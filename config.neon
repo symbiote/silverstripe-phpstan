@@ -32,6 +32,10 @@ services:
 		class: SilbinaryWolf\SilverstripePHPStan\PropertyClassReflectionExtension
 		tags:
 			- phpstan.broker.propertiesClassReflectionExtension
+	-
+		class: SilbinaryWolf\SilverstripePHPStan\DataListReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
 #
 # Bad doctype hint on functions
 #
