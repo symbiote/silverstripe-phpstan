@@ -15,6 +15,7 @@ use Object;
 use Config;
 use DataObject;
 use ContentController;
+use ViewableData;
 
 class PropertyClassReflection implements \PHPStan\Reflection\PropertiesClassReflectionExtension {
     /** @var \PHPStan\Reflection\PropertyReflection[][] */
@@ -22,11 +23,11 @@ class PropertyClassReflection implements \PHPStan\Reflection\PropertiesClassRefl
 
     public function hasProperty(ClassReflection $classReflection, string $propertyName): bool
     {
-        if (!isset($this->properties[$classReflection->getName()])) {
-            $this->properties[$classReflection->getName()] = $this->createProperties($classReflection);
+        $class = $classReflection->getName();
+        if (!isset($this->properties[$class])) {
+            $this->properties[$class] = $this->createProperties($classReflection);
         }
-
-        return isset($this->properties[$classReflection->getName()][$propertyName]);
+        return isset($this->properties[$class][$propertyName]);
     }
 
     public function getProperty(ClassReflection $classReflection, string $propertyName): PropertyReflection
@@ -49,6 +50,38 @@ class PropertyClassReflection implements \PHPStan\Reflection\PropertiesClassRefl
         $class = $classReflection->getName();
         $isDataObjectOrContentController = $classReflection->isSubclassOf(DataObject::class);
 
+        // Handle magic properties that use 'get$Method' on main class
+        if ($classReflection->isSubclassOf(ViewableData::class)) {
+            $classesToGetFrom = [$class];
+            $extensionInstances = Config::inst()->get($class, 'extensions');
+            if ($extensionInstances) {
+                $classesToGetFrom = array_merge($classesToGetFrom, $extensionInstances);
+            }
+            foreach ($classesToGetFrom as $getMethodPropClass) {
+                // Ignore parameters (ie. "Versioned('Stage', 'Live')")
+                $getMethodPropClass = explode('(', $getMethodPropClass, 2);
+                $getMethodPropClass = $getMethodPropClass[0];
+
+                foreach (get_class_methods($getMethodPropClass) as $method) {
+                    if (substr($method, 0, 3) !== 'get') {
+                        continue;
+                    }
+                    $property = substr($method, 3);
+                    // todo(Jake): Better way to handle properties, if someone does '$this->myPrOp'
+                    //             it should work with 'getMyProp' since PHP method aren't case sensitive.
+                    $propInstance = new ViewableDataGetProperty($property, $classReflection);
+                    if (!isset($properties[$property])) {
+                        $properties[$property] = $propInstance;
+                    }
+                    // ie. getOwner() -> owner
+                    $propertyToLower = strtolower($property);
+                    if (!isset($properties[$propertyToLower])) {
+                        $properties[$propertyToLower] = $propInstance;
+                    }
+                }
+            }
+        }
+
         // Handle Page_Controller where it has $failover
         // NOTE(Jake): This is not foolproof, but if people follow the general SS convention
         //             it'll work.
@@ -59,9 +92,17 @@ class PropertyClassReflection implements \PHPStan\Reflection\PropertiesClassRefl
         }
 
         if ($isDataObjectOrContentController) {
-            $properties['ID'] = new ComponentDBFieldProperty('ID', $classReflection, 'Int');
-            $properties['Created'] = new ComponentDBFieldProperty('LastEdited', $classReflection, 'SS_Datetime');
-            $properties['LastEdited'] = new ComponentDBFieldProperty('LastEdited', $classReflection, 'SS_Datetime');
+            $defaultDataObjectDBFields = array(
+                'ID' => 'Int', // NOTE: DBInt in SS 3.6+ and 4.0
+                'Created' => 'SS_Datetime',
+                'LastEdited' => 'SS_Datetime',
+            );
+            foreach ($defaultDataObjectDBFields as $column => $columnClass) {
+                if (isset($properties[$column])) {
+                    continue;
+                }
+                $properties[$column] = new ComponentDBFieldProperty($column, $classReflection, $columnClass);
+            }
 
             $dbFields = Config::inst()->get($class, 'db');
             if ($dbFields) {
@@ -69,8 +110,8 @@ class PropertyClassReflection implements \PHPStan\Reflection\PropertiesClassRefl
                     // Ignore parameters
                     $type = explode('(', $type, 2);
                     $type = $type[0];
-
-                    if (is_numeric($propertyName)) {
+                    if (isset($properties[$propertyName]) ||
+                        is_numeric($propertyName)) {
                         // Skip
                         continue;
                     }
@@ -86,6 +127,10 @@ class PropertyClassReflection implements \PHPStan\Reflection\PropertiesClassRefl
                     $type = $type[0];
 
                     $propertyName = $propertyName.'ID';
+                    if (isset($properties[$propertyName])) {
+                        // Skip
+                        continue;
+                    }
                     $properties[$propertyName] = new ComponentHasOneProperty($propertyName, $classReflection);
                 }
             }

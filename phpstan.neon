@@ -6,8 +6,14 @@ parameters:
 	earlyTerminatingMethodCalls:
 		Controller:
 			- redirect
+	universalObjectCratesClasses:
+		- ArrayData
+	ignoreErrors:
+		# No QueuedJobs seem to call the parent::__construct()
+		- '#does not call parent constructor from AbstractQueuedJob#'
 	excludes_analyse:
 		- *\codeception\*
+		- *\tests\*
 		- silverstripe-cache
 	customRulesetUsed: false
 	checkThisOnly: true
