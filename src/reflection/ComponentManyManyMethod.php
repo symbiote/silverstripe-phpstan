@@ -5,9 +5,12 @@ namespace SilbinaryWolf\SilverstripePHPStan;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\Type;
-use PHPStan\Type\ArrayType;
+use PHPStan\Type\ObjectType;
 
-class ComponentManyMethod implements MethodReflection
+// Silverstripe
+use ManyManyList;
+
+class ComponentManyManyMethod implements MethodReflection
 {
 
     /** @var string */
@@ -16,14 +19,14 @@ class ComponentManyMethod implements MethodReflection
     /** @var \PHPStan\Reflection\ClassReflection */
     private $declaringClass;
 
-    /** @var  ArrayType */
+    /** todo(Jake) */
     private $returnType;
 
-    public function __construct(string $name, ClassReflection $declaringClass, Type $type)
+    public function __construct(string $name, ClassReflection $declaringClass, ObjectType $type)
     {
         $this->name = $name;
         $this->declaringClass = $declaringClass;
-        $this->returnType = new ArrayType($type);
+        $this->returnType = new DataListType(ManyManyList::class, $type);
     }
 
     public function getDeclaringClass(): ClassReflection

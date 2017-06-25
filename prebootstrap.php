@@ -6,16 +6,16 @@
 
 $SRC_FOLDER = dirname(__FILE__).'/src';
 
-require_once($SRC_FOLDER.'/ViewableDataGetProperty.php');
-require_once($SRC_FOLDER.'/ComponentHasOneProperty.php');
-require_once($SRC_FOLDER.'/ComponentDBFieldProperty.php');
-require_once($SRC_FOLDER.'/PropertyClassReflection.php');
+require_once($SRC_FOLDER.'/type/DataListType.php');
 
-require_once($SRC_FOLDER.'/AnyMethod.php');
-require_once($SRC_FOLDER.'/ComponentHasOneMethod.php');
-require_once($SRC_FOLDER.'/ComponentManyMethod.php');
-require_once($SRC_FOLDER.'/MethodClassReflection.php');
+require_once($SRC_FOLDER.'/reflection/AnyMethod.php');
+require_once($SRC_FOLDER.'/reflection/ViewableDataGetProperty.php');
+require_once($SRC_FOLDER.'/reflection/ComponentHasOneProperty.php');
+require_once($SRC_FOLDER.'/reflection/ComponentDBFieldProperty.php');
+require_once($SRC_FOLDER.'/reflection/ComponentHasOneMethod.php');
+require_once($SRC_FOLDER.'/reflection/ComponentHasManyMethod.php');
+require_once($SRC_FOLDER.'/reflection/ComponentManyManyMethod.php');
 
-// Module-specific
-require_once($SRC_FOLDER.'/AbstractQueuedJobProperty.php');
-require_once($SRC_FOLDER.'/AbstractQueuedJobPropertyClassReflection.php');
+// Services
+require_once($SRC_FOLDER.'/PropertyClassReflectionExtension.php');
+require_once($SRC_FOLDER.'/MethodClassReflectionExtension.php');

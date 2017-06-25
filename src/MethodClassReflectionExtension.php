@@ -21,22 +21,15 @@ use Config;
 use DataObject;
 use ContentController;
 
-class MethodClassReflection implements MethodsClassReflectionExtension, BrokerAwareClassReflectionExtension {
+class MethodClassReflectionExtension implements MethodsClassReflectionExtension, BrokerAwareClassReflectionExtension {
     /** @var MethodReflection[][] */
     private $methods = [];
 
     /** @var Broker */
     private $broker;
 
-    /** @var boolean */
-    protected $inCheckingUnderscoreCacheFunction = false;
-
     public function hasMethod(ClassReflection $classReflection, string $methodName): bool 
     {
-        if ($this->inCheckingUnderscoreCacheFunction) {
-            return false;
-        }
-
         if (!isset($this->methods[$classReflection->getName()])) {
             $this->methods[$classReflection->getName()] = $this->createMethods($classReflection);
         }
@@ -120,9 +113,9 @@ class MethodClassReflection implements MethodsClassReflectionExtension, BrokerAw
             $components = array(
                 'has_one' => ComponentHasOneMethod::class,
                 'belongs_to' => ComponentHasOneMethod::class,
-                'has_many' => ComponentManyMethod::class,
-                'many_many' => ComponentManyMethod::class,
-                'belongs_many_many' => ComponentManyMethod::class,
+                'has_many' => ComponentHasManyMethod::class,
+                'many_many' => ComponentManyManyMethod::class,
+                'belongs_many_many' => ComponentManyManyMethod::class,
             );
             foreach ($components as $componentType => $componentClass) {
                 $componentNameValueMap = Config::inst()->get($class, $componentType);

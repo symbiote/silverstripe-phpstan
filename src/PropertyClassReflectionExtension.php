@@ -17,7 +17,7 @@ use DataObject;
 use ContentController;
 use ViewableData;
 
-class PropertyClassReflection implements \PHPStan\Reflection\PropertiesClassReflectionExtension {
+class PropertyClassReflectionExtension implements \PHPStan\Reflection\PropertiesClassReflectionExtension {
     /** @var \PHPStan\Reflection\PropertyReflection[][] */
     private $properties = [];
 

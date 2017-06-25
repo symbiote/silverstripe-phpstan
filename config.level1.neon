@@ -1,0 +1,20 @@
+includes:
+	- config.neon
+
+services:
+	-
+		class: PHPStan\Rules\Variables\DefinedVariableRule
+		arguments:
+			cliArgumentsVariablesRegistered: %cliArgumentsVariablesRegistered%
+		tags:
+			- phpstan.rules.rule
+
+	-
+		class: PHPStan\Rules\Variables\DefinedVariableInAnonymousFunctionUseRule
+		tags:
+			- phpstan.rules.rule
+
+	-
+		class: PHPStan\Rules\Constants\ConstantRule
+		tags:
+			- phpstan.rules.rule

@@ -8,9 +8,14 @@ parameters:
 			- redirect
 	universalObjectCratesClasses:
 		- ArrayData
+		- Config_ForClass
+		# QueuedJobs module
+		- AbstractQueuedJob
 	ignoreErrors:
 		# No QueuedJobs seem to call the parent::__construct()
 		- '#does not call parent constructor from AbstractQueuedJob#'
+		# ArrayList and DataList both support sort(), consider it supported.
+		- '#Call to an undefined method SS_List::sort#'
 	excludes_analyse:
 		- *\codeception\*
 		- *\tests\*
@@ -20,18 +25,24 @@ parameters:
 
 services:
 	-
-		class: SilbinaryWolf\SilverstripePHPStan\MethodClassReflection
+		class: SilbinaryWolf\SilverstripePHPStan\MethodClassReflectionExtension
 		tags:
 			- phpstan.broker.methodsClassReflectionExtension
 	-
-		class: SilbinaryWolf\SilverstripePHPStan\PropertyClassReflection
+		class: SilbinaryWolf\SilverstripePHPStan\PropertyClassReflectionExtension
 		tags:
 			- phpstan.broker.propertiesClassReflectionExtension
-	-
-		class: SilbinaryWolf\SilverstripePHPStan\AbstractQueuedJobPropertyClassReflection
-		tags:
-			- phpstan.broker.propertiesClassReflectionExtension
-
+#
+# Bad doctype hint on functions
+#
+#	-
+#		class: PHPStan\Rules\Functions\ExistingClassesInTypehintsRule
+#		tags:
+#			- phpstan.rules.rule
+#	-
+#		class: PHPStan\Rules\Methods\ExistingClassesInTypehintsRule
+#		tags:
+#			- phpstan.rules.rule
 	-
 		class: PHPStan\Rules\Classes\AccessPropertiesRule
 		arguments:
@@ -93,17 +104,6 @@ services:
 		class: PHPStan\Rules\Functions\ExistingClassesInClosureTypehintsRule
 		tags:
 			- phpstan.rules.rule
-#
-# Require typehint on functions
-#
-#	-
-#		class: PHPStan\Rules\Functions\ExistingClassesInTypehintsRule
-#		tags:
-#			- phpstan.rules.rule
-#	-
-#		class: PHPStan\Rules\Methods\ExistingClassesInTypehintsRule
-#		tags:
-#			- phpstan.rules.rule
 	-
 		class: PHPStan\Rules\Functions\InnerFunctionRule
 		tags:

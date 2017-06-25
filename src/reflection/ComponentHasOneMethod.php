@@ -5,7 +5,7 @@ namespace SilbinaryWolf\SilverstripePHPStan;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\Type;
-use PHPStan\Type\ArrayType;
+use PHPStan\Type\ObjectType;
 
 class ComponentHasOneMethod implements MethodReflection
 {
@@ -16,10 +16,10 @@ class ComponentHasOneMethod implements MethodReflection
     /** @var \PHPStan\Reflection\ClassReflection */
     private $declaringClass;
 
-    /** @var  ArrayType */
+    /** @var  ObjectType */
     private $returnType;
 
-    public function __construct(string $name, ClassReflection $declaringClass, Type $type)
+    public function __construct(string $name, ClassReflection $declaringClass, ObjectType $type)
     {
         $this->name = $name;
         $this->declaringClass = $declaringClass;
