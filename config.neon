@@ -33,9 +33,9 @@ services:
 		tags:
 			- phpstan.broker.propertiesClassReflectionExtension
 	-
-		class: SilbinaryWolf\SilverstripePHPStan\DataListReturnTypeExtension
+		class: SilbinaryWolf\SilverstripePHPStan\DataObjectGetStaticReturnTypeExtension
 		tags:
-			- phpstan.broker.dynamicMethodReturnTypeExtension
+			- phpstan.broker.dynamicStaticMethodReturnTypeExtension
 #
 # Bad doctype hint on functions
 #
