@@ -45,6 +45,10 @@ class DataListType extends ObjectType implements IterableType
         return sprintf('%s(%s[])', $this->dataListType->getClass(), $this->nestedType->getClass());
     }
 
+    public function getDataListType(): ObjectType {
+        return $this->dataListType;
+    }
+
     public function getClass(): string 
     {
         return $this->dataListType->getClass();
