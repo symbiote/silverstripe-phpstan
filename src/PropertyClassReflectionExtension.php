@@ -48,14 +48,28 @@ class PropertyClassReflectionExtension implements \PHPStan\Reflection\Properties
         $properties = [];
 
         $class = $classReflection->getName();
-        $isDataObjectOrContentController = $classReflection->isSubclassOf(DataObject::class);
+        $isDataObjectOrContentController = $classReflection->getName() === DataObject::class || 
+                                            $classReflection->isSubclassOf(DataObject::class);
+
+        // Get extension classes
+        $extensionClasses = array();
+        $extensions = Config::inst()->get($class, 'extensions');
+        if ($extensions) {
+            foreach ($extensions as $extensionClass) {
+                // Ignore parameters (ie. "Versioned('Stage', 'Live')")
+                $extensionClass = explode('(', $extensionClass, 2);
+                $extensionClass = $extensionClass[0];
+
+                $extensionClasses[$extensionClass] = $extensionClass;
+            }
+        }
+        unset($extensions);
 
         // Handle magic properties that use 'get$Method' on main class
         if ($classReflection->isSubclassOf(ViewableData::class)) {
             $classesToGetFrom = [$class];
-            $extensionInstances = Config::inst()->get($class, 'extensions');
-            if ($extensionInstances) {
-                $classesToGetFrom = array_merge($classesToGetFrom, $extensionInstances);
+            if ($extensionClasses) {
+                $classesToGetFrom = array_merge($classesToGetFrom, $extensionClasses);
             }
             foreach ($classesToGetFrom as $getMethodPropClass) {
                 // Ignore parameters (ie. "Versioned('Stage', 'Live')")
@@ -94,9 +108,14 @@ class PropertyClassReflectionExtension implements \PHPStan\Reflection\Properties
         if ($isDataObjectOrContentController) {
             $defaultDataObjectDBFields = array(
                 'ID' => 'Int', // NOTE: DBInt in SS 3.6+ and 4.0
+                'ClassName' => 'Enum',
                 'Created' => 'SS_Datetime',
                 'LastEdited' => 'SS_Datetime',
             );
+            // Support Versioned fields for when grabbing records out of *_versions tables.
+            if ($extensionClasses && isset($extensionClasses['Versioned'])) {
+                $defaultDataObjectDBFields['RecordID'] = 'Int';
+            }
             foreach ($defaultDataObjectDBFields as $column => $columnClass) {
                 if (isset($properties[$column])) {
                     continue;

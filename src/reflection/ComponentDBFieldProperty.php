@@ -30,6 +30,7 @@ class ComponentDBFieldProperty implements PropertyReflection
             case 'Varchar':
             case 'HTMLVarchar':
             case 'HTMLText':
+            case 'Enum':
                 $this->returnType = new StringType;
             break;
 

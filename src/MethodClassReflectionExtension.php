@@ -60,7 +60,8 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
         $methods = [];
 
         $class = $classReflection->getName();
-        $isDataObjectOrContentController = $classReflection->isSubclassOf(DataObject::class);
+        $isDataObjectOrContentController = $classReflection->getName() === DataObject::class || 
+                                            $classReflection->isSubclassOf(DataObject::class);
 
         // Add methods from extensions
         $extensionInstances = Config::inst()->get($class, 'extensions');

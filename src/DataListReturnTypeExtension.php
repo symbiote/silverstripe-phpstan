@@ -11,6 +11,8 @@ use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\Type;
+use PHPStan\Type\ArrayType;
+use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
 
 // Silverstripe
@@ -28,16 +30,25 @@ class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTy
         switch ($name) {
             // DataList
             case 'filter':
+            case 'reverse':
             case 'where':
             case 'whereAny':
             case 'innerJoin':
             case 'sort':
             case 'limit':
             case 'exclude':
-            case 'min':
             case 'setDataQueryParam':
             case 'alterDataQuery':
-
+            case 'setQueriedColumns':
+            case 'byIDs':
+            case 'addMany':
+            case 'removeMany':
+            case 'removeByFilter':
+            case 'removeAll':
+            // int[]
+            case 'getIDList':
+            // DataObject[]
+            case 'toArray':
             // DataObject
             case 'find':
             case 'byID':
@@ -46,7 +57,9 @@ class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTy
                 return true;
             break;
 
-            /*case 'toArray':
+            /*case 'min':
+            case 'max':
+            case 'avg':
             case 'dataClass':
             case 'column':
             case 'map':
@@ -76,30 +89,43 @@ class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTy
         if (!$type || !($type instanceof DataListType)) {
             return $methodReflection->getReturnType();
         }
+        
         switch ($name) {
             // DataList
             case 'filter':
+            case 'reverse':
             case 'where':
             case 'whereAny':
             case 'innerJoin':
             case 'sort':
             case 'limit':
             case 'exclude':
-            case 'min':
             case 'setDataQueryParam':
             case 'alterDataQuery':
-                if ($type && $type instanceof DataListType) {
-                    return $type;
-                }
+            case 'setQueriedColumns':
+            case 'byIDs':
+            case 'addMany':
+            case 'removeMany':
+            case 'removeByFilter':
+            case 'removeAll':
+                return $type;
             break;
 
+            case 'getIDList':
+                return new ArrayType(new IntegerType);
+            break;
+
+            // DataObject[]
+            case 'toArray':
+                return new ArrayType($type->getItemType());
+            break;
+
+            // DataObject
             case 'find':
             case 'byID':
             case 'first':
             case 'last':
-                if ($type && $type instanceof DataListType) {
-                    return $type->getItemType();
-                }
+                return $type->getItemType();
             break;
 
             default:
