@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * This file is required to include additional Rule classes, etc.

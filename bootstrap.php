@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * This file is required to setup the autoloader
