@@ -6,8 +6,9 @@ use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\Type;
 use PHPStan\Type\MixedType;
+use PHPStan\Reflection\Php\PhpMethodReflection;
 
-class AnyMethod implements MethodReflection
+class CachedMethod implements MethodReflection
 {
 
     /** @var string */
@@ -16,49 +17,46 @@ class AnyMethod implements MethodReflection
     /** @var \PHPStan\Reflection\ClassReflection */
     private $declaringClass;
 
-    /** @var  ArrayType */
-    private $returnType;
-
-    public function __construct(string $name, ClassReflection $declaringClass)
+    public function __construct(PhpMethodReflection $methodReflection)
     {
-        $this->name = $name;
-        $this->declaringClass = $declaringClass;
-        $this->returnType = new MixedType();
+        // Remove '_' from front of function
+        $this->name = substr($methodReflection->getName(), 1);
+        $this->methodReflection = $methodReflection;
     }
 
     public function getDeclaringClass(): ClassReflection
     {
-        return $this->declaringClass;
+        return $this->methodReflection->getDeclaringClass();
     }
 
     public function getPrototype(): MethodReflection
     {
-        return $this;
+        return $this->methodReflection->getPrototype();
     }
 
     public function isStatic(): bool
     {
-        return false;
+        return $this->methodReflection->isStatic();
     }
 
     public function getParameters(): array
     {
-        return [];
+        return $this->methodReflection->getParameters();
     }
 
     public function isVariadic(): bool
     {
-        return false;
+        return $this->methodReflection->isVariadic();
     }
 
     public function isPrivate(): bool
     {
-        return false;
+        return $this->methodReflection->isPrivate();
     }
 
     public function isPublic(): bool
     {
-        return true;
+        return $this->methodReflection->isPublic();
     }
 
     public function getName(): string
@@ -68,6 +66,6 @@ class AnyMethod implements MethodReflection
 
     public function getReturnType(): Type
     {
-        return $this->returnType;
+        return $this->methodReflection->getReturnType();
     }
 }

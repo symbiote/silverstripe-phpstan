@@ -34,13 +34,13 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
             $this->methods[$classReflection->getName()] = $this->createMethods($classReflection);
         }
 
-        return isset($this->methods[$classReflection->getName()][$methodName]);
+        return isset($this->methods[$classReflection->getName()][strtolower($methodName)]);
     }
 
     public function getMethod(ClassReflection $classReflection, string $methodName): MethodReflection
     {
         // Fallback to has_one/has_many/many_many
-        return $this->methods[$classReflection->getName()][$methodName];
+        return $this->methods[$classReflection->getName()][strtolower($methodName)];
     }
 
     public function setBroker(Broker $broker) {
@@ -76,7 +76,7 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
                 foreach (get_class_methods($extensionClass) as $methodName) {
                     /** @var $methodReflection PhpMethodReflection */
                     $methodReflection = $extensionClassReflection->getMethod($methodName);
-                    $methods[$methodName] = $methodReflection;
+                    $methods[strtolower($methodName)] = $methodReflection;
                 }
             }
         }
@@ -87,9 +87,9 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
         //     Call: $this->MyFunction() will be cached.
         //
         foreach (get_class_methods($class) as $methodName) {
-            if ($methodName && $methodName[0] === '_') {
-                $methodName = substr($methodName, 1);
-                $methods[$methodName] = new AnyMethod($methodName, $classReflection);
+            if ($methodName && $methodName[0] === '_' && isset($methodName[1]) && $methodName[1] !== '_') {
+                $uncachedMethodName = substr($methodName, 1);
+                $methods[strtolower($uncachedMethodName)] = new CachedMethod($classReflection->getMethod($methodName));
             }
         }
 
@@ -105,7 +105,7 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
             foreach (get_class_methods($class) as $methodName) {
                 /** @var $methodReflection PhpMethodReflection */
                 $methodReflection = $failoverClassReflection->getMethod($methodName);
-                $methods[$methodName] = $methodReflection;
+                $methods[strtolower($methodName)] = $methodReflection;
             }
         }
 
@@ -129,7 +129,7 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
                     $type = explode('(', $type, 2);
                     $type = $type[0];
 
-                    $methods[$methodName] = new $componentClass($methodName, $classReflection, new ObjectType($type));
+                    $methods[strtolower($methodName)] = new $componentClass($methodName, $classReflection, new ObjectType($type));
                 }
             }
         }

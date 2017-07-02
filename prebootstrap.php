@@ -8,7 +8,7 @@ $SRC_FOLDER = dirname(__FILE__).'/src';
 
 require_once($SRC_FOLDER.'/type/DataListType.php');
 
-require_once($SRC_FOLDER.'/reflection/AnyMethod.php');
+require_once($SRC_FOLDER.'/reflection/CachedMethod.php');
 require_once($SRC_FOLDER.'/reflection/ViewableDataGetProperty.php');
 require_once($SRC_FOLDER.'/reflection/ComponentHasOneProperty.php');
 require_once($SRC_FOLDER.'/reflection/ComponentDBFieldProperty.php');
