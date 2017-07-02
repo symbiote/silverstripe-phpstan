@@ -18,6 +18,7 @@ require_once($SRC_FOLDER.'/reflection/ComponentManyManyMethod.php');
 
 // Services
 require_once($SRC_FOLDER.'/DataObjectGetStaticReturnTypeExtension.php');
+require_once($SRC_FOLDER.'/DataObjectReturnTypeExtension.php');
 require_once($SRC_FOLDER.'/DataListReturnTypeExtension.php');
 require_once($SRC_FOLDER.'/PropertyClassReflectionExtension.php');
 require_once($SRC_FOLDER.'/MethodClassReflectionExtension.php');

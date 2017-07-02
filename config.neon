@@ -40,6 +40,10 @@ services:
 		class: SilbinaryWolf\SilverstripePHPStan\DataListReturnTypeExtension
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		class: SilbinaryWolf\SilverstripePHPStan\DataObjectReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
 #
 # Bad doctype hint on functions
 #

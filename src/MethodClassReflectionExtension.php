@@ -7,12 +7,12 @@ use \ReflectionMethod;
 
 use PHPStan\Reflection\MethodsClassReflectionExtension;
 use PHPStan\Reflection\BrokerAwareClassReflectionExtension;
+use PHPStan\Broker\Broker;
 
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\FileTypeMapper;
 use PHPStan\Type\ObjectType;
-use PHPStan\Broker\Broker;
 use PHPStan\Reflection\Php\PhpMethodReflection;
 
 // Silverstripe
@@ -43,7 +43,8 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
         return $this->methods[$classReflection->getName()][strtolower($methodName)];
     }
 
-    public function setBroker(Broker $broker) {
+    public function setBroker(Broker $broker) 
+    {
         $this->broker = $broker;
     }
 
