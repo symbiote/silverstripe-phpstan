@@ -1,0 +1,11 @@
+includes:
+	- config.level4.neon
+
+parameters:
+	checkFunctionArgumentTypes: true
+
+services:
+	-
+		class: PHPStan\Rules\Functions\CallToCountOnlyWithArrayOrCountableRule
+		tags:
+			- phpstan.rules.rule

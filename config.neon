@@ -13,9 +13,9 @@ parameters:
 		- AbstractQueuedJob
 	ignoreErrors:
 		# No QueuedJobs seem to call the parent::__construct()
-		- '#does not call parent constructor from AbstractQueuedJob#'
-		# ArrayList and DataList both support sort(), consider it supported.
-		- '#Call to an undefined method SS_List::sort#'
+		#- '#does not call parent constructor from AbstractQueuedJob#'
+		# ArrayList and DataList both support filter()/sort(), consider it supported.
+		#- '#Call to an undefined method SS_List::#'
 	excludes_analyse:
 		- *\codeception\*
 		- *\tests\*
@@ -44,6 +44,10 @@ services:
 		class: SilbinaryWolf\SilverstripePHPStan\DataObjectReturnTypeExtension
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		class: SilbinaryWolf\SilverstripePHPStan\DBFieldStaticReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicStaticMethodReturnTypeExtension
 #
 # Bad doctype hint on functions
 #
