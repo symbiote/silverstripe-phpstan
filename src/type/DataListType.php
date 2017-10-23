@@ -15,8 +15,10 @@ use Config;
 use DataObject;
 use ContentController;
 
-class DataListType extends ObjectType implements IterableType
+class DataListType extends ObjectType
 {
+    use IterableTypeTrait;
+
     /** @var ObjectType */
     private $dataListType;
 

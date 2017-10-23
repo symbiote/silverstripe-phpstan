@@ -12,8 +12,8 @@
     "require": {
         "silverstripe/framework": "~3.1"
     },
-    "suggest": {
-        "phpstan/phpstan-shim": "Install PHPStan-Shim and execute with PHP7 executable on 5.x codebase."
+    "require-dev": {
+        "phpstan/phpstan-shim": "~0.8",
     },
     "extra": {
         "installer-name": "phpstan"

@@ -1,17 +1,34 @@
 <?php
 
 /**
- * This file is required to setup the autoloader
+ * This file is required to setup Silverstripe class autoloader
  */
 $CORE_PATH = dirname(__FILE__).'/../framework/core';
-require_once($CORE_PATH.'/TempPath.php');
-
-// Copy-pasted from framework/Constants.php
-/*$candidateBasePath = rtrim(dirname(dirname(dirname(__FILE__))), DIRECTORY_SEPARATOR);
-if($candidateBasePath == '') $candidateBasePath = DIRECTORY_SEPARATOR;
-define('BASE_PATH', $candidateBasePath);
-
-// Override silverstripe-cache username to 'phpstan'
-define('TEMP_FOLDER', getTempParentFolder(BASE_PATH) . DIRECTORY_SEPARATOR . 'phpstan');*/
-
+//require_once($CORE_PATH.'/TempPath.php');
+if (!file_exists($CORE_PATH.'/Core.php')) {
+	echo 'Unable to find "framework" folder for Silverstripe 3.X project.';
+	exit;
+}
 require_once($CORE_PATH.'/Core.php');
+
+/**
+ * This file is required to include additional Rule classes, etc.
+ */
+$SRC_FOLDER = dirname(__FILE__).'/src';
+
+require_once($SRC_FOLDER.'/type/DataListType.php');
+
+require_once($SRC_FOLDER.'/reflection/CachedMethod.php');
+require_once($SRC_FOLDER.'/reflection/ViewableDataGetProperty.php');
+require_once($SRC_FOLDER.'/reflection/ComponentHasOneProperty.php');
+require_once($SRC_FOLDER.'/reflection/ComponentDBFieldProperty.php');
+require_once($SRC_FOLDER.'/reflection/ComponentHasOneMethod.php');
+require_once($SRC_FOLDER.'/reflection/ComponentHasManyMethod.php');
+require_once($SRC_FOLDER.'/reflection/ComponentManyManyMethod.php');
+
+require_once($SRC_FOLDER.'/DBFieldStaticReturnTypeExtension.php');
+require_once($SRC_FOLDER.'/DataObjectGetStaticReturnTypeExtension.php');
+require_once($SRC_FOLDER.'/DataObjectReturnTypeExtension.php');
+require_once($SRC_FOLDER.'/DataListReturnTypeExtension.php');
+require_once($SRC_FOLDER.'/PropertyClassReflectionExtension.php');
+require_once($SRC_FOLDER.'/MethodClassReflectionExtension.php');

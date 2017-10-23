@@ -45,4 +45,14 @@ class ComponentHasOneProperty implements PropertyReflection
     public function isPublic(): bool {
         return true;
     }
+
+    public function isReadable(): bool 
+    {
+        return true;
+    }
+
+    public function isWritable(): bool 
+    {
+        return true;
+    }
 }

@@ -1,0 +1,44 @@
+parameters:
+	earlyTerminatingMethodCalls:
+		Controller:
+			- redirect
+	universalObjectCratesClasses:
+		- ArrayData
+		- Config_ForClass
+		# QueuedJobs module
+		- AbstractQueuedJob
+	ignoreErrors:
+		# Most QueuedJobs don't call the parent::__construct() method
+		- '#does not call parent constructor from AbstractQueuedJob#'
+		# SS_List is basically ArrayList and DataList. Consider filter/sort/etc supported.
+		- '#Call to an undefined method SS_List::#'
+	excludes_analyse:
+		- *\codeception\*
+		- *\tests\*
+		- silverstripe-cache
+
+services:
+	-
+		class: SilbinaryWolf\SilverstripePHPStan\MethodClassReflectionExtension
+		tags:
+			- phpstan.broker.methodsClassReflectionExtension
+	-
+		class: SilbinaryWolf\SilverstripePHPStan\PropertyClassReflectionExtension
+		tags:
+			- phpstan.broker.propertiesClassReflectionExtension
+	-
+		class: SilbinaryWolf\SilverstripePHPStan\DataObjectGetStaticReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicStaticMethodReturnTypeExtension
+	-
+		class: SilbinaryWolf\SilverstripePHPStan\DataListReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		class: SilbinaryWolf\SilverstripePHPStan\DataObjectReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
+		class: SilbinaryWolf\SilverstripePHPStan\DBFieldStaticReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicStaticMethodReturnTypeExtension

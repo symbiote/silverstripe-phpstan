@@ -1,17 +1,26 @@
-PHPStan for Silverstripe
-=========================
+# PHPStan for Silverstripe
 
-Warning: This is a work in progress, the instructions below are mostly for myself for the time being.
-
-Quick Start
-- Download PHPStan.phar from: https://github.com/phpstan/phpstan/releases
-- Place in root directory of project
-- While in path of project execute:
+1. Create "phpstan.neon" in project dir.
 ```
-php7 phpstan.phar analyse {MODULE_FOLDER_HERE} -a "phpstan/service_autoloader.php" -c "phpstan/phpstan.neon"
+includes:
+	- phpstan/extension.neon
 ```
 
-Example use on Windows:
+2. Execute from project dir:
+`php ./vendor/phpstan/phpstan-shim/phpstan.phar analyse mysite --level 0 -c "phpstan.neon" -a "phpstan/bootstrap.php"`
+
+3. Visit the [PHPStan Github](https://github.com/phpstan/phpstan) for additional information.
+
+## Composer Install
+
 ```
-"/D/wamp/bin/php/php7.1.5/php" "/D/wamp/bin/php/php7.1.5/phpstan.phar" analyse mysite -c "phpstan/phpstan.neon" -a "phpstan/prebootstrap.php"
+composer require silbinarywolf/silverstripe-phpstan:~1.0.0
 ```
+
+## Requirements
+
+* SilverStripe 3.1+
+
+## Documentation
+
+* [License](LICENSE.md)
