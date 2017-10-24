@@ -24,7 +24,8 @@ use PHPStan\Type\StaticType;
 use DataObject;
 use Config;
 
-class DataObjectReturnTypeExtension implements DynamicMethodReturnTypeExtension {
+class DataObjectReturnTypeExtension implements DynamicMethodReturnTypeExtension
+{
     /** @var Broker */
     private $broker;
 
@@ -32,11 +33,6 @@ class DataObjectReturnTypeExtension implements DynamicMethodReturnTypeExtension 
     {
         return DataObject::class;
     }
-
-    /*public function setBroker(Broker $broker) 
-    {
-        $this->broker = $broker;
-    }*/
 
     public function isMethodSupported(MethodReflection $methodReflection): bool
     {

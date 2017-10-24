@@ -17,7 +17,8 @@ use PHPStan\Type\ObjectType;
 use DataList;
 use DataObject;
 
-class DataObjectGetStaticReturnTypeExtension implements \PHPStan\Type\DynamicStaticMethodReturnTypeExtension {
+class DataObjectGetStaticReturnTypeExtension implements \PHPStan\Type\DynamicStaticMethodReturnTypeExtension
+{
     public static function getClass(): string
     {
         return DataObject::class;
@@ -26,7 +27,9 @@ class DataObjectGetStaticReturnTypeExtension implements \PHPStan\Type\DynamicSta
     public function isStaticMethodSupported(MethodReflection $methodReflection): bool
     {
         $name = $methodReflection->getName();
-        return $name === 'get' || $name === 'get_one' || $name === 'get_by_id';
+        return $name === 'get' ||
+               $name === 'get_one' ||
+               $name === 'get_by_id';
     }
 
     public function getTypeFromStaticMethodCall(MethodReflection $methodReflection, StaticCall $methodCall, Scope $scope): Type
@@ -50,7 +53,6 @@ class DataObjectGetStaticReturnTypeExtension implements \PHPStan\Type\DynamicSta
                 if ($callerClass === 'self') {
                     $callerClass = $scope->getClassReflection()->getName();
                 }
-
                 return new DataListType(DataList::class, new ObjectType($callerClass));
             break;
 

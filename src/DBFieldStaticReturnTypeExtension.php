@@ -17,7 +17,8 @@ use PHPStan\Type\ObjectType;
 // Silverstripe
 use DBField;
 
-class DBFieldStaticReturnTypeExtension implements \PHPStan\Type\DynamicStaticMethodReturnTypeExtension {
+class DBFieldStaticReturnTypeExtension implements \PHPStan\Type\DynamicStaticMethodReturnTypeExtension
+{
     public static function getClass(): string
     {
         return DBField::class;
@@ -43,10 +44,12 @@ class DBFieldStaticReturnTypeExtension implements \PHPStan\Type\DynamicStaticMet
                 if ($arg instanceof Variable) {
                     // Unhandled, cannot retrieve variable value even if set in this scope.
                     return $methodReflection->getReturnType();
-                } else if ($arg instanceof String_) {
+                }
+                if ($arg instanceof String_) {
                     $value = $arg->value;
                 }
                 if (!$value) {
+                    // If value is empty
                     return $methodReflection->getReturnType();
                 }
                 return new ObjectType($value);

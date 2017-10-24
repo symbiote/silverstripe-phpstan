@@ -18,7 +18,8 @@ use PHPStan\Type\ObjectType;
 // Silverstripe
 use DataList;
 
-class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTypeExtension {
+class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTypeExtension
+{
     public static function getClass(): string
     {
         return DataList::class;

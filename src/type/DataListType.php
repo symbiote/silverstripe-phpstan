@@ -9,13 +9,7 @@ use PHPStan\Type\IterableTypeTrait;
 use PHPStan\Type\NestedArrayItemType;
 use PHPStan\Type\StaticResolvableType;
 
-// Silverstripe
-use Object;
-use Config;
-use DataObject;
-use ContentController;
-
-class DataListType extends ObjectType
+class DataListType extends ObjectType implements StaticResolvableType
 {
     use IterableTypeTrait;
 
@@ -25,7 +19,7 @@ class DataListType extends ObjectType
     /** @var Type */
     private $nestedType;
 
-    public function __construct(string $dataListType, Type $nestedType) 
+    public function __construct(string $dataListType, Type $nestedType)
     {
         parent::__construct($dataListType);
         $this->dataListType = new ObjectType($dataListType);
@@ -44,14 +38,15 @@ class DataListType extends ObjectType
 
     public function describe(): string
     {
-        return sprintf('%s(%s[])', $this->dataListType->getClass(), $this->nestedType->getClass());
+        return sprintf('%s<%s[]>', $this->dataListType->getClass(), $this->nestedType->getClass());
     }
 
-    public function getDataListType(): ObjectType {
+    public function getDataListType(): ObjectType
+    {
         return $this->dataListType;
     }
 
-    public function getClass(): string 
+    public function getClass(): string
     {
         return $this->dataListType->getClass();
     }

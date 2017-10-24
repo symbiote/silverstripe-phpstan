@@ -32,45 +32,55 @@ class ComponentDBFieldProperty implements PropertyReflection
             case 'HTMLText':
             case 'Enum':
                 $this->returnType = new StringType;
-            break;
+                break;
 
             case 'Int':
             case 'DBInt':
                 $this->returnType = new IntegerType;
-            break;
+                break;
+
+            case 'Float':
+            case 'DBFloat':
+                $this->returnType = new FloatType;
+                break;
 
             default:
                 $this->returnType = new MixedType;
-            break;
+                break;
         }
     }
 
-    public function getType(): Type {
+    public function getType(): Type
+    {
         return $this->returnType;
     }
     
-    public function getDeclaringClass(): ClassReflection {
+    public function getDeclaringClass(): ClassReflection
+    {
         return $this->declaringClass;
     }
 
-    public function isStatic(): bool {
+    public function isStatic(): bool
+    {
         return false;
     }
 
-    public function isPrivate(): bool {
+    public function isPrivate(): bool
+    {
         return false;
     }
 
-    public function isPublic(): bool {
-        return true;
-    }
-
-    public function isReadable(): bool 
+    public function isPublic(): bool
     {
         return true;
     }
 
-    public function isWritable(): bool 
+    public function isReadable(): bool
+    {
+        return true;
+    }
+
+    public function isWritable(): bool
     {
         return true;
     }

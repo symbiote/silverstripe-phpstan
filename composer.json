@@ -1,21 +1,43 @@
 {
     "name": "silbinarywolf/silverstripe-phpstan",
     "description": "PHPStan for Silverstripe",
-    "type": "silverstripe-module",
-    "keywords": ["silverstripe"],
+    "type": "library",
+    "keywords": [
+        "php",
+        "silverstripe",
+        "static",
+        "analysis",
+        "phpstan",
+        "scrutinizer"
+    ],
     "license": "BSD-3-Clause",
     "authors": [
     {
         "name": "Jake Bentvelzen",
-        "email": "jake@silverstripe.com.au"
+        "email": "jake@dontcontactme.com.au"
     }],
     "require": {
+        "php": "~7.0",
         "silverstripe/framework": "~3.1"
     },
     "require-dev": {
-        "phpstan/phpstan-shim": "~0.8",
+        "squizlabs/php_codesniffer": "*"
+    },
+    "suggest": {
+        "phpstan/phpstan-shim": "~0.8.0"
+    },
+    "autoload": {
+        "psr-4": { 
+            "SilbinaryWolf\\SilverstripePHPStan\\": [
+                "src/",
+                "src/type",
+                "src/reflection"
+            ]
+        }
     },
     "extra": {
-        "installer-name": "phpstan"
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
     }
 }

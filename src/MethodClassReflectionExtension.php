@@ -21,14 +21,15 @@ use Config;
 use DataObject;
 use ContentController;
 
-class MethodClassReflectionExtension implements MethodsClassReflectionExtension, BrokerAwareClassReflectionExtension {
+class MethodClassReflectionExtension implements MethodsClassReflectionExtension, BrokerAwareClassReflectionExtension
+{
     /** @var MethodReflection[][] */
     private $methods = [];
 
     /** @var Broker */
     private $broker;
 
-    public function hasMethod(ClassReflection $classReflection, string $methodName): bool 
+    public function hasMethod(ClassReflection $classReflection, string $methodName): bool
     {
         if (!isset($this->methods[$classReflection->getName()])) {
             $this->methods[$classReflection->getName()] = $this->createMethods($classReflection);
@@ -43,7 +44,7 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
         return $this->methods[$classReflection->getName()][strtolower($methodName)];
     }
 
-    public function setBroker(Broker $broker) 
+    public function setBroker(Broker $broker)
     {
         $this->broker = $broker;
     }
@@ -61,7 +62,7 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
         $methods = [];
 
         $class = $classReflection->getName();
-        $isDataObjectOrContentController = $classReflection->getName() === DataObject::class || 
+        $isDataObjectOrContentController = $classReflection->getName() === DataObject::class ||
                                             $classReflection->isSubclassOf(DataObject::class);
 
         // Add methods from extensions
@@ -97,7 +98,7 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
         // Handle Page_Controller where it has $failover
         // NOTE(Jake): This is not foolproof, but if people follow the general SS convention
         //             it'll work.
-        if (strpos($class, '_Controller') !== FALSE &&
+        if (strpos($class, '_Controller') !== false &&
             $classReflection->isSubclassOf(ContentController::class)) {
             $class = str_replace('_Controller', '', $class);
             $isDataObjectOrContentController = true;

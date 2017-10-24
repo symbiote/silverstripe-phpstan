@@ -1,20 +1,17 @@
 # PHPStan for Silverstripe
 
-1. Create "phpstan.neon" in project dir.
-```
-includes:
-	- phpstan/extension.neon
-```
+[![Build Status](https://travis-ci.org/SilbinaryWolf/silverstripe-phpstan.svg?branch=master)](https://travis-ci.org/SilbinaryWolf/silverstripe-phpstan)
+[![Latest Stable Version](https://poser.pugx.org/silbinarywolf/silverstripe-phpstan/version.svg)](https://github.com/silbinarywolf/silverstripe-phpstan/releases)
+[![Latest Unstable Version](https://poser.pugx.org/silbinarywolf/silverstripe-phpstan/v/unstable.svg)](https://packagist.org/packages/silbinarywolf/silverstripe-phpstan)
+[![Total Downloads](https://poser.pugx.org/silbinarywolf/silverstripe-phpstan/downloads.svg)](https://packagist.org/packages/silbinarywolf/silverstripe-phpstan)
+[![License](https://poser.pugx.org/silbinarywolf/silverstripe-phpstan/license.svg)](https://github.com/silbinarywolf/silverstripe-phpstan/blob/master/LICENSE.md)
 
-2. Execute from project dir:
-`php ./vendor/phpstan/phpstan-shim/phpstan.phar analyse mysite --level 0 -c "phpstan.neon" -a "phpstan/bootstrap.php"`
-
-3. Visit the [PHPStan Github](https://github.com/phpstan/phpstan) for additional information.
+Add PHPStan functionality to Silverstripe.
 
 ## Composer Install
 
 ```
-composer require silbinarywolf/silverstripe-phpstan:~1.0.0
+composer require silbinarywolf/silverstripe-phpstan:~0.1
 ```
 
 ## Requirements
@@ -23,4 +20,6 @@ composer require silbinarywolf/silverstripe-phpstan:~1.0.0
 
 ## Documentation
 
+* [Quick Start](docs/en/quick-start.md)
+* [Advanced Usage](docs/en/advanced-usage.md)
 * [License](LICENSE.md)

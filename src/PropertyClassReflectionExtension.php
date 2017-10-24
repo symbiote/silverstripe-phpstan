@@ -17,7 +17,8 @@ use DataObject;
 use ContentController;
 use ViewableData;
 
-class PropertyClassReflectionExtension implements \PHPStan\Reflection\PropertiesClassReflectionExtension {
+class PropertyClassReflectionExtension implements \PHPStan\Reflection\PropertiesClassReflectionExtension
+{
     /** @var \PHPStan\Reflection\PropertyReflection[][] */
     private $properties = [];
 
@@ -48,7 +49,7 @@ class PropertyClassReflectionExtension implements \PHPStan\Reflection\Properties
         $properties = [];
 
         $class = $classReflection->getName();
-        $isDataObjectOrContentController = $classReflection->getName() === DataObject::class || 
+        $isDataObjectOrContentController = $classReflection->getName() === DataObject::class ||
                                             $classReflection->isSubclassOf(DataObject::class);
 
         // Get extension classes
@@ -99,7 +100,7 @@ class PropertyClassReflectionExtension implements \PHPStan\Reflection\Properties
         // Handle Page_Controller where it has $failover
         // NOTE(Jake): This is not foolproof, but if people follow the general SS convention
         //             it'll work.
-        if (strpos($class, '_Controller') !== FALSE &&
+        if (strpos($class, '_Controller') !== false &&
             $classReflection->isSubclassOf(ContentController::class)) {
             $class = str_replace('_Controller', '', $class);
             $isDataObjectOrContentController = true;

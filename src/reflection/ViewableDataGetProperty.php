@@ -28,37 +28,37 @@ class ViewableDataGetProperty implements PropertyReflection
         $this->returnType = new MixedType;
     }
 
-    public function getType(): Type 
+    public function getType(): Type
     {
         return $this->returnType;
     }
     
-    public function getDeclaringClass(): ClassReflection 
+    public function getDeclaringClass(): ClassReflection
     {
         return $this->declaringClass;
     }
 
-    public function isStatic(): bool 
+    public function isStatic(): bool
     {
         return false;
     }
 
-    public function isPrivate(): bool 
+    public function isPrivate(): bool
     {
         return false;
     }
 
-    public function isPublic(): bool 
+    public function isPublic(): bool
     {
         return true;
     }
 
-    public function isReadable(): bool 
+    public function isReadable(): bool
     {
         return true;
     }
 
-    public function isWritable(): bool 
+    public function isWritable(): bool
     {
         return true;
     }
