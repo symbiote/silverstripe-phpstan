@@ -16,34 +16,26 @@ class DataListType extends ObjectType implements StaticResolvableType
     /** @var ObjectType */
     private $dataListType;
 
-    /** @var Type */
-    private $nestedType;
-
-    public function __construct(string $dataListType, Type $nestedType)
+    public function __construct(string $dataListClassName, Type $itemType)
     {
-        parent::__construct($dataListType);
-        $this->dataListType = new ObjectType($dataListType);
-        $this->nestedType = $nestedType;
-    }
-
-    public function getItemType(): Type
-    {
-        return $this->nestedType;
-    }
-
-    public function getNestedItemType(): NestedArrayItemType
-    {
-        return $this->nestedType;
+        parent::__construct($dataListClassName);
+        $this->dataListType = new ObjectType($dataListClassName);
+        $this->itemType = $itemType;
     }
 
     public function describe(): string
     {
-        return sprintf('%s<%s[]>', $this->dataListType->getClass(), $this->nestedType->getClass());
+        return sprintf('%s<%s[]>', $this->dataListType->getClass(), $this->itemType->getClass());
     }
 
     public function getDataListType(): ObjectType
     {
         return $this->dataListType;
+    }
+
+    public function getIterableValueType(): Type
+    {
+        return $this->itemType;
     }
 
     public function getClass(): string
