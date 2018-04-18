@@ -6,7 +6,7 @@ use \ReflectionClass;
 use \ReflectionMethod;
 
 use PHPStan\Reflection\MethodsClassReflectionExtension;
-use PHPStan\Reflection\BrokerAwareClassReflectionExtension;
+use PHPStan\Reflection\BrokerAwareExtension;
 use PHPStan\Broker\Broker;
 
 use PHPStan\Reflection\ClassReflection;
@@ -14,6 +14,7 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\FileTypeMapper;
 use PHPStan\Type\ObjectType;
 use PHPStan\Reflection\Php\PhpMethodReflection;
+use PHPStan\Analyser\Scope;
 
 // Silverstripe
 use Object;
@@ -21,7 +22,7 @@ use Config;
 use DataObject;
 use ContentController;
 
-class MethodClassReflectionExtension implements MethodsClassReflectionExtension, BrokerAwareClassReflectionExtension
+class MethodClassReflectionExtension implements MethodsClassReflectionExtension, BrokerAwareExtension
 {
     /** @var MethodReflection[][] */
     private $methods = [];
@@ -77,7 +78,7 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
                 $extensionClassReflection = $this->broker->getClass($extensionClass);
                 foreach (get_class_methods($extensionClass) as $methodName) {
                     /** @var $methodReflection PhpMethodReflection */
-                    $methodReflection = $extensionClassReflection->getMethod($methodName);
+                    $methodReflection = $extensionClassReflection->getNativeMethod($methodName);
                     $methods[strtolower($methodName)] = $methodReflection;
                 }
             }
@@ -91,7 +92,7 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
         foreach (get_class_methods($class) as $methodName) {
             if ($methodName && $methodName[0] === '_' && isset($methodName[1]) && $methodName[1] !== '_') {
                 $uncachedMethodName = substr($methodName, 1);
-                $methods[strtolower($uncachedMethodName)] = new CachedMethod($classReflection->getMethod($methodName));
+                $methods[strtolower($uncachedMethodName)] = new CachedMethod($classReflection->getNativeMethod($methodName));
             }
         }
 
@@ -106,7 +107,7 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
             $failoverClassReflection = $this->broker->getClass($class);
             foreach (get_class_methods($class) as $methodName) {
                 /** @var $methodReflection PhpMethodReflection */
-                $methodReflection = $failoverClassReflection->getMethod($methodName);
+                $methodReflection = $failoverClassReflection->getNativeMethod($methodName);
                 $methods[strtolower($methodName)] = $methodReflection;
             }
         }

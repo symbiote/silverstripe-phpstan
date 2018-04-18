@@ -2,10 +2,10 @@
 
 namespace SilbinaryWolf\SilverstripePHPStan;
 
-use PHPStanVendor\PhpParser\Node\Expr\StaticCall;
-use PHPStanVendor\PhpParser\Node\Expr\PropertyFetch;
-use PHPStanVendor\PhpParser\Node\Expr\Variable;
-use PHPStanVendor\PhpParser\Node\Scalar\String_;
+use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Expr\PropertyFetch;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Scalar\String_;
 
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
@@ -19,7 +19,7 @@ use DataObject;
 
 class DataObjectGetStaticReturnTypeExtension implements \PHPStan\Type\DynamicStaticMethodReturnTypeExtension
 {
-    public static function getClass(): string
+    public function getClass(): string
     {
         return DataObject::class;
     }
@@ -68,7 +68,7 @@ class DataObjectGetStaticReturnTypeExtension implements \PHPStan\Type\DynamicSta
                 /*if ($arg instanceof PropertyFetch) {
                     $vars = $scope->getVariableTypes();
                    var_dump($vars);
-                    var_dump($arg);  
+                    var_dump($arg);
                 }*/
                 return $methodReflection->getReturnType();
             break;
