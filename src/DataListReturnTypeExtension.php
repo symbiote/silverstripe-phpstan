@@ -2,10 +2,10 @@
 
 namespace SilbinaryWolf\SilverstripePHPStan;
 
-use PHPStanVendor\PhpParser\Node\Expr\MethodCall;
-use PHPStanVendor\PhpParser\Node\Expr\PropertyFetch;
-use PHPStanVendor\PhpParser\Node\Expr\Variable;
-use PHPStanVendor\PhpParser\Node\Scalar\String_;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\PropertyFetch;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Scalar\String_;
 
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
@@ -20,7 +20,7 @@ use DataList;
 
 class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTypeExtension
 {
-    public static function getClass(): string
+    public function getClass(): string
     {
         return DataList::class;
     }
@@ -90,7 +90,7 @@ class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTy
         if (!$type || !($type instanceof DataListType)) {
             return $methodReflection->getReturnType();
         }
-        
+
         switch ($name) {
             // DataList
             case 'filter':

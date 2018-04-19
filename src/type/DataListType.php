@@ -25,7 +25,9 @@ class DataListType extends ObjectType implements StaticResolvableType
 
     public function describe(): string
     {
-        return sprintf('%s<%s[]>', $this->dataListType->getClass(), $this->itemType->getClass());
+        $dataListTypeClass = count($this->dataListType->getReferencedClasses()) === 1 ? $this->dataListType->getReferencedClasses()[0] : '';
+        $itemTypeClass = count($this->itemType->getReferencedClasses()) === 1 ? $this->itemType->getReferencedClasses()[0] : '';
+        return sprintf('%s<%s[]>', $dataListTypeClass, $itemTypeClass);
     }
 
     public function getDataListType(): ObjectType
@@ -38,9 +40,9 @@ class DataListType extends ObjectType implements StaticResolvableType
         return $this->itemType;
     }
 
-    public function getClass(): string
+    public function getReferencedClasses(): array
     {
-        return $this->dataListType->getClass();
+        return $this->dataListType->getReferencedClasses();
     }
 
     public function resolveStatic(string $className): Type
