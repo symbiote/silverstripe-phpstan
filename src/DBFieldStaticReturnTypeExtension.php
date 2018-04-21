@@ -40,19 +40,8 @@ class DBFieldStaticReturnTypeExtension implements \PHPStan\Type\DynamicStaticMet
                 }
                 // Handle DBField::create_field('HTMLText', '<p>Value</p>')
                 $arg = $methodCall->args[0]->value;
-                $value = '';
-                if ($arg instanceof Variable) {
-                    // Unhandled, cannot retrieve variable value even if set in this scope.
-                    return $methodReflection->getReturnType();
-                }
-                if ($arg instanceof String_) {
-                    $value = $arg->value;
-                }
-                if (!$value) {
-                    // If value is empty
-                    return $methodReflection->getReturnType();
-                }
-                return new ObjectType($value);
+                $type = Utility::getTypeFromVariable($arg, $methodReflection);
+                return $type;
             break;
         }
         return $methodReflection->getReturnType();

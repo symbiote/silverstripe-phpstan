@@ -10,13 +10,25 @@ use PHPStan\Type\IntegerType;
 class ComponentHasOneProperty implements PropertyReflection
 {
 
-    /** @var string */
+    /**
+     *
+     *
+     * @var string
+     */
     private $name;
 
-    /** @var \PHPStan\Reflection\ClassReflection */
+    /**
+     *
+     *
+     * @var \PHPStan\Reflection\ClassReflection
+     */
     private $declaringClass;
 
-    /** @var  IntegerType */
+    /**
+     *
+     *
+     * @var IntegerType
+     */
     private $returnType;
 
     public function __construct(string $name, ClassReflection $declaringClass)

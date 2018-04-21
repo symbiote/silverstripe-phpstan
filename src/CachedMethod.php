@@ -11,10 +11,18 @@ use PHPStan\Reflection\Php\PhpMethodReflection;
 class CachedMethod implements MethodReflection
 {
 
-    /** @var string */
+    /**
+     *
+     *
+     * @var string
+     */
     private $name;
 
-    /** @var \PHPStan\Reflection\ClassReflection */
+    /**
+     *
+     *
+     * @var \PHPStan\Reflection\ClassReflection
+     */
     private $declaringClass;
 
     public function __construct(PhpMethodReflection $methodReflection)

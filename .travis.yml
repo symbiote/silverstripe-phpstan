@@ -1,8 +1,16 @@
 language: php
 php:
   - 7.1
+#  - 7.2
+env:
+  matrix:
+    - DB=MYSQL CORE_RELEASE=3.6
 before_script:
-  - composer self-update
-  - composer install
+  - composer self-update || true
+  - phpenv rehash
+  - git clone git://github.com/silverstripe-labs/silverstripe-travis-support.git ~/travis-support
+  - php ~/travis-support/travis_setup.php --source `pwd` --target ~/builds/ss
+  - cd ~/builds/ss
 script:
-  - vendor/bin/phpcs --standard=PSR2 -n src/
+  - vendor/bin/phpcs --standard=PSR2 -n vendor/silbinarywolf/silverstripe-phpstan/src/
+  - vendor/bin/phpunit -c "vendor/silbinarywolf/silverstripe-phpstan/tests/phpunit.xml" vendor/silbinarywolf/silverstripe-phpstan/tests/

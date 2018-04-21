@@ -12,13 +12,25 @@ use PHPStan\Type\MixedType;
 class ViewableDataGetProperty implements PropertyReflection
 {
 
-    /** @var string */
+    /**
+     *
+     *
+     * @var string
+     */
     private $name;
 
-    /** @var \PHPStan\Reflection\ClassReflection */
+    /**
+     *
+     *
+     * @var \PHPStan\Reflection\ClassReflection
+     */
     private $declaringClass;
 
-    /** @var  MixedType */
+    /**
+     *
+     *
+     * @var MixedType
+     */
     private $returnType;
 
     public function __construct(string $name, ClassReflection $declaringClass)

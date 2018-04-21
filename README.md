@@ -1,6 +1,6 @@
 # PHPStan for Silverstripe
 
-[![Build Status](https://travis-ci.org/SilbinaryWolf/silverstripe-phpstan.svg?branch=master)](https://travis-ci.org/SilbinaryWolf/silverstripe-phpstan)
+[![Build Status](https://travis-ci.org/silbinarywolf/silverstripe-phpstan.svg?branch=master)](https://travis-ci.org/silbinarywolf/silverstripe-phpstan)
 [![Latest Stable Version](https://poser.pugx.org/silbinarywolf/silverstripe-phpstan/version.svg)](https://github.com/silbinarywolf/silverstripe-phpstan/releases)
 [![Latest Unstable Version](https://poser.pugx.org/silbinarywolf/silverstripe-phpstan/v/unstable.svg)](https://packagist.org/packages/silbinarywolf/silverstripe-phpstan)
 [![Total Downloads](https://poser.pugx.org/silbinarywolf/silverstripe-phpstan/downloads.svg)](https://packagist.org/packages/silbinarywolf/silverstripe-phpstan)
@@ -11,8 +11,10 @@ Add PHPStan functionality to Silverstripe.
 ## Composer Install
 
 ```
-composer require silbinarywolf/silverstripe-phpstan:~0.1
+composer require --dev silbinarywolf/silverstripe-phpstan:0.3.0 phpstan/phpstan-shim:0.9.2
 ```
+
+NOTE: We recommend installing the phpstan-shim as currently in SilverStripe 3.X, the QueuedJobs module's dependence on superclosure forces the PHP-Parser dependency of PHPStan to be at a very outdated version.
 
 ## Requirements
 

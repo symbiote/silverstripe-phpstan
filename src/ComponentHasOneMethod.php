@@ -7,26 +7,35 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\Type;
 use PHPStan\Type\ObjectType;
 
-// Silverstripe
-use HasManyList;
-
-class ComponentHasManyMethod implements MethodReflection
+class ComponentHasOneMethod implements MethodReflection
 {
 
-    /** @var string */
+    /**
+     *
+     *
+     * @var string
+     */
     private $name;
 
-    /** @var \PHPStan\Reflection\ClassReflection */
+    /**
+     *
+     *
+     * @var \PHPStan\Reflection\ClassReflection
+     */
     private $declaringClass;
 
-    /** todo(Jake) */
+    /**
+     *
+     *
+     * @var ObjectType
+     */
     private $returnType;
 
     public function __construct(string $name, ClassReflection $declaringClass, ObjectType $type)
     {
         $this->name = $name;
         $this->declaringClass = $declaringClass;
-        $this->returnType = new DataListType(HasManyList::class, $type);
+        $this->returnType = $type;
     }
 
     public function getDeclaringClass(): ClassReflection

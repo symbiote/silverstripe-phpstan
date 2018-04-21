@@ -37,13 +37,11 @@ class DataObjectGetStaticReturnTypeExtension implements \PHPStan\Type\DynamicSta
         $name = $methodReflection->getName();
         switch ($name) {
             case 'get':
-                if (count($methodCall->args) !== 0) {
+                if (count($methodCall->args) > 0) {
                     // Handle DataObject::get('Page')
                     $arg = $methodCall->args[0];
-                    if ($arg instanceof String_) {
-                        return new DataListType(DataList::class, new ObjectType($arg->value));
-                    }
-                    return $methodReflection->getReturnType();
+                    $type = Utility::getTypeFromVariable($arg, $methodReflection);
+                    return new DataListType(DataList::class, $type);
                 }
                 // Handle Page::get() / self::get()
                 $callerClass = $methodCall->class->toString();
@@ -58,19 +56,21 @@ class DataObjectGetStaticReturnTypeExtension implements \PHPStan\Type\DynamicSta
 
             case 'get_one':
             case 'get_by_id':
-                if (count($methodCall->args) === 0) {
+                if (count($methodCall->args) > 0) {
+                    // Handle DataObject::get_one('Page')
+                    $arg = $methodCall->args[0];
+                    $type = Utility::getTypeFromVariable($arg, $methodReflection);
+                    return $type;
+                }
+                // Handle Page::get() / self::get()
+                $callerClass = $methodCall->class->toString();
+                if ($callerClass === 'static') {
                     return $methodReflection->getReturnType();
                 }
-                $arg = $methodCall->args[0]->value;
-                if ($arg instanceof String_) {
-                    return new ObjectType($arg->value);
+                if ($callerClass === 'self') {
+                    $callerClass = $scope->getClassReflection()->getName();
                 }
-                /*if ($arg instanceof PropertyFetch) {
-                    $vars = $scope->getVariableTypes();
-                   var_dump($vars);
-                    var_dump($arg);
-                }*/
-                return $methodReflection->getReturnType();
+                return new ObjectType($callerClass);
             break;
         }
         return $methodReflection->getReturnType();

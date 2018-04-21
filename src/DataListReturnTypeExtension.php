@@ -46,11 +46,11 @@ class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTy
             case 'removeMany':
             case 'removeByFilter':
             case 'removeAll':
-            // int[]
+                // int[]
             case 'getIDList':
-            // DataObject[]
+                // DataObject[]
             case 'toArray':
-            // DataObject
+                // DataObject
             case 'find':
             case 'byID':
             case 'first':
@@ -80,16 +80,11 @@ class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTy
     {
         $name = $methodReflection->getName();
 
-        $type = null;
-        if ($methodCall->var instanceof Variable) {
-            $type = $scope->getVariableType($methodCall->var->name);
-        } else {
-            $type = $scope->getType($methodCall->var);
-        }
-
-        if (!$type || !($type instanceof DataListType)) {
-            return $methodReflection->getReturnType();
-        }
+        // NOTE(Jake): 2018-04-21
+        // Said it could be simplified to this:
+        // https://github.com/phpstan/phpstan/issues/350#issuecomment-339159006
+        //
+        $type = $scope->getType($methodCall->var);
 
         switch ($name) {
             // DataList
@@ -113,12 +108,12 @@ class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTy
             break;
 
             case 'getIDList':
-                return new ArrayType(new IntegerType);
+                return new ArrayType(new IntegerType, new IntegerType);
             break;
 
             // DataObject[]
             case 'toArray':
-                return new ArrayType($type->getItemType());
+                return new ArrayType(new IntegerType, $type->getItemType());
             break;
 
             // DataObject
@@ -126,7 +121,7 @@ class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTy
             case 'byID':
             case 'first':
             case 'last':
-                return $type->getItemType();
+                return $type->getIterableValueType();
             break;
 
             default:

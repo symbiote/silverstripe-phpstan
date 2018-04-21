@@ -2,8 +2,9 @@
 
 namespace SilbinaryWolf\SilverstripePHPStan;
 
-use \ReflectionClass;
-use \ReflectionMethod;
+use ReflectionClass;
+use ReflectionMethod;
+use Exception;
 
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\PropertyReflection;
@@ -19,21 +20,44 @@ use ViewableData;
 
 class PropertyClassReflectionExtension implements \PHPStan\Reflection\PropertiesClassReflectionExtension
 {
-    /** @var \PHPStan\Reflection\PropertyReflection[][] */
+    /**
+     *
+     *
+     * @var \PHPStan\Reflection\PropertyReflection[][]
+     */
     private $properties = [];
 
     public function hasProperty(ClassReflection $classReflection, string $propertyName): bool
+    {
+       /* if ($classReflection->isSubclassOf(ViewableData::class)) {
+            // ViewableData has a magic __get() method that always at least
+            // returns 'null'
+            return true;
+        }*/
+        $class = $classReflection->getName();
+        if (!isset($this->properties[$class])) {
+            $this->properties[$class] = $this->createProperties($classReflection);
+        }
+        $result = isset($this->properties[$class][$propertyName]);
+        return $result;
+    }
+
+    public function getProperty(ClassReflection $classReflection, string $propertyName): PropertyReflection
     {
         $class = $classReflection->getName();
         if (!isset($this->properties[$class])) {
             $this->properties[$class] = $this->createProperties($classReflection);
         }
-        return isset($this->properties[$class][$propertyName]);
-    }
-
-    public function getProperty(ClassReflection $classReflection, string $propertyName): PropertyReflection
-    {
-        return $this->properties[$classReflection->getName()][$propertyName];
+        if (isset($this->properties[$class][$propertyName])) {
+            return $this->properties[$class][$propertyName];
+        }
+        if ($classReflection->isSubclassOf(ViewableData::class)) {
+            // ViewableData has a magic __get() method that always at least
+            // returns 'null'
+            $this->properties[$class][$propertyName] = new ViewableDataGetProperty($propertyName, $classReflection);
+            return $this->properties[$class][$propertyName];
+        }
+        throw new Exception('This should not happen.');
     }
 
     /**
@@ -100,8 +124,9 @@ class PropertyClassReflectionExtension implements \PHPStan\Reflection\Properties
         // Handle Page_Controller where it has $failover
         // NOTE(Jake): This is not foolproof, but if people follow the general SS convention
         //             it'll work.
-        if (strpos($class, '_Controller') !== false &&
-            $classReflection->isSubclassOf(ContentController::class)) {
+        if (strpos($class, '_Controller') !== false
+            && $classReflection->isSubclassOf(ContentController::class)
+        ) {
             $class = str_replace('_Controller', '', $class);
             $isDataObjectOrContentController = true;
         }
@@ -130,8 +155,9 @@ class PropertyClassReflectionExtension implements \PHPStan\Reflection\Properties
                     // Ignore parameters
                     $type = explode('(', $type, 2);
                     $type = $type[0];
-                    if (isset($properties[$propertyName]) ||
-                        is_numeric($propertyName)) {
+                    if (isset($properties[$propertyName])
+                        || is_numeric($propertyName)
+                    ) {
                         // Skip
                         continue;
                     }

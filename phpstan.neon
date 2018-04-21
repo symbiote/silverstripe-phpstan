@@ -5,6 +5,7 @@ parameters:
     universalObjectCratesClasses:
         - ArrayData
         - Config_ForClass
+        - ViewableData
         - AbstractQueuedJob # symbiote/silverstripe-queuedjobs module support
     excludes_analyse:
         - silverstripe-cache
@@ -22,6 +23,10 @@ services:
         tags:
             - phpstan.broker.dynamicStaticMethodReturnTypeExtension
     -
+        class: SilbinaryWolf\SilverstripePHPStan\SingletonReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicFunctionReturnTypeExtension
+    -
         class: SilbinaryWolf\SilverstripePHPStan\DataListReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
@@ -33,3 +38,7 @@ services:
         class: SilbinaryWolf\SilverstripePHPStan\DBFieldStaticReturnTypeExtension
         tags:
             - phpstan.broker.dynamicStaticMethodReturnTypeExtension
+    -
+        class: SilbinaryWolf\SilverstripePHPStan\InjectorReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension

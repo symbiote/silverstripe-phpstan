@@ -24,10 +24,18 @@ use ContentController;
 
 class MethodClassReflectionExtension implements MethodsClassReflectionExtension, BrokerAwareExtension
 {
-    /** @var MethodReflection[][] */
+    /**
+     *
+     *
+     * @var MethodReflection[][]
+     */
     private $methods = [];
 
-    /** @var Broker */
+    /**
+     *
+     *
+     * @var Broker
+     */
     private $broker;
 
     public function hasMethod(ClassReflection $classReflection, string $methodName): bool
@@ -35,12 +43,14 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
         if (!isset($this->methods[$classReflection->getName()])) {
             $this->methods[$classReflection->getName()] = $this->createMethods($classReflection);
         }
-
         return isset($this->methods[$classReflection->getName()][strtolower($methodName)]);
     }
 
     public function getMethod(ClassReflection $classReflection, string $methodName): MethodReflection
     {
+        if (!isset($this->methods[$classReflection->getName()])) {
+            $this->methods[$classReflection->getName()] = $this->createMethods($classReflection);
+        }
         // Fallback to has_one/has_many/many_many
         return $this->methods[$classReflection->getName()][strtolower($methodName)];
     }
@@ -77,7 +87,11 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
 
                 $extensionClassReflection = $this->broker->getClass($extensionClass);
                 foreach (get_class_methods($extensionClass) as $methodName) {
-                    /** @var $methodReflection PhpMethodReflection */
+                    /**
+                     *
+                     *
+                     * @var $methodReflection PhpMethodReflection
+                    */
                     $methodReflection = $extensionClassReflection->getNativeMethod($methodName);
                     $methods[strtolower($methodName)] = $methodReflection;
                 }
@@ -99,14 +113,19 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
         // Handle Page_Controller where it has $failover
         // NOTE(Jake): This is not foolproof, but if people follow the general SS convention
         //             it'll work.
-        if (strpos($class, '_Controller') !== false &&
-            $classReflection->isSubclassOf(ContentController::class)) {
+        if (strpos($class, '_Controller') !== false
+            && $classReflection->isSubclassOf(ContentController::class)
+        ) {
             $class = str_replace('_Controller', '', $class);
             $isDataObjectOrContentController = true;
 
             $failoverClassReflection = $this->broker->getClass($class);
             foreach (get_class_methods($class) as $methodName) {
-                /** @var $methodReflection PhpMethodReflection */
+                /**
+*
+                 *
+ * @var $methodReflection PhpMethodReflection
+*/
                 $methodReflection = $failoverClassReflection->getNativeMethod($methodName);
                 $methods[strtolower($methodName)] = $methodReflection;
             }
@@ -132,11 +151,11 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
                     $type = explode('(', $type, 2);
                     $type = $type[0];
 
-                    $methods[strtolower($methodName)] = new $componentClass($methodName, $classReflection, new ObjectType($type));
+                    $componentMethodClass = new $componentClass($methodName, $classReflection, new ObjectType($type));
+                    $methods[strtolower($methodName)] = $componentMethodClass;
                 }
             }
         }
-
         return $methods;
     }
 }
