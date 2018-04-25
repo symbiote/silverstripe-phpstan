@@ -3,19 +3,13 @@
 namespace SilbinaryWolf\SilverstripePHPStan;
 
 use PhpParser\Node\Expr\MethodCall;
-use PhpParser\Node\Expr\PropertyFetch;
-use PhpParser\Node\Expr\Variable;
-use PhpParser\Node\Scalar\String_;
-
-use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\Type;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\IntegerType;
-use PHPStan\Type\ObjectType;
 
-// Silverstripe
+// SilverStripe
 use DataList;
 
 class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTypeExtension

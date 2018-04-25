@@ -4,22 +4,11 @@ namespace SilbinaryWolf\SilverstripePHPStan;
 
 use Exception;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
-use PHPStan\Broker\Broker;
 
 use PhpParser\Node\Expr\MethodCall;
-use PhpParser\Node\Expr\PropertyFetch;
-use PhpParser\Node\Expr\Variable;
-use PhpParser\Node\Scalar\String_;
-use PhpParser\Node\Expr\ClassConstFetch;
-
-use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\Type;
-use PHPStan\Type\ArrayType;
-use PHPStan\Type\IntegerType;
-use PHPStan\Type\ObjectType;
-use PHPStan\Type\StaticType;
 
 // Silverstripe
 use Injector;

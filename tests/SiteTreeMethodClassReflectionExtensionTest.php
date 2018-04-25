@@ -5,6 +5,7 @@ namespace SilbinaryWolf\SilverstripePHPStan\Tests;
 use PHPStan\Type\VerbosityLevel;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\MixedType;
+use PHPStan\Type\NullType;
 use SiteTree;
 use ManyManyList;
 
@@ -120,6 +121,6 @@ final class SiteTreeMethodClassReflectionExtensionTest extends \PHPStan\Testing\
     {
         $classReflection = $this->broker->getClass(SiteTree::class);
         $propertyReflection = $this->property->getProperty($classReflection, 'UnusedVariable');
-        self::assertSame(MixedType::class, get_class($propertyReflection->getType()));
+        self::assertSame(NullType::class, get_class($propertyReflection->getType()));
     }
 }

@@ -60,43 +60,41 @@ class DataObjectReturnTypeExtension implements DynamicMethodReturnTypeExtension
                     if (count($type->getReferencedClasses()) === 1) {
                         $className = $type->getReferencedClasses()[0];
                     }
-                } else {
-                    return $methodReflection->getReturnType();
+                } else if ($type instanceof ObjectType) {
+                    $className = $type->getClassName();
                 }
                 if (!$className) {
-                    return $methodReflection->getReturnType();
+                    throw new Exception('Unhandled type: '.get_class($type));
+                    //return $methodReflection->getReturnType();
                 }
-                $dbFields = Config::inst()->get($className, 'db');
                 if (count($methodCall->args) === 0) {
                     return $methodReflection->getReturnType();
                 }
                 // Handle $this->dbObject('Field')
                 $arg = $methodCall->args[0]->value;
-                $value = '';
+                $fieldName = '';
                 if ($arg instanceof Variable) {
                     // Unhandled, cannot retrieve variable value even if set in this scope.
                     return $methodReflection->getReturnType();
                 } else if ($arg instanceof ClassConstFetch) {
                     // Handle "SiteTree::class" constant
-                    $value = (string)$arg->class;
+                    $fieldName = (string)$arg->class;
                 } else if ($arg instanceof String_) {
-                    $value = $arg->value;
+                    $fieldName = $arg->value;
                 }
-                if (!$value) {
+                if (!$fieldName) {
                     throw new Exception('Mishandled "newClassInstance" call.');
                     //return $methodReflection->getReturnType();
                 }
-                if (!isset($dbFields[$value])) {
+                $dbFields = ConfigHelper::get_db($className);
+                if (!isset($dbFields[$fieldName])) {
                     return $methodReflection->getReturnType();
                 }
-                $dbFieldType = $dbFields[$value];
-
-                // Ignore parameters
-                // ie. Extract "Enum" from "Enum('Value1', 'Value2')"
-                $dbFieldType = explode('(', $dbFieldType, 2);
-                $dbFieldType = $dbFieldType[0];
-
-                return new ObjectType($dbFieldType);
+                $dbFieldType = $dbFields[$fieldName];
+                if (!$dbFieldType) {
+                    return $methodReflection->getReturnType();
+                }
+                return $dbFieldType;
             break;
 
             case 'newClassInstance':
