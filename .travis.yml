@@ -1,7 +1,7 @@
 language: php
 php:
   - 7.1
-#  - 7.2
+  - 7.2
 env:
   matrix:
     - DB=MYSQL CORE_RELEASE=3.6
