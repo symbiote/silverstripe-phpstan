@@ -17,7 +17,6 @@ use Extension;
 use Object;
 use Config;
 
-
 class ExtensionReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTypeExtension
 {
     protected $ownerClassNamesByExtensionClassName = null;
@@ -60,7 +59,7 @@ class ExtensionReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnT
                     $objectType = Utility::getTypeFromVariable($methodCall->var, $methodReflection);
                 }
                 if (!$objectType) {
-                    return $methodReflection->getReturnType(); 
+                    return $methodReflection->getReturnType();
                 }
 
                 // Lookup if this extension is configured by any class to be used in their 'extensions'
@@ -103,7 +102,7 @@ class ExtensionReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnT
         return $methodReflection->getReturnType();
     }
 
-    private function getOwnerClassNamesByExtensionClassName() 
+    private function getOwnerClassNamesByExtensionClassName()
     {
         if ($this->ownerClassNamesByExtensionClassName !== null) {
             return $this->ownerClassNamesByExtensionClassName;
@@ -125,7 +124,7 @@ class ExtensionReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnT
         return $this->ownerClassNamesByExtensionClassName = $extensionToClassName;
     }
 
-    private function getSubclassesOf($parentClass) 
+    private function getSubclassesOf($parentClass)
     {
         $result = array();
         foreach (get_declared_classes() as $class) {
