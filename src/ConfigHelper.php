@@ -11,7 +11,7 @@ class ConfigHelper
     /**
      * @var array
      */
-    public static function get_db($className) 
+    public static function get_db($className)
     {
         $dbFields = array();
         // NOTE(Jake): 2018-04-25
@@ -54,7 +54,7 @@ class ConfigHelper
     /**
      * @var array
      */
-    public static function get_extensions($className) 
+    public static function get_extensions($className)
     {
         $extensionClasses = array();
         $extensions = Config::inst()->get($className, 'extensions');

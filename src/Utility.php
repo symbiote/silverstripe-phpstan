@@ -50,7 +50,7 @@ class Utility
         return self::getClassFromInjectorString($label);
     }
 
-    public static function getClassFromInjectorString($classNameOrLabel) 
+    public static function getClassFromInjectorString($classNameOrLabel)
     {
         $injectorInfo = Config::inst()->get(Injector::class, $classNameOrLabel);
         if (!$injectorInfo) {
