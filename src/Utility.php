@@ -47,9 +47,14 @@ class Utility
         if (!$label) {
             throw new Exception('Unhandled or invalid "class" data. Type passed:'.get_class($node));
         }
-        $injectorInfo = Config::inst()->get(Injector::class, $label);
+        return self::getClassFromInjectorString($label);
+    }
+
+    public static function getClassFromInjectorString($classNameOrLabel) 
+    {
+        $injectorInfo = Config::inst()->get(Injector::class, $classNameOrLabel);
         if (!$injectorInfo) {
-            return new ObjectType($label);
+            return new ObjectType($classNameOrLabel);
         }
         if (is_string($injectorInfo)) {
             return new ObjectType($injectorInfo);
@@ -59,7 +64,7 @@ class Utility
             return new ObjectType($injectorInfo['class']);
         }
         // ie. If only "properties" is set on a class/label, like the `RequestProcessor` class.
-        return new ObjectType($label);
+        return new ObjectType($classNameOrLabel);
     }
 
     public static function getTypeFromVariable(NodeAbstract $node, ParametersAcceptorWithPhpDocs $methodOrFunctionReflection): ObjectType
