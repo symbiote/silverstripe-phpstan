@@ -1,7 +1,7 @@
 language: php
 php:
   - 7.1
-  - 7.2
+#  - 7.2 # NOTE(Jake): 2018-04-25: SilverStripe 3.X does not support PHP 7.2, most likely due to `object` being a reserved keyword
 env:
   matrix:
     - DB=MYSQL CORE_RELEASE=3.6
