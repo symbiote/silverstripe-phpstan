@@ -39,9 +39,7 @@
         }
     },
     "autoload-dev": {
-        "psr-4": {
-            "SilbinaryWolf\\SilverstripePHPStan\\Tests\\": "tests/"
-        }
+        "classmap": ["tests/"]
     },
     "extra": {
         "branch-alias": {
