@@ -25,8 +25,7 @@ abstract class ResolverTest extends \PHPStan\Testing\TestCase
         array $dynamicStaticMethodReturnTypeExtensions = [],
         array $dynamicFunctionReturnTypeExtensions = [],
         string $evaluatedPointExpression = 'die;'
-    )
-    {
+    ) {
 
         // NOTE(Jake): 2018-04-21
         //
@@ -59,13 +58,12 @@ abstract class ResolverTest extends \PHPStan\Testing\TestCase
     }
 
     private function processFile(
-        string $file, 
-        \Closure $callback, 
+        string $file,
+        \Closure $callback,
         array $dynamicMethodReturnTypeExtensions = [],
         array $dynamicStaticMethodReturnTypeExtensions = [],
         array $dynamicFunctionReturnTypeExtensions = []
-    )
-    {
+    ) {
         // NOTE(Jake): 2018-04-21
         //
         // Taken from:
@@ -108,7 +106,7 @@ abstract class ResolverTest extends \PHPStan\Testing\TestCase
             ]
         );
         $broker = $this->createBroker(
-            $dynamicMethodReturnTypeExtensions, 
+            $dynamicMethodReturnTypeExtensions,
             $dynamicStaticMethodReturnTypeExtensions
         );
 

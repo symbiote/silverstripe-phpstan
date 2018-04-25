@@ -28,7 +28,7 @@
         "phpunit/phpunit": "^7.0"
     },
     "scripts": {
-        "phpcbf": "phpcbf --standard=PSR2 -n src/"
+        "phpcbf": "phpcbf -n src/ tests/"
     },
     "suggest": {
         "phpstan/phpstan-shim": "~0.9.0"

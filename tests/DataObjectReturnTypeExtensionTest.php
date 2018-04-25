@@ -33,8 +33,7 @@ class DataObjectReturnTypeExtensionTest extends ResolverTest
     public function testDynamicMethodReturnTypeExtensions(
         string $description,
         string $expression
-    )
-    {
+    ) {
         $dynamicMethodReturnTypeExtensions = [
             new \SilbinaryWolf\SilverstripePHPStan\DataObjectReturnTypeExtension(),
         ];
@@ -44,7 +43,7 @@ class DataObjectReturnTypeExtensionTest extends ResolverTest
             __DIR__ . '/data/data-object-dynamic-method-return-types.php',
             $description,
             $expression,
-            $dynamicMethodReturnTypeExtensions, 
+            $dynamicMethodReturnTypeExtensions,
             $dynamicStaticMethodReturnTypeExtensions
         );
     }

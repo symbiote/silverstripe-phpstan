@@ -12,5 +12,5 @@ before_script:
   - php ~/travis-support/travis_setup.php --source `pwd` --target ~/builds/ss
   - cd ~/builds/ss
 script:
-  - vendor/bin/phpcs --standard=PSR2 -n vendor/silbinarywolf/silverstripe-phpstan/src/
+  - vendor/bin/phpcs -n vendor/silbinarywolf/silverstripe-phpstan/src/ vendor/silbinarywolf/silverstripe-phpstan/tests/
   - vendor/bin/phpunit -c "vendor/silbinarywolf/silverstripe-phpstan/tests/phpunit.xml" vendor/silbinarywolf/silverstripe-phpstan/tests/

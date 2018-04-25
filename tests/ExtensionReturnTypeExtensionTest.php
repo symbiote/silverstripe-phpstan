@@ -10,7 +10,7 @@ class ExtensionReturnTypeExtensionTest extends ResolverTest
     public function dataDynamicMethodReturnTypeExtensions(): array
     {
         return [
-            //  Test `$this->getOwner()` returns `Foo` 
+            //  Test `$this->getOwner()` returns `Foo`
             [
                 sprintf(\DataExtensionDynamicMethodReturnTypesNamespace\Foo::class),
                 sprintf('$this->getOwner()'),
@@ -28,23 +28,23 @@ class ExtensionReturnTypeExtensionTest extends ResolverTest
     public function testDynamicMethodReturnTypeExtensions(
         string $description,
         string $expression
-    )
-    {
+    ) {
         $dynamicMethodReturnTypeExtensions = [
             new \SilbinaryWolf\SilverstripePHPStan\ExtensionReturnTypeExtension(),
         ];
         $dynamicStaticMethodReturnTypeExtensions = [];
         Config::inst()->update(
-            \DataExtensionDynamicMethodReturnTypesNamespace\Foo::class, 
-            'extensions', 
-        [
+            \DataExtensionDynamicMethodReturnTypesNamespace\Foo::class,
+            'extensions',
+            [
             \DataExtensionDynamicMethodReturnTypesNamespace\FooDataExtension::class,
-        ]);
+            ]
+        );
         $this->assertTypes(
             __DIR__ . '/data/data-extension-dynamic-method-return-types.php',
             $description,
             $expression,
-            $dynamicMethodReturnTypeExtensions, 
+            $dynamicMethodReturnTypeExtensions,
             $dynamicStaticMethodReturnTypeExtensions
         );
     }
@@ -52,10 +52,10 @@ class ExtensionReturnTypeExtensionTest extends ResolverTest
     public function dataUnionDynamicMethodReturnTypeExtensions(): array
     {
         return [
-            //  Test `$this->getOwner()` returns `Foo` 
+            //  Test `$this->getOwner()` returns `Foo`
             [
                 sprintf(
-                    '%s|%s', 
+                    '%s|%s',
                     \DataExtensionUnionDynamicMethodReturnTypesNamespace\Foo::class,
                     \DataExtensionUnionDynamicMethodReturnTypesNamespace\FooTwo::class
                 ),
@@ -74,8 +74,7 @@ class ExtensionReturnTypeExtensionTest extends ResolverTest
     public function testUnionDynamicMethodReturnTypeExtensions(
         string $description,
         string $expression
-    )
-    {
+    ) {
         $dynamicMethodReturnTypeExtensions = [
             new \SilbinaryWolf\SilverstripePHPStan\ExtensionReturnTypeExtension(),
         ];
@@ -85,20 +84,20 @@ class ExtensionReturnTypeExtensionTest extends ResolverTest
             \DataExtensionUnionDynamicMethodReturnTypesNamespace\FooDataExtension::class,
         ];
         Config::inst()->update(
-            \DataExtensionUnionDynamicMethodReturnTypesNamespace\Foo::class, 
-            'extensions', 
+            \DataExtensionUnionDynamicMethodReturnTypesNamespace\Foo::class,
+            'extensions',
             $extensions
         );
         Config::inst()->update(
-            \DataExtensionUnionDynamicMethodReturnTypesNamespace\FooTwo::class, 
-            'extensions', 
+            \DataExtensionUnionDynamicMethodReturnTypesNamespace\FooTwo::class,
+            'extensions',
             $extensions
         );
         $this->assertTypes(
             __DIR__ . '/data/data-extension-union-dynamic-method-return-types.php',
             $description,
             $expression,
-            $dynamicMethodReturnTypeExtensions, 
+            $dynamicMethodReturnTypeExtensions,
             $dynamicStaticMethodReturnTypeExtensions
         );
     }

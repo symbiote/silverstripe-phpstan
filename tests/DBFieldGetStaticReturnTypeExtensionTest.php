@@ -32,8 +32,7 @@ class DBFieldGetStaticReturnTypeExtensionTest extends ResolverTest
     public function testDynamicMethodReturnTypeExtensions(
         string $description,
         string $expression
-    )
-    {
+    ) {
         $dynamicMethodReturnTypeExtensions = [];
         $dynamicStaticMethodReturnTypeExtensions = [
             new \SilbinaryWolf\SilverstripePHPStan\DBFieldStaticReturnTypeExtension(),
@@ -42,7 +41,7 @@ class DBFieldGetStaticReturnTypeExtensionTest extends ResolverTest
             __DIR__ . '/data/data-object-dynamic-method-return-types.php',
             $description,
             $expression,
-            $dynamicMethodReturnTypeExtensions, 
+            $dynamicMethodReturnTypeExtensions,
             $dynamicStaticMethodReturnTypeExtensions
         );
     }

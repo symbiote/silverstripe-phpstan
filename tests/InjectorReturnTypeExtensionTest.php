@@ -41,8 +41,7 @@ class InjectorReturnTypeExtensionTest extends ResolverTest
     public function testDynamicMethodReturnTypeExtensions(
         string $description,
         string $expression
-    )
-    {
+    ) {
         $dynamicMethodReturnTypeExtensions = [
             new \SilbinaryWolf\SilverstripePHPStan\InjectorReturnTypeExtension(),
         ];
@@ -51,7 +50,7 @@ class InjectorReturnTypeExtensionTest extends ResolverTest
             __DIR__ . '/data/data-object-dynamic-method-return-types.php',
             $description,
             $expression,
-            $dynamicMethodReturnTypeExtensions, 
+            $dynamicMethodReturnTypeExtensions,
             $dynamicStaticMethodReturnTypeExtensions
         );
     }
@@ -85,8 +84,7 @@ class InjectorReturnTypeExtensionTest extends ResolverTest
     public function testFunctionReturnTypeExtensions(
         string $description,
         string $expression
-    )
-    {
+    ) {
         $dynamicFunctionReturnTypeExtensions = [
             new \SilbinaryWolf\SilverstripePHPStan\SingletonReturnTypeExtension(),
         ];
