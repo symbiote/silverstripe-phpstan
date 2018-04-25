@@ -75,6 +75,13 @@ class Utility
             // Handle type: 'HomePage::class'
             $class = (string)$node->class;
         } else if ($node instanceof Variable) {
+            if ($node->name === 'this') {
+                // NOTE(Jake): 2018-04-25
+                //
+                // We might want to handle $this better.
+                // This would require having `Scope`
+                //
+            }
             // NOTE(Jake): 2018-04-21
             //
             // If we pass in scope, we can get the variable type:

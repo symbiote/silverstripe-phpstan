@@ -53,8 +53,11 @@ class PropertyClassReflectionExtension implements \PHPStan\Reflection\Properties
         }
         if ($classReflection->isSubclassOf(ViewableData::class)) {
             // ViewableData has a magic __get() method that always at least
-            // returns 'null'
-            $this->properties[$class][$propertyName] = new ViewableDataGetProperty($propertyName, $classReflection);
+            // returns 'null'. 
+            // 
+            // If we couldn't determine a property from `get` methods or extensions.
+            //
+            $this->properties[$class][$propertyName] = new ViewableDataGetNullProperty($propertyName, $classReflection);
             return $this->properties[$class][$propertyName];
         }
         throw new Exception('This should not happen.');
