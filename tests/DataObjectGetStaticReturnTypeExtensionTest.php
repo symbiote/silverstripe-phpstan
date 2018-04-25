@@ -13,12 +13,6 @@ use Injector;
 use MySQLDatabase;
 use MySQLPDODatabase;
 
-// NOTE(Jake): 2018-04-05
-//
-// Workaround Composer Autoloader / PHPUnit not working as I expect.
-//
-include_once(dirname(__FILE__).'/ResolverTest.php');
-
 class DataObjectGetStaticReturnTypeExtensionTest extends ResolverTest
 {
     public function dataDynamicMethodReturnTypeExtensions(): array
