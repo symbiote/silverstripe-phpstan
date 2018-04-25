@@ -11,6 +11,10 @@ parameters:
         - silverstripe-cache
 services:
     -
+        class: SilbinaryWolf\SilverstripePHPStan\RequestFilterPreRequestRule
+        tags:
+            - phpstan.rules.rule
+    -
         class: SilbinaryWolf\SilverstripePHPStan\MethodClassReflectionExtension
         tags:
             - phpstan.broker.methodsClassReflectionExtension
