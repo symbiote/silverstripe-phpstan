@@ -10,14 +10,19 @@ parameters:
     excludes_analyse:
         - silverstripe-cache
 services:
+    # This rule will throw an error if you `return false` from a RequestFilter::preRequest() method
+    # as in SilverStripe 3.X, this throws an uncaught exception in the site.
     -
         class: SilbinaryWolf\SilverstripePHPStan\RequestFilterPreRequestRule
         tags:
             - phpstan.rules.rule
+    # This adds additional methods from SilverStripe extensions, as well as determining proper
+    # types when has_one() magic methods.
     -
         class: SilbinaryWolf\SilverstripePHPStan\MethodClassReflectionExtension
         tags:
             - phpstan.broker.methodsClassReflectionExtension
+    #
     -
         class: SilbinaryWolf\SilverstripePHPStan\PropertyClassReflectionExtension
         tags:

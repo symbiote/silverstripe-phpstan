@@ -7,6 +7,11 @@
 //
 include_once(dirname(__FILE__).'/ResolverTest.php');
 
+// Used by: RequestFilterPreRequestRuleTest
+include_once(dirname(__FILE__).'/RequestFilterBad.php');
+include_once(dirname(__FILE__).'/RequestFilterGood.php');
+
+
 // Composer - vendor/autoload.php
 require_once __DIR__.'/../../../autoload.php';
 
