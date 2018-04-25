@@ -3,13 +3,10 @@
 namespace SilbinaryWolf\SilverstripePHPStan\Tests;
 
 // SilverStripe
-use DataObject;
-use DataList;
-use SiteTree;
 use File;
-use Cookie_Backend;
-use CookieJar;
 use Injector;
+use CookieJar;
+use Cookie_Backend;
 use MySQLDatabase;
 use MySQLPDODatabase;
 

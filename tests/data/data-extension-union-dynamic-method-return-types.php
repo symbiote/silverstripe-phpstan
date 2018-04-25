@@ -1,6 +1,6 @@
 <?php
 
-namespace DataExtensionDynamicMethodReturnTypesNamespace;
+namespace DataExtensionUnionDynamicMethodReturnTypesNamespace;
 
 // SilverStripe
 use DataObject;
