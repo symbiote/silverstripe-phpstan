@@ -14,6 +14,9 @@ use PHPStan\Reflection\BrokerAwareExtension;
 
 abstract class ResolverTest extends \PHPStan\Testing\TestCase
 {
+    /** @var \PHPStan\Broker\Broker */
+    private $broker;
+    
     protected function assertTypes(
         string $file,
         string $description,
