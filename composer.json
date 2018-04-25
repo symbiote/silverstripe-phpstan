@@ -38,6 +38,11 @@
             "SilbinaryWolf\\SilverstripePHPStan\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": { 
+            "SilbinaryWolf\\SilverstripePHPStan\\Tests\\": "tests/"
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "0.3.x-dev"

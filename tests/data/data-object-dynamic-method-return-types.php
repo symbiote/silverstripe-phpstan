@@ -2,16 +2,11 @@
 
 namespace DataObjectDynamicMethodReturnTypesNamespace;
 
-use SiteTree;
-
 class Foo
 {
-
 	public function doFoo()
 	{
-		$sitetree = new SiteTree();
+		//$sitetree = new \SiteTree();
 		die;
 	}
-
 }
-
