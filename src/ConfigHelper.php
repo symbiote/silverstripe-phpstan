@@ -5,6 +5,7 @@ namespace SilbinaryWolf\SilverstripePHPStan;
 // SilverStripe
 use Config;
 use Injector;
+use Versioned;
 
 class ConfigHelper
 {
@@ -26,7 +27,7 @@ class ConfigHelper
         );
         // Support Versioned fields for when grabbing records out of *_versions tables.
         $extensions = self::get_extensions($className);
-        if ($extensions && isset($extensions['Versioned'])) {
+        if ($extensions && isset($extensions[Versioned::class])) {
             $dbFields['RecordID'] = 'Int';
         }
 
