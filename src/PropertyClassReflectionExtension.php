@@ -29,11 +29,6 @@ class PropertyClassReflectionExtension implements \PHPStan\Reflection\Properties
 
     public function hasProperty(ClassReflection $classReflection, string $propertyName): bool
     {
-       /* if ($classReflection->isSubclassOf(ViewableData::class)) {
-            // ViewableData has a magic __get() method that always at least
-            // returns 'null'
-            return true;
-        }*/
         $class = $classReflection->getName();
         if (!isset($this->properties[$class])) {
             $this->properties[$class] = $this->createProperties($classReflection);

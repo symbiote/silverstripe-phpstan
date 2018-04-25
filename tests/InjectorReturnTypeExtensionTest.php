@@ -30,11 +30,6 @@ class InjectorReturnTypeExtensionTest extends ResolverTest
                 sprintf('%s', MySQLDatabase::class),
                 sprintf('%s::inst()->get(%s::class)', Injector::class, MySQLPDODatabase::class),
             ],
-            // 
-            /*[
-                sprintf('%s', Object::class),
-                sprintf('class ExtensionTest extends \DataExtension { public function Test() { return $this->getOwner(); } }'),
-            ]*/
         ];
     }
 

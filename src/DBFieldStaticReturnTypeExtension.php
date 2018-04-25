@@ -3,12 +3,7 @@
 namespace SilbinaryWolf\SilverstripePHPStan;
 
 use PhpParser\Node\Expr\StaticCall;
-use PhpParser\Node\Expr\PropertyFetch;
-use PhpParser\Node\Expr\Variable;
-use PhpParser\Node\Expr\Expr;
-use PhpParser\Node\Scalar\String_;
 
-use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\Type;

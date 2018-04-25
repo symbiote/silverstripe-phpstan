@@ -48,11 +48,6 @@ class DataObjectGetStaticReturnTypeExtensionTest extends ResolverTest
                 sprintf(SiteTree::class),
                 sprintf('%s::get_one(%s::class)', DataObject::class, SiteTree::class),
             ],
-            // 
-            /*[
-                sprintf('%s', Object::class),
-                sprintf('class ExtensionTest extends \DataExtension { public function Test() { return $this->getOwner(); } }'),
-            ]*/
         ];
     }
 
