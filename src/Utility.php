@@ -7,6 +7,7 @@ use PhpParser\NodeAbstract;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\ClassConstFetch;
+use PhpParser\Node\Expr\PropertyFetch;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Expr\Variable;
 use PHPStan\Type\Type;
@@ -32,6 +33,9 @@ class Utility
         } else if ($node instanceof ClassConstFetch) {
             // Handle type: 'HomePage::class'
             $label = (string)$node->class;
+        } else if ($node instanceof PropertyFetch) {
+            // Handle passing of: '$this->modelClass' in ModelAdmin to 'singleton'
+            return $defaultType;
         } else if ($node instanceof Variable) {
             // NOTE(Jake): 2018-04-21
             //
@@ -45,7 +49,7 @@ class Utility
             return $defaultType;
         }
         if (!$label) {
-            throw new Exception('Unhandled or invalid "class" data. Type passed:'.get_class($node));
+            throw new Exception(__FUNCTION__.': Unhandled or invalid "class" data. Type passed:'.get_class($node));
         }
         return self::getClassFromInjectorString($label);
     }
@@ -99,7 +103,7 @@ class Utility
             return $methodOrFunctionReflection->getReturnType();
         }
         if (!$class) {
-            throw new Exception('Unhandled or invalid "class" data. Type passed:'.get_class($node));
+            throw new Exception(__FUNCTION__.':Unhandled or invalid "class" data. Type passed:'.get_class($node));
         }
         return new ObjectType($class);
     }

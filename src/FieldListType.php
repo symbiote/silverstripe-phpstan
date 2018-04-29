@@ -10,21 +10,24 @@ use PHPStan\Type\ObjectType;
 use PHPStan\Type\IterableTypeTrait;
 use PHPStan\Type\StaticResolvableType;
 
-class DataListType extends ObjectType implements StaticResolvableType
+// SilverStripe
+use FormField;
+
+class FieldListType extends ObjectType implements StaticResolvableType
 {
     use IterableTypeTrait;
 
-    public function __construct(string $dataListClassName, Type $itemType)
+    public function __construct(string $fieldListClassName)
     {
-        parent::__construct($dataListClassName);
-        $this->itemType = $itemType;
+        parent::__construct($fieldListClassName);
+        $this->itemType = new ObjectType(FormField::class);
     }
 
     public function describe(): string
     {
-        $dataListTypeClass = count($this->getReferencedClasses()) === 1 ? $this->getReferencedClasses()[0] : '';
+        $fieldListClassName = count($this->getReferencedClasses()) === 1 ? $this->getReferencedClasses()[0] : '';
         $itemTypeClass = count($this->itemType->getReferencedClasses()) === 1 ? $this->itemType->getReferencedClasses()[0] : '';
-        return sprintf('%s<%s>', $dataListTypeClass, $itemTypeClass);
+        return sprintf('%s<%s>', $fieldListClassName, $itemTypeClass);
     }
 
     public function getItemType(): Type

@@ -8,6 +8,8 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Type\Type;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\IntegerType;
+use PHPStan\Type\ObjectType;
+use PHPStan\Type\IterableTypeTrait;
 
 // SilverStripe
 use DataList;
@@ -25,6 +27,7 @@ class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTy
         switch ($name) {
             // DataList
             case 'filter':
+            case 'filterAny':
             case 'reverse':
             case 'where':
             case 'whereAny':
@@ -83,6 +86,7 @@ class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTy
         switch ($name) {
             // DataList
             case 'filter':
+            case 'filterAny':
             case 'reverse':
             case 'where':
             case 'whereAny':
@@ -107,7 +111,14 @@ class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTy
 
             // DataObject[]
             case 'toArray':
-                return new ArrayType(new IntegerType, $type->getItemType());
+                // NOTE(Jake): 2018-04-29
+                //
+                // Since `instanceof` doesn't work with traits, I'm using this.
+                //
+                if (method_exists($type, 'getItemType')) {
+                    return new ArrayType(new IntegerType, $type->getItemType());
+                }
+                return $methodReflection->getReturnType();
             break;
 
             // DataObject

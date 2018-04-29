@@ -23,7 +23,6 @@ use PHPStan\Type\StaticType;
 
 // Silverstripe
 use DataObject;
-use Config;
 
 class DataObjectReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -36,6 +35,10 @@ class DataObjectReturnTypeExtension implements DynamicMethodReturnTypeExtension
     {
         $name = $methodReflection->getName();
         switch ($name) {
+            case 'getCMSFields':
+                return true;
+            break;
+
             case 'dbObject':
                 return true;
             break;
@@ -49,11 +52,28 @@ class DataObjectReturnTypeExtension implements DynamicMethodReturnTypeExtension
 
     public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): Type
     {
-        $type = null;
         $type = $scope->getType($methodCall->var);
 
         $name = $methodReflection->getName();
         switch ($name) {
+            case 'getCMSFields':
+                // todo(Jake): 2018-04-29
+                //
+                // This is very incomplete.
+                //
+                // Look into determining the values of a FieldList based on scaffolding
+                // and SiteTree defaults. This is so `GridField` and other FormField
+                // subclasses can be reasoned about.
+                //
+                // A current blocker in PHPStan 0.9.2 is that `parent::getCMSFields()`
+                // won't work with `DataObjectReturnTypeExtension` but if I call it
+                // directly from another function like `$this->getCMSFields()`, this will
+                // execute.
+                //
+                $className = $methodReflection->getReturnType()->getClassName();
+                return new FieldListType($className);
+            break;
+
             case 'dbObject':
                 $className = '';
                 if ($type instanceof StaticType) {
