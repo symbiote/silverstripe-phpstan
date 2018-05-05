@@ -2,10 +2,7 @@
 
 namespace SilbinaryWolf\SilverstripePHPStan\Tests;
 
-// SilverStripe
-use SiteTree;
-use HTMLText;
-use DBInt;
+use SilbinaryWolf\SilverstripePHPStan\ClassHelper;
 
 class DataObjectReturnTypeExtensionTest extends ResolverTest
 {
@@ -14,12 +11,12 @@ class DataObjectReturnTypeExtensionTest extends ResolverTest
         return [
             // Test `$sitetree->dbObject("ID")` returns `DBInt`
             [
-                sprintf('%s', DBInt::class),
+                sprintf('%s', ClassHelper::DBInt),
                 sprintf('$sitetree->dbObject("%s")', 'ID'),
             ],
             // Test `$sitetree->dbObject("Content")` returns `HTMLText`
             [
-                sprintf('%s', HTMLText::class),
+                sprintf('%s', ClassHelper::HTMLText),
                 sprintf('$sitetree->dbObject("%s")', 'Content'),
             ],
         ];

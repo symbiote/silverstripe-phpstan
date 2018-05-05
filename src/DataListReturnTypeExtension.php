@@ -2,6 +2,7 @@
 
 namespace SilbinaryWolf\SilverstripePHPStan;
 
+use Exception;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Analyser\Scope;
@@ -11,14 +12,11 @@ use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\IterableTypeTrait;
 
-// SilverStripe
-use DataList;
-
 class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTypeExtension
 {
     public function getClass(): string
     {
-        return DataList::class;
+        return ClassHelper::DataList;
     }
 
     public function isMethodSupported(MethodReflection $methodReflection): bool
@@ -130,7 +128,7 @@ class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTy
             break;
 
             default:
-                throw Exception('Unhandled method call: '.$name);
+                throw new Exception('Unhandled method call: '.$name);
             break;
         }
         return $methodReflection->getReturnType();

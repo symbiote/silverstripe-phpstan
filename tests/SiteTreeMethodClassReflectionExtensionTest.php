@@ -2,12 +2,12 @@
 
 namespace SilbinaryWolf\SilverstripePHPStan\Tests;
 
+use SilbinaryWolf\SilverstripePHPStan\ClassHelper;
+
 use PHPStan\Type\VerbosityLevel;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\MixedType;
 use PHPStan\Type\NullType;
-use SiteTree;
-use ManyManyList;
 
 final class SiteTreeMethodClassReflectionExtensionTest extends \PHPStan\Testing\TestCase
 {
@@ -17,32 +17,28 @@ final class SiteTreeMethodClassReflectionExtensionTest extends \PHPStan\Testing\
     /** @var \SilbinaryWolf\SilverstripePHPStan\MethodClassReflectionExtension */
     private $method;
 
-    /** @var \SilbinaryWolf\SilverstripePHPStan\PropertyClassReflectionExtension */
-    private $property;
-
     protected function setUp(): void
     {
         $this->broker = $this->createBroker();
         $this->method = new \SilbinaryWolf\SilverstripePHPStan\MethodClassReflectionExtension();
         $this->method->setBroker($this->broker);
-        $this->property = new \SilbinaryWolf\SilverstripePHPStan\PropertyClassReflectionExtension();
     }
 
     public function dataHasMethod(): array
     {
         return [
             [
-                SiteTree::class,
+                ClassHelper::SiteTree,
                 'Parent',
                 true,
             ],
             [
-                SiteTree::class,
+                ClassHelper::SiteTree,
                 'LinkTracking',
                 true,
             ],
             [
-                SiteTree::class,
+                ClassHelper::SiteTree,
                 'UnusedMethod',
                 false,
             ],
@@ -63,64 +59,19 @@ final class SiteTreeMethodClassReflectionExtensionTest extends \PHPStan\Testing\
 
     public function testParentMethod(): void
     {
-        $classReflection = $this->broker->getClass(SiteTree::class);
+        $classReflection = $this->broker->getClass(ClassHelper::SiteTree);
         $methodReflection = $this->method->getMethod($classReflection, 'Parent');
         self::assertSame('Parent', $methodReflection->getName());
-        self::assertSame(SiteTree::class, $methodReflection->getReturnType()->getClassName());
+        self::assertSame(ClassHelper::SiteTree, $methodReflection->getReturnType()->getClassName());
     }
 
     public function testLinkTrackingMethod(): void
     {
-        $classReflection = $this->broker->getClass(SiteTree::class);
+        $classReflection = $this->broker->getClass(ClassHelper::SiteTree);
         $methodReflection = $this->method->getMethod($classReflection, 'LinkTracking');
         self::assertSame('LinkTracking', $methodReflection->getName());
         $dataListType = $methodReflection->getReturnType();
-        self::assertSame(ManyManyList::class, $dataListType->getClassName());
-        self::assertSame(SiteTree::class, $dataListType->getItemType()->getClassName());
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function dataHasProperty(): array
-    {
-        $data = [];
-        $data[] = [
-            SiteTree::class,
-            'ParentID',
-            true,
-        ];
-        $data[] = [
-            SiteTree::class,
-            'UnusedVariable',
-            false,
-        ];
-        return $data;
-    }
-
-    /**
-     * @dataProvider dataHasProperty
-     * @param string $className
-     * @param string $property
-     * @param bool $result
-     */
-    public function testHasProperty(string $className, string $property, bool $result): void
-    {
-        $classReflection = $this->broker->getClass($className);
-        self::assertSame($result, $this->property->hasProperty($classReflection, $property));
-    }
-
-    public function testParentIDProperty(): void
-    {
-        $classReflection = $this->broker->getClass(SiteTree::class);
-        $propertyReflection = $this->property->getProperty($classReflection, 'ParentID');
-        self::assertSame(IntegerType::class, get_class($propertyReflection->getType()));
-    }
-
-    public function testUnusedVariableProperty(): void
-    {
-        $classReflection = $this->broker->getClass(SiteTree::class);
-        $propertyReflection = $this->property->getProperty($classReflection, 'UnusedVariable');
-        self::assertSame(NullType::class, get_class($propertyReflection->getType()));
+        self::assertSame(ClassHelper::ManyManyList, $dataListType->getClassName());
+        self::assertSame(ClassHelper::SiteTree, $dataListType->getItemType()->getClassName());
     }
 }

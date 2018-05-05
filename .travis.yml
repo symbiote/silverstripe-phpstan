@@ -14,3 +14,4 @@ before_script:
 script:
   - vendor/bin/phpcs -n vendor/silbinarywolf/silverstripe-phpstan/src/ vendor/silbinarywolf/silverstripe-phpstan/tests/
   - vendor/bin/phpunit -c "vendor/silbinarywolf/silverstripe-phpstan/tests/phpunit.xml" vendor/silbinarywolf/silverstripe-phpstan/tests/
+  - vendor/bin/phpstan analyse vendor/silbinarywolf/silverstripe-phpstan/src/ -c "vendor/silbinarywolf/silverstripe-phpstan/tests/phpstan.neon" -a "vendor/silbinarywolf/silverstripe-phpstan/tests/bootstrap-phpstan.php" --level 4

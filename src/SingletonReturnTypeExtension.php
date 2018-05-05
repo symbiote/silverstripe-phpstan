@@ -30,7 +30,7 @@ class SingletonReturnTypeExtension implements DynamicFunctionReturnTypeExtension
                 }
                 // Handle singleton('HTMLText')
                 $arg = $functionCall->args[0]->value;
-                $type = Utility::getClassFromInjectorVariable($arg, $functionReflection->getReturnType());
+                $type = Utility::getTypeFromInjectorVariable($arg, $functionReflection->getReturnType());
                 return $type;
             break;
         }

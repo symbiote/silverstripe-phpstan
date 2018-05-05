@@ -11,13 +11,6 @@ use PHPStan\Reflection\PropertyReflection;
 use PHPStan\Type\FileTypeMapper;
 use PHPStan\Type\ObjectType;
 
-// Silverstripe
-use Object;
-use Config;
-use DataObject;
-use ContentController;
-use ViewableData;
-
 class PropertyClassReflectionExtension implements \PHPStan\Reflection\PropertiesClassReflectionExtension
 {
     /**
@@ -46,7 +39,7 @@ class PropertyClassReflectionExtension implements \PHPStan\Reflection\Properties
         if (isset($this->properties[$class][$propertyName])) {
             return $this->properties[$class][$propertyName];
         }
-        if ($classReflection->isSubclassOf(ViewableData::class)) {
+        if ($classReflection->isSubclassOf(ClassHelper::ViewableData)) {
             // ViewableData has a magic __get() method that always at least
             // returns 'null'.
             //
@@ -64,19 +57,19 @@ class PropertyClassReflectionExtension implements \PHPStan\Reflection\Properties
      */
     private function createProperties(ClassReflection $classReflection): array
     {
-        if (!$classReflection->isSubclassOf(Object::class)) {
+        if (!$classReflection->isSubclassOf(ClassHelper::SSObject)) {
             return [];
         }
 
         $properties = [];
 
         $class = $classReflection->getName();
-        $isDataObjectOrContentController = $classReflection->getName() === DataObject::class ||
-                                            $classReflection->isSubclassOf(DataObject::class);
+        $isDataObjectOrContentController = $classReflection->getName() === ClassHelper::DataObject ||
+                                            $classReflection->isSubclassOf(ClassHelper::DataObject);
 
         // Get extension classes
         $extensionClasses = array();
-        $extensions = Config::inst()->get($class, 'extensions');
+        $extensions = ConfigHelper::get($class, 'extensions');
         if ($extensions) {
             foreach ($extensions as $extensionClass) {
                 // Ignore parameters (ie. "Versioned('Stage', 'Live')")
@@ -89,7 +82,7 @@ class PropertyClassReflectionExtension implements \PHPStan\Reflection\Properties
         unset($extensions);
 
         // Handle magic properties that use 'get$Method' on main class
-        if ($classReflection->isSubclassOf(ViewableData::class)) {
+        if ($classReflection->isSubclassOf(ClassHelper::ViewableData)) {
             $classesToGetFrom = [$class];
             if ($extensionClasses) {
                 $classesToGetFrom = array_merge($classesToGetFrom, $extensionClasses);
@@ -123,58 +116,23 @@ class PropertyClassReflectionExtension implements \PHPStan\Reflection\Properties
         // NOTE(Jake): This is not foolproof, but if people follow the general SS convention
         //             it'll work.
         if (strpos($class, '_Controller') !== false
-            && $classReflection->isSubclassOf(ContentController::class)
+            && $classReflection->isSubclassOf(ClassHelper::ContentController)
         ) {
             $class = str_replace('_Controller', '', $class);
             $isDataObjectOrContentController = true;
         }
 
         if ($isDataObjectOrContentController) {
-            $defaultDataObjectDBFields = array(
-                'ID' => 'Int', // NOTE: DBInt in SS 3.6+ and 4.0
-                'ClassName' => 'Enum',
-                'Created' => 'SS_Datetime',
-                'LastEdited' => 'SS_Datetime',
-            );
-            // Support Versioned fields for when grabbing records out of *_versions tables.
-            if ($extensionClasses && isset($extensionClasses['Versioned'])) {
-                $defaultDataObjectDBFields['RecordID'] = 'Int';
-            }
-            foreach ($defaultDataObjectDBFields as $column => $columnClass) {
-                if (isset($properties[$column])) {
-                    continue;
-                }
-                $properties[$column] = new ComponentDBFieldProperty($column, $classReflection, $columnClass);
-            }
-
-            $dbFields = Config::inst()->get($class, 'db');
+            $dbFields = ConfigHelper::get_db($class);
             if ($dbFields) {
                 foreach ($dbFields as $propertyName => $type) {
-                    // Ignore parameters
-                    $type = explode('(', $type, 2);
-                    $type = $type[0];
-                    if (isset($properties[$propertyName])
-                        || is_numeric($propertyName)
-                    ) {
-                        // Skip
-                        continue;
-                    }
                     $properties[$propertyName] = new ComponentDBFieldProperty($propertyName, $classReflection, $type);
                 }
             }
 
-            $hasOne = Config::inst()->get($class, 'has_one');
+            $hasOne = ConfigHelper::get_has_one($class);
             if ($hasOne) {
-                foreach ($hasOne as $propertyName => $type) {
-                    // Ignore parameters
-                    $type = explode('(', $type, 2);
-                    $type = $type[0];
-
-                    $propertyName = $propertyName.'ID';
-                    if (isset($properties[$propertyName])) {
-                        // Skip
-                        continue;
-                    }
+                foreach ($hasOne as $propertyName => $_) {
                     $properties[$propertyName] = new ComponentHasOneProperty($propertyName, $classReflection);
                 }
             }

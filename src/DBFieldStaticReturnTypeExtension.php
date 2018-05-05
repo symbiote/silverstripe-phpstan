@@ -9,14 +9,11 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Type\Type;
 use PHPStan\Type\ObjectType;
 
-// Silverstripe
-use DBField;
-
 class DBFieldStaticReturnTypeExtension implements \PHPStan\Type\DynamicStaticMethodReturnTypeExtension
 {
     public function getClass(): string
     {
-        return DBField::class;
+        return ClassHelper::DBField;
     }
 
     public function isStaticMethodSupported(MethodReflection $methodReflection): bool

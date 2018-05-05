@@ -20,6 +20,12 @@ class CachedMethod implements MethodReflection
 
     /**
      *
+     * @var \PHPStan\Reflection\Php\PhpMethodReflection
+     */
+    private $methodReflection;
+
+    /**
+     *
      *
      * @var \PHPStan\Reflection\ClassReflection
      */

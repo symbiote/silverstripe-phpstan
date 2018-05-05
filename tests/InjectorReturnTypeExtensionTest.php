@@ -2,33 +2,27 @@
 
 namespace SilbinaryWolf\SilverstripePHPStan\Tests;
 
-// SilverStripe
-use File;
-use Injector;
-use CookieJar;
-use Cookie_Backend;
-use MySQLDatabase;
-use MySQLPDODatabase;
+use SilbinaryWolf\SilverstripePHPStan\ClassHelper;
 
 class InjectorReturnTypeExtensionTest extends ResolverTest
 {
     public function dataDynamicMethodReturnTypeExtensions(): array
     {
         return [
-            // Injector::inst()->get(File::class)
+            // Injector::inst()->get(ClassHelper::File)
             [
-                sprintf(File::class),
-                sprintf('%s::inst()->get(%s::class)', Injector::class, File::class),
+                sprintf(ClassHelper::File),
+                sprintf('%s::inst()->get(%s::class)', ClassHelper::Injector, ClassHelper::File),
             ],
             // Test `Injector::inst()->get('Cookie_Backend)` returns `CookieJar` (uses direct value in YML, SS 3.6.X)
             [
-                sprintf('%s', CookieJar::class),
-                sprintf('%s::inst()->get(%s::class)', Injector::class, Cookie_Backend::class),
+                sprintf('%s', ClassHelper::CookieJar),
+                sprintf('%s::inst()->get(%s::class)', ClassHelper::Injector, ClassHelper::Cookie_Backend),
             ],
             // Test `Injector::inst()->get("MySQLPDODatabase")` returns `MySQLDatabase` (uses "class" array in YML, SS 3.6.X)
             [
-                sprintf('%s', MySQLDatabase::class),
-                sprintf('%s::inst()->get(%s::class)', Injector::class, MySQLPDODatabase::class),
+                sprintf('%s', ClassHelper::MySQLDatabase),
+                sprintf('%s::inst()->get("MySQLPDODatabase")', ClassHelper::Injector),
             ],
         ];
     }
@@ -60,18 +54,18 @@ class InjectorReturnTypeExtensionTest extends ResolverTest
         return [
             // Test `singleton('File)` returns `File`
             [
-                sprintf('%s', File::class),
-                sprintf('singleton("%s")', File::class),
+                sprintf('%s', ClassHelper::File),
+                sprintf('singleton("%s")', ClassHelper::File),
             ],
             // Test `singleton("Cookie_Backend")` returns `CookieJar` (uses direct value in YML, SS 3.6.X)
             [
-                sprintf('%s', CookieJar::class),
-                sprintf('singleton("%s")', Cookie_Backend::class),
+                sprintf('%s', ClassHelper::CookieJar),
+                sprintf('singleton("%s")', ClassHelper::Cookie_Backend),
             ],
             // Test `singleton("MySQLPDODatabase")` returns `MySQLDatabase` (uses "class" array in YML, SS 3.6.X)
             [
-                sprintf('%s', MySQLDatabase::class),
-                sprintf('singleton("%s")', MySQLPDODatabase::class),
+                sprintf('%s', ClassHelper::MySQLDatabase),
+                sprintf('singleton("MySQLPDODatabase")'),
             ]
         ];
     }

@@ -2,12 +2,9 @@
 
 namespace SilbinaryWolf\SilverstripePHPStan;
 
-use PHPStan\Analyser\Scope;
 use PhpParser\Node\Stmt\Return_;
+use PHPStan\Analyser\Scope;
 use PHPStan\Type\FalseBooleanType;
-
-// SilverStripe
-use RequestFilter;
 
 class RequestFilterPreRequestRule implements \PHPStan\Rules\Rule
 {
@@ -24,7 +21,7 @@ class RequestFilterPreRequestRule implements \PHPStan\Rules\Rule
     public function processNode(\PhpParser\Node $node, Scope $scope): array
     {
         $className = $scope->getClassReflection()->getName();
-        if (!is_a($className, RequestFilter::class, true)) {
+        if (!is_a($className, ClassHelper::RequestFilter, true)) {
             return [];
         }
         $functionName = $scope->getFunctionName();
@@ -43,7 +40,7 @@ class RequestFilterPreRequestRule implements \PHPStan\Rules\Rule
             return [
                 sprintf(
                     '%s::preRequest() should not return false as this will cause an uncaught "Invalid Request" exception to be thrown by the SilverStripe framework. (returning "null" will not cause this problem)',
-                    RequestFilter::class
+                    ClassHelper::RequestFilter
                 ),
             ];
         }

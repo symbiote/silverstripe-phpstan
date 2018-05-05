@@ -2,6 +2,7 @@
 
 namespace SilbinaryWolf\SilverstripePHPStan;
 
+use Exception;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Analyser\Scope;
@@ -12,18 +13,13 @@ use PHPStan\Type\ThisType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\UnionType;
 
-// SilverStripe
-use Extension;
-use Object;
-use Config;
-
 class ExtensionReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTypeExtension
 {
     protected $ownerClassNamesByExtensionClassName = null;
 
     public function getClass(): string
     {
-        return Extension::class;
+        return ClassHelper::Extension;
     }
 
     public function isMethodSupported(MethodReflection $methodReflection): bool
@@ -61,6 +57,9 @@ class ExtensionReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnT
                 if (!$objectType) {
                     return $methodReflection->getReturnType();
                 }
+                if (!($objectType instanceof ObjectType)) {
+                    throw new Exception('Unexpected type: '.get_class($objectType).', expected ObjectType');
+                }
 
                 // Lookup if this extension is configured by any class to be used in their 'extensions'
                 $extensionClassName = $objectType->getClassName();
@@ -89,14 +88,13 @@ class ExtensionReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnT
                     //
                     // UnionType does not allow multiple types to be passed in
                     //
-                    //
                     return $types[0];
                 }
                 return new UnionType($types);
             break;
 
             default:
-                throw Exception('Unhandled method call: '.$name);
+                throw new Exception('Unhandled method call: '.$name);
             break;
         }
         return $methodReflection->getReturnType();
@@ -108,9 +106,9 @@ class ExtensionReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnT
             return $this->ownerClassNamesByExtensionClassName;
         }
         $extensionToClassName = array();
-        $classes = $this->getSubclassesOf(Object::class);
+        $classes = $this->getSubclassesOf(ClassHelper::SSObject);
         foreach ($classes as $class) {
-            $extensions = Config::inst()->get($class, 'extensions');
+            $extensions = ConfigHelper::get($class, 'extensions');
             if (!$extensions) {
                 continue;
             }

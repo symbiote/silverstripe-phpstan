@@ -4,14 +4,10 @@ namespace SilbinaryWolf\SilverstripePHPStan;
 
 use Exception;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
-
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\Type;
-
-// Silverstripe
-use Injector;
 
 class InjectorReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -22,7 +18,7 @@ class InjectorReturnTypeExtension implements DynamicMethodReturnTypeExtension
 
     public function getClass(): string
     {
-        return Injector::class;
+        return ClassHelper::Injector;
     }
 
     public function isMethodSupported(MethodReflection $methodReflection): bool
@@ -39,12 +35,12 @@ class InjectorReturnTypeExtension implements DynamicMethodReturnTypeExtension
                     return $methodReflection->getReturnType();
                 }
                 $arg = $methodCall->args[0]->value;
-                $type = Utility::getClassFromInjectorVariable($arg, $methodReflection->getReturnType());
+                $type = Utility::getTypeFromInjectorVariable($arg, $methodReflection->getReturnType());
                 return $type;
             break;
 
             default:
-                throw \Exception('Unhandled method call: '.$name);
+                throw new Exception('Unhandled method call: '.$name);
             break;
         }
         return $methodReflection->getReturnType();

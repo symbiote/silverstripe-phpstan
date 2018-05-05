@@ -7,9 +7,6 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\Type;
 use PHPStan\Type\ObjectType;
 
-// Silverstripe
-use HasManyList;
-
 class ComponentHasManyMethod implements MethodReflection
 {
 
@@ -38,7 +35,7 @@ class ComponentHasManyMethod implements MethodReflection
     {
         $this->name = $name;
         $this->declaringClass = $declaringClass;
-        $this->returnType = new DataListType(HasManyList::class, $type);
+        $this->returnType = new DataListType(ClassHelper::HasManyList, $type);
     }
 
     public function getDeclaringClass(): ClassReflection

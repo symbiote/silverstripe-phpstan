@@ -10,18 +10,36 @@ use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\PropertyFetch;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Expr\Variable;
+
 use PHPStan\Type\Type;
 use PHPStan\Type\ObjectType;
+use PHPStan\Type\StringType;
+use PHPStan\Type\IntegerType;
+use PHPStan\Type\FloatType;
+use PHPStan\Type\MixedType;
 use PHPStan\Reflection\MethodReflection;
 use Exception;
 
-// SilverStripe
-use Config;
-use Injector;
-
 class Utility
 {
-    public static function getClassFromInjectorVariable(NodeAbstract $node, $defaultType): Type
+    public static function get_primitive_from_dbfield($className): Type
+    {
+        $returnType = null;
+        if (is_a($className, ClassHelper::StringField, true)) {
+            $returnType = new StringType;
+        } elseif (is_a($className, 'Int', true) || // 'Int' == Support SS 3.5 and below
+            is_a($className, ClassHelper::DBInt, true)) {
+            $returnType = new IntegerType;
+        } elseif (is_a($className, 'Float', true) || // 'Int' == Support SS 3.5 and below
+            is_a($className, ClassHelper::DBFloat, true)) {
+            $returnType = new FloatType;
+        } else {
+            $returnType = new MixedType;
+        }
+        return $returnType;
+    }
+
+    public static function getTypeFromInjectorVariable(NodeAbstract $node, $defaultType): Type
     {
         $label = '';
         if ($node instanceof Arg) {
@@ -54,9 +72,9 @@ class Utility
         return self::getClassFromInjectorString($label);
     }
 
-    public static function getClassFromInjectorString($classNameOrLabel)
+    public static function getClassFromInjectorString($classNameOrLabel): ObjectType
     {
-        $injectorInfo = Config::inst()->get(Injector::class, $classNameOrLabel);
+        $injectorInfo = ConfigHelper::get(ClassHelper::Injector, $classNameOrLabel);
         if (!$injectorInfo) {
             return new ObjectType($classNameOrLabel);
         }
@@ -67,11 +85,15 @@ class Utility
             isset($injectorInfo['class'])) {
             return new ObjectType($injectorInfo['class']);
         }
-        // ie. If only "properties" is set on a class/label, like the `RequestProcessor` class.
+        // NOTE(Jake): 2018-05-05
+        //
+        // If only "properties" is set on a class/label, like the `RequestProcessor` class.
+        // Then we simply use the original class name passed in. (No override is configured)
+        //
         return new ObjectType($classNameOrLabel);
     }
 
-    public static function getTypeFromVariable(NodeAbstract $node, ParametersAcceptorWithPhpDocs $methodOrFunctionReflection): ObjectType
+    public static function getTypeFromVariable(NodeAbstract $node, ParametersAcceptorWithPhpDocs $methodOrFunctionReflection): Type
     {
         $class = '';
         if ($node instanceof Arg) {

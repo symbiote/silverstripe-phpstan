@@ -2,16 +2,7 @@
 
 namespace SilbinaryWolf\SilverstripePHPStan\Tests;
 
-// SilverStripe
-use DataObject;
-use DataList;
-use SiteTree;
-use File;
-use Cookie_Backend;
-use CookieJar;
-use Injector;
-use MySQLDatabase;
-use MySQLPDODatabase;
+use SilbinaryWolf\SilverstripePHPStan\ClassHelper;
 
 class DataObjectGetStaticReturnTypeExtensionTest extends ResolverTest
 {
@@ -20,33 +11,33 @@ class DataObjectGetStaticReturnTypeExtensionTest extends ResolverTest
         return [
             // Test `SiteTree::get()` returns `DataList<SiteTree>`
             [
-                sprintf('%s<%s>', DataList::class, SiteTree::class),
-                sprintf('%s::get()', SiteTree::class),
+                sprintf('%s<%s>', ClassHelper::DataList, ClassHelper::SiteTree),
+                sprintf('%s::get()', ClassHelper::SiteTree),
             ],
             // DataObject::get('SiteTree')
             [
-                sprintf('%s<%s>', DataList::class, SiteTree::class),
-                sprintf('%s::get("%s")', DataObject::class, SiteTree::class),
+                sprintf('%s<%s>', ClassHelper::DataList, ClassHelper::SiteTree),
+                sprintf('%s::get("%s")', ClassHelper::DataObject, ClassHelper::SiteTree),
             ],
-            // DataObject::get(SiteTree::class)
+            // DataObject::get(ClassHelper::SiteTree)
             [
-                sprintf('%s<%s>', DataList::class, SiteTree::class),
-                sprintf('%s::get(%s::class)', DataObject::class, SiteTree::class),
+                sprintf('%s<%s>', ClassHelper::DataList, ClassHelper::SiteTree),
+                sprintf('%s::get(%s::class)', ClassHelper::DataObject, ClassHelper::SiteTree),
             ],
             // SiteTree::get_one()
             [
-                SiteTree::class,
-                sprintf('%s::get_one()', SiteTree::class),
+                ClassHelper::SiteTree,
+                sprintf('%s::get_one()', ClassHelper::SiteTree),
             ],
             // DataObject::get_one('SiteTree')
             [
-                SiteTree::class,
-                sprintf('%s::get_one("%s")', DataObject::class, SiteTree::class),
+                ClassHelper::SiteTree,
+                sprintf('%s::get_one("%s")', ClassHelper::DataObject, ClassHelper::SiteTree),
             ],
-            // DataObject::get_one(SiteTree::class)
+            // DataObject::get_one(ClassHelper::SiteTree)
             [
-                sprintf(SiteTree::class),
-                sprintf('%s::get_one(%s::class)', DataObject::class, SiteTree::class),
+                sprintf(ClassHelper::SiteTree),
+                sprintf('%s::get_one(%s::class)', ClassHelper::DataObject, ClassHelper::SiteTree),
             ],
         ];
     }

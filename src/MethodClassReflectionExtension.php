@@ -16,12 +16,6 @@ use PHPStan\Type\ObjectType;
 use PHPStan\Reflection\Php\PhpMethodReflection;
 use PHPStan\Analyser\Scope;
 
-// Silverstripe
-use Object;
-use Config;
-use DataObject;
-use ContentController;
-
 class MethodClassReflectionExtension implements MethodsClassReflectionExtension, BrokerAwareExtension
 {
     /**
@@ -66,38 +60,27 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
      */
     private function createMethods(ClassReflection $classReflection): array
     {
-        if (!$classReflection->isSubclassOf(Object::class)) {
+        if (!$classReflection->isSubclassOf(ClassHelper::SSObject)) {
             return [];
         }
 
         $methods = [];
 
         $class = $classReflection->getName();
-        $isDataObjectOrContentController = $classReflection->getName() === DataObject::class ||
-                                            $classReflection->isSubclassOf(DataObject::class);
+        $isDataObjectOrContentController = $classReflection->getName() === ClassHelper::DataObject ||
+                                            $classReflection->isSubclassOf(ClassHelper::DataObject);
 
         // Add methods from extensions
-        $extensionInstances = Config::inst()->get($class, 'extensions');
+        $extensionInstances = ConfigHelper::get_extensions($class);
         if ($extensionInstances) {
             foreach ($extensionInstances as $extensionClass) {
-                // Ignore parameters
-                // ie. Extract "Versioned" from "Versioned('Stage', 'Live')"
-                $extensionClass = explode('(', $extensionClass, 2);
-                $extensionClass = $extensionClass[0];
-
                 $extensionClassReflection = $this->broker->getClass($extensionClass);
                 foreach (get_class_methods($extensionClass) as $methodName) {
-                    /**
-                     *
-                     *
-                     * @var $methodReflection PhpMethodReflection
-                    */
                     $methodReflection = $extensionClassReflection->getNativeMethod($methodName);
                     $methods[strtolower($methodName)] = $methodReflection;
                 }
             }
         }
-
 
         // Detect little-known Silverstripe '_' cache function
         // ie. Define: function _MyFunction()
@@ -114,18 +97,13 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
         // NOTE(Jake): This is not foolproof, but if people follow the general SS convention
         //             it'll work.
         if (strpos($class, '_Controller') !== false
-            && $classReflection->isSubclassOf(ContentController::class)
+            && $classReflection->isSubclassOf(ClassHelper::ContentController)
         ) {
             $class = str_replace('_Controller', '', $class);
             $isDataObjectOrContentController = true;
 
             $failoverClassReflection = $this->broker->getClass($class);
             foreach (get_class_methods($class) as $methodName) {
-                /**
-*
-                 *
- * @var $methodReflection PhpMethodReflection
-*/
                 $methodReflection = $failoverClassReflection->getNativeMethod($methodName);
                 $methods[strtolower($methodName)] = $methodReflection;
             }
@@ -141,7 +119,7 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
                 'belongs_many_many' => ComponentManyManyMethod::class,
             );
             foreach ($components as $componentType => $componentClass) {
-                $componentNameValueMap = Config::inst()->get($class, $componentType);
+                $componentNameValueMap = ConfigHelper::get($class, $componentType);
                 if (!$componentNameValueMap) {
                     continue;
                 }

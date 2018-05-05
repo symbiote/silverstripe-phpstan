@@ -2,9 +2,7 @@
 
 namespace SilbinaryWolf\SilverstripePHPStan\Tests;
 
-// SilverStripe
-use DBField;
-use HTMLText;
+use SilbinaryWolf\SilverstripePHPStan\ClassHelper;
 
 class DBFieldGetStaticReturnTypeExtensionTest extends ResolverTest
 {
@@ -13,13 +11,13 @@ class DBFieldGetStaticReturnTypeExtensionTest extends ResolverTest
         return [
             // Test `DBField::create_field("HTMLText")` returns `HTMLText`
             [
-                sprintf('%s', HTMLText::class),
-                sprintf('%s::create_field("%s")', DBField::class, HTMLText::class),
+                sprintf('%s', ClassHelper::HTMLText),
+                sprintf('%s::create_field("%s")', ClassHelper::DBField, ClassHelper::HTMLText),
             ],
-            // Test `DBField::create_field(HTMLText::class)` returns `HTMLText`
+            // Test `DBField::create_field(ClassHelper::HTMLText)` returns `HTMLText`
             [
-                sprintf('%s', HTMLText::class),
-                sprintf('%s::create_field(%s::class)', DBField::class, HTMLText::class),
+                sprintf('%s', ClassHelper::HTMLText),
+                sprintf('%s::create_field(%s::class)', ClassHelper::DBField, ClassHelper::HTMLText),
             ],
         ];
     }

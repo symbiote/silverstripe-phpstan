@@ -13,15 +13,11 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Type\Type;
 use PHPStan\Type\ObjectType;
 
-// Silverstripe
-use DataList;
-use DataObject;
-
 class DataObjectGetStaticReturnTypeExtension implements \PHPStan\Type\DynamicStaticMethodReturnTypeExtension
 {
     public function getClass(): string
     {
-        return DataObject::class;
+        return ClassHelper::DataObject;
     }
 
     public function isStaticMethodSupported(MethodReflection $methodReflection): bool
@@ -41,7 +37,7 @@ class DataObjectGetStaticReturnTypeExtension implements \PHPStan\Type\DynamicSta
                     // Handle DataObject::get('Page')
                     $arg = $methodCall->args[0];
                     $type = Utility::getTypeFromVariable($arg, $methodReflection);
-                    return new DataListType(DataList::class, $type);
+                    return new DataListType(ClassHelper::DataList, $type);
                 }
                 // Handle Page::get() / self::get()
                 $callerClass = $methodCall->class->toString();
@@ -51,7 +47,7 @@ class DataObjectGetStaticReturnTypeExtension implements \PHPStan\Type\DynamicSta
                 if ($callerClass === 'self') {
                     $callerClass = $scope->getClassReflection()->getName();
                 }
-                return new DataListType(DataList::class, new ObjectType($callerClass));
+                return new DataListType(ClassHelper::DataList, new ObjectType($callerClass));
             break;
 
             case 'get_one':

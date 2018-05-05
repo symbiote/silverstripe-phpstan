@@ -6,7 +6,15 @@
 [![Total Downloads](https://poser.pugx.org/silbinarywolf/silverstripe-phpstan/downloads.svg)](https://packagist.org/packages/silbinarywolf/silverstripe-phpstan)
 [![License](https://poser.pugx.org/silbinarywolf/silverstripe-phpstan/license.svg)](https://github.com/silbinarywolf/silverstripe-phpstan/blob/master/LICENSE.md)
 
-Add PHPStan functionality to Silverstripe.
+An extension for PHPStan to allow it to reason about SilverStripe functionality.
+
+**Features:**
+
+- Support for `DataObject::get()`, ie. it understands you have a DataList of iterable SiteTree records.
+- Support for DataObject `db`, `has_one`, `has_many` and `many_many` magic properties and methods, ie. it knows SiteTree::Title is a string, that SiteTree::ParentID is an integer and that SiteTree::Parent() is a SiteTree record.
+- Support for `singleton('SiteTree')` and `Injector::inst()->get('SiteTree')`, ie. it knows these will return "SiteTree". If you override these with the injector, it'll also know what class you're actually using.
+
+This PHPStan module is able to reason about extensions installed specific to your project as it bootstraps the SilverStripe config system. So if you've added an extension to your `Page` object that adds an additional `db` field, PHPStan will be able to reason about it.
 
 ## Composer Install
 

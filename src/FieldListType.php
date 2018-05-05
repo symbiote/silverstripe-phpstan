@@ -10,9 +10,6 @@ use PHPStan\Type\ObjectType;
 use PHPStan\Type\IterableTypeTrait;
 use PHPStan\Type\StaticResolvableType;
 
-// SilverStripe
-use FormField;
-
 class FieldListType extends ObjectType implements StaticResolvableType
 {
     use IterableTypeTrait;
@@ -20,7 +17,7 @@ class FieldListType extends ObjectType implements StaticResolvableType
     public function __construct(string $fieldListClassName)
     {
         parent::__construct($fieldListClassName);
-        $this->itemType = new ObjectType(FormField::class);
+        $this->itemType = new ObjectType(ClassHelper::FormField);
     }
 
     public function describe(): string

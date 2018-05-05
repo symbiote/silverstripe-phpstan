@@ -5,9 +5,7 @@ namespace SilbinaryWolf\SilverstripePHPStan;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\PropertyReflection;
 use PHPStan\Type\Type;
-use PHPStan\Type\StringType;
-use PHPStan\Type\IntegerType;
-use PHPStan\Type\MixedType;
+use PHPStan\Type\ObjectType;
 
 class ComponentDBFieldProperty implements PropertyReflection
 {
@@ -29,44 +27,25 @@ class ComponentDBFieldProperty implements PropertyReflection
     /**
      *
      *
-     * @var IntegerType
+     * @var Type
      */
     private $returnType;
 
-    public function __construct(string $name, ClassReflection $declaringClass, string $type)
+    public function __construct(string $name, ClassReflection $declaringClass, ObjectType $type)
     {
         $this->name = $name;
         $this->declaringClass = $declaringClass;
 
-        switch ($type) {
-            case 'Varchar':
-            case 'HTMLVarchar':
-            case 'HTMLText':
-            case 'Enum':
-                $this->returnType = new StringType;
-                break;
-
-            case 'Int':
-            case 'DBInt':
-                $this->returnType = new IntegerType;
-                break;
-
-            case 'Float':
-            case 'DBFloat':
-                $this->returnType = new FloatType;
-                break;
-
-            default:
-                $this->returnType = new MixedType;
-                break;
-        }
+        // Transform ObjectType 'DBInt' to 'IntegerType' for property access
+        $className = $type->getClassName();
+        $this->returnType = Utility::get_primitive_from_dbfield($className);
     }
 
     public function getType(): Type
     {
         return $this->returnType;
     }
-    
+
     public function getDeclaringClass(): ClassReflection
     {
         return $this->declaringClass;

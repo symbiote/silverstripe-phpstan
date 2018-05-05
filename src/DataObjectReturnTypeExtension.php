@@ -21,14 +21,11 @@ use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StaticType;
 
-// Silverstripe
-use DataObject;
-
 class DataObjectReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
     public function getClass(): string
     {
-        return DataObject::class;
+        return ClassHelper::DataObject;
     }
 
     public function isMethodSupported(MethodReflection $methodReflection): bool
@@ -70,7 +67,11 @@ class DataObjectReturnTypeExtension implements DynamicMethodReturnTypeExtension
                 // directly from another function like `$this->getCMSFields()`, this will
                 // execute.
                 //
-                $className = $methodReflection->getReturnType()->getClassName();
+                $objectType = $methodReflection->getReturnType();
+                if (!($objectType instanceof ObjectType)) {
+                    throw new Exception('Unexpected type: '.get_class($objectType).', expected ObjectType');
+                }
+                $className = $objectType->getClassName();
                 return new FieldListType($className);
             break;
 
@@ -127,7 +128,7 @@ class DataObjectReturnTypeExtension implements DynamicMethodReturnTypeExtension
             break;
 
             default:
-                throw \Exception('Unhandled method call: '.$name);
+                throw new Exception('Unhandled method call: '.$name);
             break;
         }
         return $methodReflection->getReturnType();
