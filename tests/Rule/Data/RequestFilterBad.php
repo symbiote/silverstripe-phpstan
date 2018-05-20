@@ -3,19 +3,17 @@
 namespace SilbinaryWolf\SilverstripePHPStan\Tests\Rule\Data;
 
 // SilverStripe
-use RequestFilter;
-use SS_HTTPRequest;
-use SS_HTTPResponse;
-use DataModel;
-use Session;
+use SilverStripe\Control\RequestFilter;
+use SilverStripe\Control\HTTPRequest;
+use SilverStripe\Control\HTTPResponse;
 
 class RequestFilterBad implements RequestFilter
 {
-    public function postRequest(SS_HTTPRequest $request, SS_HTTPResponse $response, DataModel $model)
+    public function postRequest(HTTPRequest $request, HTTPResponse $response)
     {
     }
 
-    public function preRequest(SS_HTTPRequest $request, Session $session, DataModel $model)
+    public function preRequest(HTTPRequest $request)
     {
         $badResult = false;
         return $badResult;

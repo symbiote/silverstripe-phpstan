@@ -1,11 +1,11 @@
 parameters:
     earlyTerminatingMethodCalls:
-        Controller:
+        SilverStripe\Control\Controller:
             - redirect
     universalObjectCratesClasses:
-        - ArrayData
-        - Config_ForClass
-        - AbstractQueuedJob # symbiote/silverstripe-queuedjobs module support
+        - SilverStripe\View\ArrayData
+        - SilverStripe\Core\Config\Config_ForClass
+        - Symbiote\QueuedJobs\Services\AbstractQueuedJob # symbiote/silverstripe-queuedjobs module support
     excludes_analyse:
         - silverstripe-cache
 services:

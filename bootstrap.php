@@ -1,23 +1,35 @@
 <?php
 
-// Use Composer autoloader
-$path = dirname(__FILE__).'/../../autoload.php';
-require_once($path);
+use SilverStripe\Core\CoreKernel;
+use SilverStripe\Control\HTTPApplication;
+use SilverStripe\Control\HTTPRequestBuilder;
+use SilverStripe\Core\Startup\ErrorControlChainMiddleware;
+use SilverStripe\Control\HTTPResponse_Exception;
 
-// Check if incorrect SilverStripe version (ie. 4+)
-$coreFilepath = dirname(__FILE__).'/../../silverstripe/framework';
-if (file_exists($coreFilepath)) {
-    echo 'This version of PHPStan is for SilverStripe 3.X projects, not SilverStipe 4.X.';
-    exit(2);
-}
-
-//
-// This file is required to setup Silverstripe class autoloader
-//
-$projectDir = dirname(__FILE__).'/../../..';
-$coreFilepath = $projectDir.'/framework/core/Core.php';
-if (!file_exists($coreFilepath)) {
-    echo 'Unable to find "framework" folder for Silverstripe 3.X project.';
+// Find Composer autoload.php
+if (file_exists(__DIR__ . '/../../autoload.php')) {
+    require __DIR__ . '/../../autoload.php';
+} elseif (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require __DIR__ . '/vendor/autoload.php';
+} else {
+    header('HTTP/1.1 500 Internal Server Error');
+    echo "autoload.php not found";
     exit(1);
 }
-require_once($coreFilepath);
+
+// Mock values to be empty if not set
+if (!isset($_SERVER['REQUEST_URI'])) { $_SERVER['REQUEST_URI'] = ''; }
+if (!isset($_SERVER['REQUEST_METHOD'])) { $_SERVER['REQUEST_METHOD'] = ''; }
+
+// Default application
+try {
+    $kernel = new CoreKernel(BASE_PATH);
+    $kernel->boot();
+} catch (HTTPResponse_Exception $e) {
+    // ignore unconfigured DB error from CoreKernel::redirectToInstaller()
+}
+//$app = new HTTPApplication($kernel);
+//$app->addMiddleware(new ErrorControlChainMiddleware($app));
+//$request = HTTPRequestBuilder::createFromEnvironment(); // Build request and detect flush
+//$response = $app->handle($request);
+//$response->output();

@@ -14,4 +14,4 @@ parameters:
         # If you're using the phpstan-shim, you will get errors when trying to
         # scan silverstripe-phpstan.
         #
-        - %rootDir%/../../../vendor/silbinarywolf/silverstripe-phpstan/tests/Type/data/
+        - %currentWorkingDirectory%/tests/Type/data/

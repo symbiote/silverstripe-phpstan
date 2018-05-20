@@ -23,8 +23,8 @@ class RequestFilterPreRequestRuleTest extends \PHPStan\Testing\RuleTestCase
     {
         $this->analyse([__DIR__ . '/Data/RequestFilterBad.php'], [
             [
-                'RequestFilter::preRequest() should not return false as this will cause an uncaught "Invalid Request" exception to be thrown by the SilverStripe framework. (returning "null" will not cause this problem)',
-                21,
+                'SilverStripe\Control\RequestFilter::preRequest() should not return false as this will cause an uncaught "Invalid Request" exception to be thrown by the SilverStripe framework. (returning "null" will not cause this problem)',
+                19,
             ],
         ]);
     }

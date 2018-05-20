@@ -5,7 +5,7 @@ namespace SilbinaryWolf\SilverstripePHPStan;
 use PHPStan\Type\ObjectType;
 
 // SilverStripe
-use Config;
+use \SilverStripe\Core\Config\Config;
 
 class ConfigHelper
 {
@@ -27,7 +27,7 @@ class ConfigHelper
      */
     public static function update($className, $configKey, $configValue)
     {
-        return Config::inst()->update($className, $configKey, $configValue);
+        return Config::modify()->set($className, $configKey, $configValue);
     }
 
     /**

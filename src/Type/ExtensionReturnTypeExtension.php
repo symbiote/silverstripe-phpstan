@@ -109,7 +109,7 @@ class ExtensionReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnT
             return $this->ownerClassNamesByExtensionClassName;
         }
         $extensionToClassName = array();
-        $classes = $this->getSubclassesOf(ClassHelper::SSObject);
+        $classes = $this->getClassesUsingExtensibleTrait();
         foreach ($classes as $class) {
             $extensions = ConfigHelper::get($class, 'extensions');
             if (!$extensions) {
@@ -125,14 +125,25 @@ class ExtensionReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnT
         return $this->ownerClassNamesByExtensionClassName = $extensionToClassName;
     }
 
-    private function getSubclassesOf($parentClass)
+    private function getClassesUsingExtensibleTrait()
     {
+        $classes = get_declared_classes();
         $result = array();
-        foreach (get_declared_classes() as $class) {
-            if (is_subclass_of($class, $parentClass)) {
-                $result[] = $class;
+        foreach ($classes as $class) {
+            $hasTrait = false;
+            foreach ($classes as $subclass) {
+                if ($subclass === $class || is_subclass_of($subclass, $class)) {
+                    $hasTrait = false;
+                    foreach (class_uses($class) as $trait) {
+                        $hasTrait = $hasTrait || $trait == ClassHelper::Extensible;
+                    }
+                    if ($hasTrait) {
+                        $result[$subclass] = $subclass;
+                    }
+                }
             }
         }
+        $result = array_values($result);
         return $result;
     }
 }

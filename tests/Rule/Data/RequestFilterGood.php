@@ -3,15 +3,13 @@
 namespace SilbinaryWolf\SilverstripePHPStan\Tests\Rule\Data;
 
 // SilverStripe
-use RequestFilter;
-use SS_HTTPRequest;
-use SS_HTTPResponse;
-use DataModel;
-use Session;
+use SilverStripe\Control\RequestFilter;
+use SilverStripe\Control\HTTPRequest;
+use SilverStripe\Control\HTTPResponse;
 
 class RequestFilterGood implements RequestFilter
 {
-    public function postRequest(SS_HTTPRequest $request, SS_HTTPResponse $response, DataModel $model)
+    public function postRequest(HTTPRequest $request, HTTPResponse $response)
     {
         if (true) {
             return 0;
@@ -23,7 +21,7 @@ class RequestFilterGood implements RequestFilter
         return $obj;
     }
 
-    public function preRequest(SS_HTTPRequest $request, Session $session, DataModel $model)
+    public function preRequest(HTTPRequest $request)
     {
         if (true) {
             return 0;

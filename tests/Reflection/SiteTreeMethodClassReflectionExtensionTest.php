@@ -3,8 +3,8 @@
 namespace SilbinaryWolf\SilverstripePHPStan\Tests\Reflection;
 
 use SilbinaryWolf\SilverstripePHPStan\ClassHelper;
-use SilbinaryWolf\SilverstripePHPStan\Type\DataListType;
 use SilbinaryWolf\SilverstripePHPStan\Reflection\MethodClassReflectionExtension;
+use SilbinaryWolf\SilverstripePHPStan\Type\DataListType;
 use PHPStan\Type\VerbosityLevel;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\MixedType;
@@ -91,6 +91,12 @@ final class SiteTreeMethodClassReflectionExtensionTest extends \PHPStan\Testing\
             // This statement is needed so PHPStan knows $resultType is ObjectType.
             return;
         }
-        self::assertSame(ClassHelper::SiteTree, $resultType->getClassName());
+        self::assertContains(
+            $resultType->getClassName(),
+            [
+                ClassHelper::SiteTree, // Expected value for: SilverStripe 4.0
+                ClassHelper::SiteTreeLink, // Expected value for: SilverStripe 4.2+ (master branch at time of writing, 4.2+ is an assumption)
+            ]
+        );
     }
 }

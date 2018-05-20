@@ -3,8 +3,8 @@
 namespace DataExtensionUnionDynamicMethodReturnTypesNamespace;
 
 // SilverStripe
-use DataObject;
-use DataExtension;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\DataExtension;
 
 class Foo extends DataObject
 {
@@ -14,7 +14,7 @@ class FooTwo extends DataObject
 {
 }
 
-class FooDataExtension Extends DataExtension
+class FooDataExtension extends DataExtension
 {
 	public function doFoo()
 	{

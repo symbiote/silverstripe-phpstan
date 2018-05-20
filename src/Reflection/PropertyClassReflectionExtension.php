@@ -58,7 +58,7 @@ class PropertyClassReflectionExtension implements \PHPStan\Reflection\Properties
      */
     private function createProperties(ClassReflection $classReflection): array
     {
-        if (!$classReflection->isSubclassOf(ClassHelper::SSObject)) {
+        if (!$classReflection->isSubclassOf(ClassHelper::ViewableData)) {
             return [];
         }
 

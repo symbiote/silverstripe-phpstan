@@ -2,7 +2,7 @@
 
 namespace DataObjectDynamicMethodReturnTypesNamespace;
 
-use SiteTree;
+use SilverStripe\CMS\Model\SiteTree;
 
 class Foo
 {

@@ -4,6 +4,7 @@ namespace SilbinaryWolf\SilverstripePHPStan\Reflection;
 
 use ReflectionClass;
 use ReflectionMethod;
+use Exception;
 use SilbinaryWolf\SilverstripePHPStan\ClassHelper;
 use SilbinaryWolf\SilverstripePHPStan\ConfigHelper;
 use PHPStan\Reflection\MethodsClassReflectionExtension;
@@ -60,7 +61,7 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
      */
     private function createMethods(ClassReflection $classReflection): array
     {
-        if (!$classReflection->isSubclassOf(ClassHelper::SSObject)) {
+        if (!$classReflection->isSubclassOf(ClassHelper::ViewableData)) {
             return [];
         }
 
@@ -125,10 +126,19 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
                 }
 
                 foreach ($componentNameValueMap as $methodName => $type) {
+                    if (is_array($type)) {
+                        if (!isset($type['through'])) {
+                            throw new Exception('Unknown array format. Expected string or array with "through".');
+                        }
+                        // Example data:
+                        // array(3) {["through" => "SilverStripe\Assets\Shortcodes\FileLink"]
+                        //           ["from" => "Parent"]
+                        //           ["to" => "Linked"]
+                        $type = $type['through'];
+                    }
                     // Ignore parameters
                     $type = explode('(', $type, 2);
                     $type = $type[0];
-
                     $componentMethodClass = new $componentClass($methodName, $classReflection, new ObjectType($type));
                     $methods[strtolower($methodName)] = $componentMethodClass;
                 }
