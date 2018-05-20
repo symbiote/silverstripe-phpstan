@@ -2,6 +2,7 @@
 
 namespace SilbinaryWolf\SilverstripePHPStan\Tests;
 
+use ReflectionProperty;
 use PHPStan\PhpDoc;
 use PHPStan\Analyser\Scope;
 use PHPStan\Cache\Cache;
@@ -16,7 +17,7 @@ abstract class ResolverTest extends \PHPStan\Testing\TestCase
 {
     /** @var \PHPStan\Broker\Broker */
     private $broker;
-    
+
     protected function assertTypes(
         string $file,
         string $description,
@@ -100,9 +101,9 @@ abstract class ResolverTest extends \PHPStan\Testing\TestCase
             true,
             true,
             [
-                \EarlyTermination\Foo::class => [
-                    'doFoo',
-                ],
+                //\EarlyTermination\Foo::class => [
+                //    'doFoo',
+                //],
             ]
         );
         $broker = $this->createBroker(
@@ -127,7 +128,7 @@ abstract class ResolverTest extends \PHPStan\Testing\TestCase
             $refProperty->setAccessible(true);
             $refProperty->setValue($broker, $hack);
         }
-        
+
         $resolver->processNodes(
             $this->getParser()->parseFile($file),
             new Scope(

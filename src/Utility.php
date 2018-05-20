@@ -2,7 +2,7 @@
 
 namespace SilbinaryWolf\SilverstripePHPStan;
 
-use PHPStan\Reflection\ParametersAcceptorWithPhpDocs;
+use Exception;
 use PhpParser\NodeAbstract;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
@@ -10,7 +10,7 @@ use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\PropertyFetch;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Expr\Variable;
-
+use PhpParser\Node\Expr\ArrayDimFetch;
 use PHPStan\Type\Type;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
@@ -18,7 +18,7 @@ use PHPStan\Type\IntegerType;
 use PHPStan\Type\FloatType;
 use PHPStan\Type\MixedType;
 use PHPStan\Reflection\MethodReflection;
-use Exception;
+use PHPStan\Reflection\ParametersAcceptorWithPhpDocs;
 
 class Utility
 {
@@ -99,6 +99,7 @@ class Utility
         if ($node instanceof Arg) {
             $node = $node->value;
         }
+
         if ($node instanceof String_) {
             // Handle string: 'HomePage'
             $class = $node->value;
@@ -114,6 +115,17 @@ class Utility
                 //
             }
             // NOTE(Jake): 2018-04-21
+            //
+            // If we pass in scope, we can get the variable type:
+            // - $scope->getVariableType($node->name)
+            //
+            // However, it seems that PHPStan does not retain constant
+            // strings / values in scope, so we just need to rely on
+            // what the method returns in its type hinting.
+            //
+            return $methodOrFunctionReflection->getReturnType();
+        } else if ($node instanceof ArrayDimFetch) {
+            // NOTE(Jake): 2018-05-19
             //
             // If we pass in scope, we can get the variable type:
             // - $scope->getVariableType($node->name)

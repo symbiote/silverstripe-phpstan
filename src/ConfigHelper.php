@@ -21,6 +21,17 @@ class ConfigHelper
 
     /**
      * @param string $className
+     * @param string $configKey
+     * @param string $configValue
+     * @return array|scalar
+     */
+    public static function update($className, $configKey, $configValue)
+    {
+        return Config::inst()->update($className, $configKey, $configValue);
+    }
+
+    /**
+     * @param string $className
      * @return ObjectType[]
      */
     public static function get_db($className)

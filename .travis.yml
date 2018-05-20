@@ -1,17 +1,21 @@
 language: php
 php:
+#  - 7.0 # NOTE(Jake): 2018-05-16: Not supported due to "phpunit/phpunit 7.0.3 requires php ^7.1"
   - 7.1
 #  - 7.2 # NOTE(Jake): 2018-04-25: SilverStripe 3.X does not support PHP 7.2, most likely due to `object` being a reserved keyword
+
 env:
   matrix:
     - DB=MYSQL CORE_RELEASE=3.6
+
 before_script:
   - composer self-update || true
   - phpenv rehash
   - git clone git://github.com/silverstripe-labs/silverstripe-travis-support.git ~/travis-support
   - php ~/travis-support/travis_setup.php --source `pwd` --target ~/builds/ss
   - cd ~/builds/ss
+
 script:
-  - vendor/bin/phpcs -n vendor/silbinarywolf/silverstripe-phpstan/src/ vendor/silbinarywolf/silverstripe-phpstan/tests/
+  - vendor/bin/phpcs -n -l vendor/silbinarywolf/silverstripe-phpstan/src/ vendor/silbinarywolf/silverstripe-phpstan/src/Reflection/ vendor/silbinarywolf/silverstripe-phpstan/src/Rule/ vendor/silbinarywolf/silverstripe-phpstan/src/Type vendor/silbinarywolf/silverstripe-phpstan/tests/ vendor/silbinarywolf/silverstripe-phpstan/tests/Reflection/ vendor/silbinarywolf/silverstripe-phpstan/tests/Rule/ vendor/silbinarywolf/silverstripe-phpstan/tests/Type/
   - vendor/bin/phpunit -c "vendor/silbinarywolf/silverstripe-phpstan/tests/phpunit.xml" vendor/silbinarywolf/silverstripe-phpstan/tests/
-  - vendor/bin/phpstan analyse vendor/silbinarywolf/silverstripe-phpstan/src/ -c "vendor/silbinarywolf/silverstripe-phpstan/tests/phpstan.neon" -a "vendor/silbinarywolf/silverstripe-phpstan/tests/bootstrap-phpstan.php" --level 4
+  - vendor/bin/phpstan analyse vendor/silbinarywolf/silverstripe-phpstan/src/ vendor/silbinarywolf/silverstripe-phpstan/tests/ -c "vendor/silbinarywolf/silverstripe-phpstan/tests/phpstan.neon" -a "vendor/silbinarywolf/silverstripe-phpstan/tests/bootstrap-phpstan.php" --level 4

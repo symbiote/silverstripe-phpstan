@@ -26,5 +26,8 @@
 
         <!-- Allow $____name in ComponentData class -->
         <exclude name="PSR2.Classes.PropertyDeclaration.Underscore"/>
+
+        <!-- Ignore class constants not being uppercase -->
+        <exclude name="Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase"/>
     </rule>
 </ruleset>

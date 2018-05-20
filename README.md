@@ -18,11 +18,27 @@ This PHPStan module is able to reason about extensions installed specific to you
 
 ## Composer Install
 
+SilverStripe 3.X
 ```
-composer require --dev silbinarywolf/silverstripe-phpstan:0.5.0 phpstan/phpstan-shim:0.9.2
+composer require --dev silbinarywolf/silverstripe-phpstan:1.0.0 phpstan/phpstan-shim:0.9.2
+```
+
+SilverStripe 4.X
+```
+composer require --dev silbinarywolf/silverstripe-phpstan:2.0.0 phpstan/phpstan-shim:0.9.2
 ```
 
 NOTE: We recommend installing the phpstan-shim as currently in SilverStripe 3.X, the QueuedJobs module's dependence on superclosure forces the PHP-Parser dependency of PHPStan to be at a very outdated version.
+
+## Version Plan
+
+The plan is that this module will follow semantic versioning, even though the PHPStan module does not at time of writing.
+The pattern will be as follows until I no longer need to maintain support for SilverStripe 3.
+
+- This Module: ~1.0 - SilverStripe 3.X - PHPStan: 0.9.X 
+- This Module: ~2.0 - SilverStripe 4.X - PHPStan: 0.9.X
+- This Module: ~3.0 - SilverStripe 3.X - PHPStan: 0.10.X 
+- This Module: ~4.0 - SilverStripe 4.X - PHPStan: 0.10.X
 
 ## Requirements
 

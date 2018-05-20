@@ -5,7 +5,6 @@ parameters:
     universalObjectCratesClasses:
         - ArrayData
         - Config_ForClass
-        - ViewableData
         - AbstractQueuedJob # symbiote/silverstripe-queuedjobs module support
     excludes_analyse:
         - silverstripe-cache
@@ -13,43 +12,43 @@ services:
     # This rule will throw an error if you `return false` from a RequestFilter::preRequest() method
     # as in SilverStripe 3.X, this throws an uncaught exception in the site.
     -
-        class: SilbinaryWolf\SilverstripePHPStan\RequestFilterPreRequestRule
+        class: SilbinaryWolf\SilverstripePHPStan\Rule\RequestFilterPreRequestRule
         tags:
             - phpstan.rules.rule
     # This adds additional methods from SilverStripe extensions, as well as determining proper
     # types when has_one() magic methods.
     -
-        class: SilbinaryWolf\SilverstripePHPStan\MethodClassReflectionExtension
+        class: SilbinaryWolf\SilverstripePHPStan\Reflection\MethodClassReflectionExtension
         tags:
             - phpstan.broker.methodsClassReflectionExtension
     # This adds additional properties from 'db', 'has_one' and other config fields to
     # determine what types are returned for magic __get's
     -
-        class: SilbinaryWolf\SilverstripePHPStan\PropertyClassReflectionExtension
+        class: SilbinaryWolf\SilverstripePHPStan\Reflection\PropertyClassReflectionExtension
         tags:
             - phpstan.broker.propertiesClassReflectionExtension
     # This adds additional type info to `DataObject::get()` so that it knows what class
     # while be returned when iterating.
     -
-        class: SilbinaryWolf\SilverstripePHPStan\DataObjectGetStaticReturnTypeExtension
+        class: SilbinaryWolf\SilverstripePHPStan\Type\DataObjectGetStaticReturnTypeExtension
         tags:
             - phpstan.broker.dynamicStaticMethodReturnTypeExtension
     # This allows `singleton("File")` calls to understand the exact classes being returned
     # by using your configuration. (ie. uses Injector information if it's set)
     -
-        class: SilbinaryWolf\SilverstripePHPStan\SingletonReturnTypeExtension
+        class: SilbinaryWolf\SilverstripePHPStan\Type\SingletonReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     # This allows `Injector::inst()->get("File")` calls to understand the exact classes being returned
     # by using your configuration. (ie. uses Injector information if it's set)
     -
-        class: SilbinaryWolf\SilverstripePHPStan\InjectorReturnTypeExtension
+        class: SilbinaryWolf\SilverstripePHPStan\Type\InjectorReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
     # This allows `$this->getOwner()` to understand the possible types that it could
     # return by seeing what classes are using that extension currently.
     -
-        class: SilbinaryWolf\SilverstripePHPStan\ExtensionReturnTypeExtension
+        class: SilbinaryWolf\SilverstripePHPStan\Type\ExtensionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
     # This makes a DataList keep it's current type information as-is when calling
@@ -58,17 +57,17 @@ services:
     # This will also allow "first"/"last" calls and similar to return the correct type.
     #
     -
-        class: SilbinaryWolf\SilverstripePHPStan\DataListReturnTypeExtension
+        class: SilbinaryWolf\SilverstripePHPStan\Type\DataListReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
     # This makes calls to `dbObject` and `newClassInstance` return the correct type info
     -
-        class: SilbinaryWolf\SilverstripePHPStan\DataObjectReturnTypeExtension
+        class: SilbinaryWolf\SilverstripePHPStan\Type\DataObjectReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
     # This makes calls to `DBField::create_field('HTMLText', $value)` return the correct type info
     # ie. The injectored type of the first parameter
     -
-        class: SilbinaryWolf\SilverstripePHPStan\DBFieldStaticReturnTypeExtension
+        class: SilbinaryWolf\SilverstripePHPStan\Type\DBFieldStaticReturnTypeExtension
         tags:
             - phpstan.broker.dynamicStaticMethodReturnTypeExtension

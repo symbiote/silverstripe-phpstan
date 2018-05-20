@@ -8,3 +8,10 @@ parameters:
     exclude_files:
         # Exclude bootstrap file
         - tests/bootstrap-phpstan.php
+    autoload_directories:
+        # NOTE(Jake): 2018-05-20
+        #
+        # If you're using the phpstan-shim, you will get errors when trying to
+        # scan silverstripe-phpstan.
+        #
+        - %rootDir%/../../../vendor/silbinarywolf/silverstripe-phpstan/tests/Type/data/
