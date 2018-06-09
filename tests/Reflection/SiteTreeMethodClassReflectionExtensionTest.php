@@ -91,12 +91,9 @@ final class SiteTreeMethodClassReflectionExtensionTest extends \PHPStan\Testing\
             // This statement is needed so PHPStan knows $resultType is ObjectType.
             return;
         }
-        self::assertContains(
+        self::assertSame(
             $resultType->getClassName(),
-            [
-                ClassHelper::SiteTree, // Expected value for: SilverStripe 4.0
-                ClassHelper::SiteTreeLink, // Expected value for: SilverStripe 4.2+ (master branch at time of writing, 4.2+ is an assumption)
-            ]
+            ClassHelper::SiteTree
         );
     }
 }

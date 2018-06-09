@@ -50,6 +50,10 @@ The pattern will be as follows until I no longer need to maintain support for Si
 * [Advanced Usage](docs/en/advanced-usage.md)
 * [License](LICENSE.md)
 
+## Known Limitations
+
+* The type of the `owner` property can't be reasoned about for extensions. You must use `getOwner()`. Related Issues: [#1043](https://github.com/phpstan/phpstan/issues/1043) and [#1044](https://github.com/phpstan/phpstan/issues/1044)
+
 ## Credits
 
 * [Ondřej Mirtes](https://github.com/ondrejmirtes) for his amazing work on the PHPStan library

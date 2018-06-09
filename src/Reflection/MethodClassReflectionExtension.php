@@ -127,14 +127,24 @@ class MethodClassReflectionExtension implements MethodsClassReflectionExtension,
 
                 foreach ($componentNameValueMap as $methodName => $type) {
                     if (is_array($type)) {
-                        if (!isset($type['through'])) {
-                            throw new Exception('Unknown array format. Expected string or array with "through".');
+                        if ($componentType !== 'many_many') {
+                            throw new Exception('Cannot use array format for "'.$componentType.'" component type.');
+                        }
+                        if (!isset($type['through']) ||
+                            !isset($type['from']) ||
+                            !isset($type['to'])) {
+                            throw new Exception('Unknown array format. Expected string or array with "through", "from" and "to".');
                         }
                         // Example data:
                         // array(3) {["through" => "SilverStripe\Assets\Shortcodes\FileLink"]
                         //           ["from" => "Parent"]
                         //           ["to" => "Linked"]
-                        $type = $type['through'];
+                        $toClass = $type['to'];
+                        $throughClass = $type['through'];
+                        $throughClassHasOne = ConfigHelper::get($throughClass, 'has_one');
+                        if ($throughClassHasOne && isset($throughClassHasOne[$toClass])) {
+                            $type = $throughClassHasOne[$toClass];
+                        }
                     }
                     // Ignore parameters
                     $type = explode('(', $type, 2);
