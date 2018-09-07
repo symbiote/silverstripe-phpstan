@@ -1,8 +1,8 @@
 <?php declare(strict_types = 1);
 
-namespace SilbinaryWolf\SilverstripePHPStan\Rule;
+namespace Symbiote\SilverstripePHPStan\Rule;
 
-use SilbinaryWolf\SilverstripePHPStan\ClassHelper;
+use Symbiote\SilverstripePHPStan\ClassHelper;
 use PhpParser\Node\Stmt\Return_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\FalseBooleanType;

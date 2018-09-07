@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace SilbinaryWolf\SilverstripePHPStan\Reflection;
+namespace Symbiote\SilverstripePHPStan\Reflection;
 
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\PropertyReflection;

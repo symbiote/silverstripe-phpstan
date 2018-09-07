@@ -1,12 +1,12 @@
 <?php declare(strict_types = 1);
 
-namespace SilbinaryWolf\SilverstripePHPStan\Reflection;
+namespace Symbiote\SilverstripePHPStan\Reflection;
 
 use ReflectionClass;
 use ReflectionMethod;
 use Exception;
-use SilbinaryWolf\SilverstripePHPStan\ClassHelper;
-use SilbinaryWolf\SilverstripePHPStan\ConfigHelper;
+use Symbiote\SilverstripePHPStan\ClassHelper;
+use Symbiote\SilverstripePHPStan\ConfigHelper;
 use PHPStan\Reflection\MethodsClassReflectionExtension;
 use PHPStan\Reflection\BrokerAwareExtension;
 use PHPStan\Broker\Broker;

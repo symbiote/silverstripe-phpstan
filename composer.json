@@ -1,5 +1,5 @@
 {
-    "name": "silbinarywolf/silverstripe-phpstan",
+    "name": "symbiote/silverstripe-phpstan",
     "description": "PHPStan for Silverstripe",
     "type": "library",
     "keywords": [
@@ -37,15 +37,18 @@
     },
     "autoload": {
         "psr-4": {
-            "SilbinaryWolf\\SilverstripePHPStan\\": "src/",
-            "SilbinaryWolf\\SilverstripePHPStan\\Tests\\": "tests/"
+            "Symbiote\\SilverstripePHPStan\\": "src/",
+            "Symbiote\\SilverstripePHPStan\\Tests\\": "tests/"
         }
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.0.x-dev"
+            "dev-master": "3.0.x-dev"
         }
     },
+	"replace": {
+		"silbinarywolf/silverstripe-phpstan": "self.version"
+	},
     "prefer-stable": true,
     "minimum-stability": "dev"
 }

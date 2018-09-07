@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace SilbinaryWolf\SilverstripePHPStan\Tests;
+namespace Symbiote\SilverstripePHPStan\Tests;
 
 use ReflectionProperty;
 use PHPStan\PhpDoc;

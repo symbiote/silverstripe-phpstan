@@ -1,9 +1,9 @@
 <?php declare(strict_types = 1);
 
-namespace SilbinaryWolf\SilverstripePHPStan\Tests\Reflection;
+namespace Symbiote\SilverstripePHPStan\Tests\Reflection;
 
-use SilbinaryWolf\SilverstripePHPStan\ClassHelper;
-use SilbinaryWolf\SilverstripePHPStan\Reflection\PropertyClassReflectionExtension;
+use Symbiote\SilverstripePHPStan\ClassHelper;
+use Symbiote\SilverstripePHPStan\Reflection\PropertyClassReflectionExtension;
 use PHPStan\Type\VerbosityLevel;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\MixedType;

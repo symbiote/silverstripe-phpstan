@@ -1,9 +1,9 @@
 <?php declare(strict_types = 1);
 
-namespace SilbinaryWolf\SilverstripePHPStan\Type;
+namespace Symbiote\SilverstripePHPStan\Type;
 
 use Exception;
-use SilbinaryWolf\SilverstripePHPStan\ClassHelper;
+use Symbiote\SilverstripePHPStan\ClassHelper;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Analyser\Scope;

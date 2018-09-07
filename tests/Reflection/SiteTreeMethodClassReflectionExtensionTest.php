@@ -1,10 +1,10 @@
 <?php declare(strict_types = 1);
 
-namespace SilbinaryWolf\SilverstripePHPStan\Tests\Reflection;
+namespace Symbiote\SilverstripePHPStan\Tests\Reflection;
 
-use SilbinaryWolf\SilverstripePHPStan\ClassHelper;
-use SilbinaryWolf\SilverstripePHPStan\Reflection\MethodClassReflectionExtension;
-use SilbinaryWolf\SilverstripePHPStan\Type\DataListType;
+use Symbiote\SilverstripePHPStan\ClassHelper;
+use Symbiote\SilverstripePHPStan\Reflection\MethodClassReflectionExtension;
+use Symbiote\SilverstripePHPStan\Type\DataListType;
 use PHPStan\Type\VerbosityLevel;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\MixedType;

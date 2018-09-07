@@ -1,10 +1,10 @@
 # PHPStan for Silverstripe
 
-[![Build Status](https://travis-ci.org/silbinarywolf/silverstripe-phpstan.svg?branch=master)](https://travis-ci.org/silbinarywolf/silverstripe-phpstan)
-[![Latest Stable Version](https://poser.pugx.org/silbinarywolf/silverstripe-phpstan/version.svg)](https://github.com/silbinarywolf/silverstripe-phpstan/releases)
-[![Latest Unstable Version](https://poser.pugx.org/silbinarywolf/silverstripe-phpstan/v/unstable.svg)](https://packagist.org/packages/silbinarywolf/silverstripe-phpstan)
-[![Total Downloads](https://poser.pugx.org/silbinarywolf/silverstripe-phpstan/downloads.svg)](https://packagist.org/packages/silbinarywolf/silverstripe-phpstan)
-[![License](https://poser.pugx.org/silbinarywolf/silverstripe-phpstan/license.svg)](https://github.com/silbinarywolf/silverstripe-phpstan/blob/master/LICENSE.md)
+[![Build Status](https://travis-ci.org/symbiote/silverstripe-phpstan.svg?branch=master)](https://travis-ci.org/symbiote/silverstripe-phpstan)
+[![Latest Stable Version](https://poser.pugx.org/symbiote/silverstripe-phpstan/version.svg)](https://github.com/symbiote/silverstripe-phpstan/releases)
+[![Latest Unstable Version](https://poser.pugx.org/symbiote/silverstripe-phpstan/v/unstable.svg)](https://packagist.org/packages/symbiote/silverstripe-phpstan)
+[![Total Downloads](https://poser.pugx.org/symbiote/silverstripe-phpstan/downloads.svg)](https://packagist.org/packages/symbiote/silverstripe-phpstan)
+[![License](https://poser.pugx.org/symbiote/silverstripe-phpstan/license.svg)](https://github.com/symbiote/silverstripe-phpstan/blob/master/LICENSE.md)
 
 An extension for PHPStan to allow it to reason about SilverStripe functionality.
 
@@ -20,12 +20,12 @@ This PHPStan module is able to reason about extensions installed specific to you
 
 SilverStripe 3.X
 ```
-composer require --dev silbinarywolf/silverstripe-phpstan:1.0.0 phpstan/phpstan-shim:0.9.2
+composer require --dev symbiote/silverstripe-phpstan:1.0.0 phpstan/phpstan-shim:0.9.2
 ```
 
 SilverStripe 4.X
 ```
-composer require --dev silbinarywolf/silverstripe-phpstan:2.0.0 phpstan/phpstan-shim:0.9.2
+composer require --dev symbiote/silverstripe-phpstan:2.0.0 phpstan/phpstan-shim:0.9.2
 ```
 
 NOTE: We recommend installing the phpstan-shim as currently in SilverStripe 3.X, the QueuedJobs module's dependence on superclosure forces the PHP-Parser dependency of PHPStan to be at a very outdated version.
@@ -57,4 +57,4 @@ The pattern will be as follows until I no longer need to maintain support for Si
 ## Credits
 
 * [Ondřej Mirtes](https://github.com/ondrejmirtes) for his amazing work on the PHPStan library
-* [Grant Lucas](https://github.com/silbinarywolf/silverstripe-phpstan/pull/8) for his contribution to this library by upgrading it to PHPStan 0.9
+* [Grant Lucas](https://github.com/symbiote/silverstripe-phpstan/pull/8) for his contribution to this library by upgrading it to PHPStan 0.9

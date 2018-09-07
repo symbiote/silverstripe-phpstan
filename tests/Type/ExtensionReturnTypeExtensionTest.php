@@ -1,10 +1,10 @@
 <?php declare(strict_types = 1);
 
-namespace SilbinaryWolf\SilverstripePHPStan\Tests\Type;
+namespace Symbiote\SilverstripePHPStan\Tests\Type;
 
-use SilbinaryWolf\SilverstripePHPStan\Type\ExtensionReturnTypeExtension;
-use SilbinaryWolf\SilverstripePHPStan\ConfigHelper;
-use SilbinaryWolf\SilverstripePHPStan\Tests\ResolverTest;
+use Symbiote\SilverstripePHPStan\Type\ExtensionReturnTypeExtension;
+use Symbiote\SilverstripePHPStan\ConfigHelper;
+use Symbiote\SilverstripePHPStan\Tests\ResolverTest;
 
 class ExtensionReturnTypeExtensionTest extends ResolverTest
 {

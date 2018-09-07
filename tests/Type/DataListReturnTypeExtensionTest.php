@@ -1,11 +1,11 @@
 <?php declare(strict_types = 1);
 
-namespace SilbinaryWolf\SilverstripePHPStan\Tests\Type;
+namespace Symbiote\SilverstripePHPStan\Tests\Type;
 
-use SilbinaryWolf\SilverstripePHPStan\Type\DataListReturnTypeExtension;
-use SilbinaryWolf\SilverstripePHPStan\Type\DataObjectGetStaticReturnTypeExtension;
-use SilbinaryWolf\SilverstripePHPStan\ClassHelper;
-use SilbinaryWolf\SilverstripePHPStan\Tests\ResolverTest;
+use Symbiote\SilverstripePHPStan\Type\DataListReturnTypeExtension;
+use Symbiote\SilverstripePHPStan\Type\DataObjectGetStaticReturnTypeExtension;
+use Symbiote\SilverstripePHPStan\ClassHelper;
+use Symbiote\SilverstripePHPStan\Tests\ResolverTest;
 
 class DataListReturnTypeExtensionTest extends ResolverTest
 {

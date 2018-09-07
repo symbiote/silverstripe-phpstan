@@ -1,11 +1,11 @@
 <?php declare(strict_types = 1);
 
-namespace SilbinaryWolf\SilverstripePHPStan\Tests\Type;
+namespace Symbiote\SilverstripePHPStan\Tests\Type;
 
-use SilbinaryWolf\SilverstripePHPStan\Type\InjectorReturnTypeExtension;
-use SilbinaryWolf\SilverstripePHPStan\Type\SingletonReturnTypeExtension;
-use SilbinaryWolf\SilverstripePHPStan\ClassHelper;
-use SilbinaryWolf\SilverstripePHPStan\Tests\ResolverTest;
+use Symbiote\SilverstripePHPStan\Type\InjectorReturnTypeExtension;
+use Symbiote\SilverstripePHPStan\Type\SingletonReturnTypeExtension;
+use Symbiote\SilverstripePHPStan\ClassHelper;
+use Symbiote\SilverstripePHPStan\Tests\ResolverTest;
 
 class InjectorReturnTypeExtensionTest extends ResolverTest
 {

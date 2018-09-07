@@ -1,4 +1,4 @@
-Copyright (c) 2017, Jake Bentvelzen.
+Copyright (c) 2017, Jake Bentvelzen and Symbiote.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,

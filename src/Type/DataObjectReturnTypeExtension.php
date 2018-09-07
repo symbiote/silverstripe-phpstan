@@ -1,11 +1,11 @@
 <?php declare(strict_types = 1);
 
-namespace SilbinaryWolf\SilverstripePHPStan\Type;
+namespace Symbiote\SilverstripePHPStan\Type;
 
 use Exception;
-use SilbinaryWolf\SilverstripePHPStan\ClassHelper;
-use SilbinaryWolf\SilverstripePHPStan\ConfigHelper;
-use SilbinaryWolf\SilverstripePHPStan\Utility;
+use Symbiote\SilverstripePHPStan\ClassHelper;
+use Symbiote\SilverstripePHPStan\ConfigHelper;
+use Symbiote\SilverstripePHPStan\Utility;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Broker\Broker;
 use PhpParser\Node\Expr\MethodCall;

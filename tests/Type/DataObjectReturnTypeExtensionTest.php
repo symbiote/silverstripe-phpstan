@@ -1,10 +1,10 @@
 <?php declare(strict_types = 1);
 
-namespace SilbinaryWolf\SilverstripePHPStan\Tests\Type;
+namespace Symbiote\SilverstripePHPStan\Tests\Type;
 
-use SilbinaryWolf\SilverstripePHPStan\Type\DataObjectReturnTypeExtension;
-use SilbinaryWolf\SilverstripePHPStan\ClassHelper;
-use SilbinaryWolf\SilverstripePHPStan\Tests\ResolverTest;
+use Symbiote\SilverstripePHPStan\Type\DataObjectReturnTypeExtension;
+use Symbiote\SilverstripePHPStan\ClassHelper;
+use Symbiote\SilverstripePHPStan\Tests\ResolverTest;
 
 class DataObjectReturnTypeExtensionTest extends ResolverTest
 {
