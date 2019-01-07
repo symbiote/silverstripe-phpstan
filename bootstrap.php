@@ -17,9 +17,27 @@ if (file_exists(__DIR__ . '/../../autoload.php')) {
     exit(1);
 }
 
-// Mock values to be empty if not set
-if (!isset($_SERVER['REQUEST_URI'])) { $_SERVER['REQUEST_URI'] = ''; }
-if (!isset($_SERVER['REQUEST_METHOD'])) { $_SERVER['REQUEST_METHOD'] = ''; }
+// Ensure global $_SERVER exists
+global $_SERVER;
+if (!$_SERVER) {
+    $_SERVER = array();
+}
+
+// Mock values in the $_SERVER variable to contain data consistent with the rest of the application.
+$_SERVER = array_merge(array(
+    'SERVER_PROTOCOL' => 'HTTP/1.1',
+    'HTTP_ACCEPT' => 'text/plain;q=0.5',
+    'HTTP_ACCEPT_LANGUAGE' => '*;q=0.5',
+    'HTTP_ACCEPT_ENCODING' => '',
+    'HTTP_ACCEPT_CHARSET' => 'ISO-8859-1;q=0.5',
+    'SERVER_SIGNATURE' => 'Command-line PHP/' . phpversion(),
+    'SERVER_SOFTWARE' => 'PHP/' . phpversion(),
+    'SERVER_NAME' => 'localhost',
+    'SERVER_ADDR' => '127.0.0.1',
+    'REMOTE_ADDR' => '127.0.0.1',
+    'REQUEST_METHOD' => 'GET',
+    'HTTP_USER_AGENT' => 'CLI',
+), $_SERVER);
 
 // Default application
 try {
