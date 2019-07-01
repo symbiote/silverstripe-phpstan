@@ -5,6 +5,7 @@ parameters:
     universalObjectCratesClasses:
         - SilverStripe\View\ArrayData
         - SilverStripe\Core\Config\Config_ForClass
+        - SilverStripe\Forms\GridField\GridState_Data
         - Symbiote\QueuedJobs\Services\AbstractQueuedJob # symbiote/silverstripe-queuedjobs module support
     excludes_analyse:
         - silverstripe-cache
