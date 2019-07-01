@@ -56,7 +56,7 @@ class Utility
         }
 
         if ($node instanceof String_) {
-            // Handle string: 'HomePage'
+            // Handle string: 'HomePage' or '%$HomePage'
             $label = $node->value;
         } else if ($node instanceof ClassConstFetch) {
             // Handle type: 'HomePage::class'
@@ -89,11 +89,20 @@ class Utility
 
     public static function getClassFromInjectorString($classNameOrLabel): ObjectType
     {
+        if (preg_match('/^%\$/', $classNameOrLabel)) {
+            $classNameOrLabel = substr($classNameOrLabel, 2);
+        }
+
         $injectorInfo = ConfigHelper::get(ClassHelper::Injector, $classNameOrLabel);
         if (!$injectorInfo) {
             return new ObjectType($classNameOrLabel);
         }
         if (is_string($injectorInfo)) {
+            // Recursive service lookup
+            if (preg_match('/^%\$/', $injectorInfo)) {
+                return self::getClassFromInjectorString($injectorInfo);
+            }
+
             return new ObjectType($injectorInfo);
         }
         if (is_array($injectorInfo) &&
@@ -155,7 +164,9 @@ class Utility
             var_dump($node);
             throw new Exception(__FUNCTION__.':Unhandled or invalid "class" data. Type passed:'.get_class($node));
         }
-        return new ObjectType($class);
+
+        // Most of these lookups are now injector-based
+        return self::getClassFromInjectorString($class);
     }
 
     /**
