@@ -43,7 +43,7 @@ class DataObjectGetStaticReturnTypeExtension implements \PHPStan\Type\DynamicSta
                 // Handle Page::get() / self::get()
                 $callerClass = $methodCall->class->toString();
                 if ($callerClass === 'static') {
-                    return $methodReflection->getReturnType();
+                    return Utility::getMethodReturnType($methodReflection);
                 }
                 if ($callerClass === 'self') {
                     $callerClass = $scope->getClassReflection()->getName();
@@ -62,7 +62,7 @@ class DataObjectGetStaticReturnTypeExtension implements \PHPStan\Type\DynamicSta
                 // Handle Page::get() / self::get()
                 $callerClass = $methodCall->class->toString();
                 if ($callerClass === 'static') {
-                    return $methodReflection->getReturnType();
+                    return Utility::getMethodReturnType($methodReflection);
                 }
                 if ($callerClass === 'self') {
                     $callerClass = $scope->getClassReflection()->getName();

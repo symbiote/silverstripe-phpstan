@@ -2,7 +2,7 @@
 
 namespace Symbiote\SilverstripePHPStan\Type;
 
-use Exception;
+use LogicException;
 use Symbiote\SilverstripePHPStan\ClassHelper;
 use Symbiote\SilverstripePHPStan\Utility;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
@@ -34,17 +34,21 @@ class InjectorReturnTypeExtension implements DynamicMethodReturnTypeExtension
         switch ($name) {
             case 'get':
                 if (count($methodCall->args) === 0) {
-                    return $methodReflection->getReturnType();
+                    return Utility::getMethodReturnType($methodReflection);
                 }
                 $arg = $methodCall->args[0]->value;
-                $type = Utility::getTypeFromInjectorVariable($arg, $methodReflection->getReturnType());
+                $type = Utility::getTypeFromInjectorVariable(
+                    $arg,
+                    Utility::getMethodReturnType($methodReflection)
+                );
                 return $type;
             break;
 
             default:
-                throw new Exception('Unhandled method call: '.$name);
+                throw new LogicException('Unhandled method call: '.$name);
             break;
         }
-        return $methodReflection->getReturnType();
+
+        return Utility::getMethodReturnType($methodReflection);
     }
 }

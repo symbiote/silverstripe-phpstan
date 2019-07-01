@@ -9,10 +9,13 @@ use PHPStan\Type\Type;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\IterableTypeTrait;
 use PHPStan\Type\StaticResolvableType;
+use PHPStan\TrinaryLogic;
+use PHPStan\Type\VerbosityLevel;
 
 class DataListType extends ObjectType implements StaticResolvableType
 {
-    use IterableTypeTrait;
+    /** @var Type */
+    private $itemType;
 
     public function __construct(string $dataListClassName, Type $itemType)
     {
@@ -20,7 +23,7 @@ class DataListType extends ObjectType implements StaticResolvableType
         $this->itemType = $itemType;
     }
 
-    public function describe(): string
+    public function describe(VerbosityLevel $level): string
     {
         $dataListTypeClass = count($this->getReferencedClasses()) === 1 ? $this->getReferencedClasses()[0] : '';
         $itemTypeClass = count($this->itemType->getReferencedClasses()) === 1 ? $this->itemType->getReferencedClasses()[0] : '';
@@ -54,38 +57,13 @@ class DataListType extends ObjectType implements StaticResolvableType
 
     // IterableTrait
 
-    public function canCallMethods(): bool
+    public function canCallMethods(): TrinaryLogic
     {
-        return true;
+        return TrinaryLogic::createYes();
     }
 
-    public function hasMethod(string $methodName): bool
+    public function isClonable(): TrinaryLogic
     {
-        return parent::hasMethod($methodName);
-    }
-
-    public function getMethod(string $methodName, Scope $scope): MethodReflection
-    {
-        return parent::getMethod($methodName, $scope);
-    }
-
-    public function isClonable(): bool
-    {
-        return true;
-    }
-
-    public function canAccessProperties(): bool
-    {
-        return parent::canAccessProperties();
-    }
-
-    public function hasProperty(string $propertyName): bool
-    {
-        return parent::hasProperty($propertyName);
-    }
-
-    public function getProperty(string $propertyName, Scope $scope): PropertyReflection
-    {
-        return parent::getProperty($propertyName, $scope);
+        return TrinaryLogic::createYes();
     }
 }

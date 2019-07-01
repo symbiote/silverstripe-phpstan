@@ -21,7 +21,12 @@ class RequestFilterPreRequestRule implements \PHPStan\Rules\Rule
      */
     public function processNode(\PhpParser\Node $node, Scope $scope): array
     {
-        $className = $scope->getClassReflection()->getName();
+        $classRefl = $scope->getClassReflection();
+        if (!$classRefl) {
+            return [];
+        }
+
+        $className = $classRefl->getName();
         if (!is_a($className, ClassHelper::RequestFilter, true)) {
             return [];
         }

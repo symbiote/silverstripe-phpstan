@@ -12,6 +12,7 @@ use PHPStan\Type\ArrayType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\IterableTypeTrait;
+use Symbiote\SilverstripePHPStan\Utility;
 
 class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTypeExtension
 {
@@ -117,7 +118,7 @@ class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTy
                 if (method_exists($type, 'getItemType')) {
                     return new ArrayType(new IntegerType, $type->getItemType());
                 }
-                return $methodReflection->getReturnType();
+                return Utility::getMethodReturnType($methodReflection);
             break;
 
             // DataObject
@@ -132,6 +133,6 @@ class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTy
                 throw new Exception('Unhandled method call: '.$name);
             break;
         }
-        return $methodReflection->getReturnType();
+        return Utility::getMethodReturnType($methodReflection);
     }
 }
