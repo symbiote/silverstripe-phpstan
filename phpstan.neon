@@ -78,3 +78,9 @@ services:
         class: Symbiote\SilverstripePHPStan\Type\DBFieldStaticReturnTypeExtension
         tags:
             - phpstan.broker.dynamicStaticMethodReturnTypeExtension
+
+    # Special handling for ->hasMethod() checks
+    -
+        class: Symbiote\SilverstripePHPStan\Type\HasMethodTypeSpecifyingExtension
+        tags:
+            - phpstan.typeSpecifier.methodTypeSpecifyingExtension
