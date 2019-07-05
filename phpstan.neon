@@ -66,6 +66,12 @@ services:
         class: Symbiote\SilverstripePHPStan\Type\DataObjectReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
+
+    -
+        class: Symbiote\SilverstripePHPStan\Type\FormFieldReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
+
     # This makes calls to `DBField::create_field('HTMLText', $value)` return the correct type info
     # ie. The injectored type of the first parameter
     -
