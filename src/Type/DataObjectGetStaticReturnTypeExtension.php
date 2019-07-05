@@ -37,7 +37,7 @@ class DataObjectGetStaticReturnTypeExtension implements \PHPStan\Type\DynamicSta
                 if (count($methodCall->args) > 0) {
                     // Handle DataObject::get('Page')
                     $arg = $methodCall->args[0];
-                    $type = Utility::getTypeFromVariable($arg, $methodReflection);
+                    $type = Utility::getTypeFromInjectorVariable($arg, new ObjectType('SilverStripe\ORM\DataObject'));
                     return new DataListType(ClassHelper::DataList, $type);
                 }
                 // Handle Page::get() / self::get()
