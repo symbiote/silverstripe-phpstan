@@ -33,8 +33,7 @@ class HasMethodTypeSpecifyingExtension implements MethodTypeSpecifyingExtension,
         MethodReflection $methodReflection,
         MethodCall $node,
         TypeSpecifierContext $context
-    ): bool
-    {
+    ): bool {
         return $methodReflection->getName() === 'hasMethod'
             && $context->truthy()
             && count($node->args) >= 1;
@@ -45,8 +44,7 @@ class HasMethodTypeSpecifyingExtension implements MethodTypeSpecifyingExtension,
         MethodCall $node,
         Scope $scope,
         TypeSpecifierContext $context
-    ): SpecifiedTypes
-    {
+    ): SpecifiedTypes {
         $methodNameType = $scope->getType($node->args[0]->value);
         if (!$methodNameType instanceof ConstantStringType) {
             return new SpecifiedTypes([], []);

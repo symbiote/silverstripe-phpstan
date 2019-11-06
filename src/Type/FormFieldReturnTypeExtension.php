@@ -15,7 +15,6 @@ use PHPStan\Type\Type;
 use PHPStan\Type\ObjectType;
 use PhpParser\Node\Expr\MethodCall;
 
-
 class FormFieldReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTypeExtension
 {
     public function getClass(): string

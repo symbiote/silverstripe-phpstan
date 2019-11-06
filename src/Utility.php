@@ -175,7 +175,8 @@ class Utility
      *
      * @param MethodReflection|FunctionReflection
      */
-    public static function getMethodReturnType($methodReflection): Type {
+    public static function getMethodReturnType($methodReflection): Type
+    {
         $variants = $methodReflection->getVariants();
         switch (sizeof($variants)) {
             case 0:
