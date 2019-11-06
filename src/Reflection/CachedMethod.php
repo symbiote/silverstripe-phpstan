@@ -4,6 +4,7 @@ namespace Symbiote\SilverstripePHPStan\Reflection;
 
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\Reflection\ClassMemberReflection;
 use PHPStan\Type\Type;
 use PHPStan\Type\MixedType;
 use PHPStan\Reflection\Php\PhpMethodReflection;
@@ -43,7 +44,7 @@ class CachedMethod implements MethodReflection
         return $this->methodReflection->getDeclaringClass();
     }
 
-    public function getPrototype(): MethodReflection
+    public function getPrototype(): ClassMemberReflection
     {
         return $this->methodReflection->getPrototype();
     }
@@ -81,5 +82,13 @@ class CachedMethod implements MethodReflection
     public function getReturnType(): Type
     {
         return $this->methodReflection->getReturnType();
+    }
+
+    /**
+     * @return \PHPStan\Reflection\ParametersAcceptor[]
+     */
+    public function getVariants(): array
+    {
+            return $this->methodReflection->getVariants();
     }
 }
