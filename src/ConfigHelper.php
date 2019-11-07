@@ -23,7 +23,7 @@ class ConfigHelper
      * @param string $className
      * @param string $configKey
      * @param string $configValue
-     * @return array|scalar
+     * @return \SilverStripe\Config\Collections\MutableConfigCollectionInterface
      */
     public static function update($className, $configKey, $configValue)
     {
