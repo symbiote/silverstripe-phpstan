@@ -15,6 +15,12 @@ use PHPStan\Type\VerbosityLevel;
 
 class FieldListType extends ObjectType implements StaticResolvableType
 {
+
+    /**
+     * @var ObjectType
+     */
+    private $itemType;
+
     public function __construct(string $fieldListClassName)
     {
         parent::__construct($fieldListClassName);
