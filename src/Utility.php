@@ -20,6 +20,7 @@ use PHPStan\Type\StringType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\FloatType;
 use PHPStan\Type\MixedType;
+use PHPStan\Type\UnionType;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Reflection\ParametersAcceptor;
@@ -173,14 +174,14 @@ class Utility
      * Get a return type from a MethodReflection or FunctionReflection.
      * Calls its variants, and if necessary, creates a union type
      *
-     * @param MethodReflection|FunctionReflection
+     * @param MethodReflection|FunctionReflection   $methodReflection
      */
     public static function getMethodReturnType($methodReflection): Type
     {
         $variants = $methodReflection->getVariants();
         switch (sizeof($variants)) {
             case 0:
-                throw new LogicException('No method variants for method: ' . $methodReflection->getName());
+                throw new \LogicException('No method variants for method: ' . $methodReflection->getName());
 
             case 1:
                 return $variants[0]->getReturnType();
