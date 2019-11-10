@@ -113,9 +113,12 @@ class DataObjectReturnTypeExtension implements DynamicMethodReturnTypeExtension
                     return Utility::getMethodReturnType($methodReflection);
                 }
                 $dbFieldType = $dbFields[$fieldName];
-                if (!$dbFieldType) {
-                    return Utility::getMethodReturnType($methodReflection);
-                }
+                // NOTE(mleutenegger): 2019-11-10
+                // $dbFieldType is always truthy
+                //
+                // if (!$dbFieldType) {
+                //     return Utility::getMethodReturnType($methodReflection);
+                // }
                 return $dbFieldType;
             break;
 
