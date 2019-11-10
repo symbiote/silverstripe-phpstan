@@ -18,7 +18,7 @@
     }],
     "require": {
         "php": "~7.1",
-        "silverstripe/framework": "~4.0",
+        "silverstripe/framework": "~4.3",
         "silverstripe/vendor-plugin": "^1.0"
     },
     "require-dev": {
