@@ -56,7 +56,7 @@ abstract class ResolverTest extends \PHPStan\Testing\TestCase
             $printer = new \PhpParser\PrettyPrinter\Standard();
             $printedNode = $printer->prettyPrint([$node]);
             if ($printedNode === $evaluatedPointExpression) {
-                /** @var \PhpParser\Node\Expr $expressionNode */
+                /** @var \PhpParser\Node\Stmt\Expression $expressionNode */
                 $expressionNode = $this->getParser()->parseString(sprintf('<?php %s;', $expression))[0];
 			    $type = $scope->getType($expressionNode->expr);
                 $this->assertTypeDescribe(
