@@ -8,6 +8,9 @@ parameters:
     exclude_files:
         # Exclude bootstrap file
         - tests/bootstrap-phpstan.php
+    excludes_analyse:
+        # Exclude test data files
+        - %currentWorkingDirectory%/tests/*/Data/*
     autoload_directories:
         # NOTE(Jake): 2018-05-20
         #

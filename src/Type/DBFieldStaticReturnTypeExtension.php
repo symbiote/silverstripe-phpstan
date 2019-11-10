@@ -6,6 +6,7 @@ use Symbiote\SilverstripePHPStan\ClassHelper;
 use Symbiote\SilverstripePHPStan\Utility;
 use PhpParser\Node\Expr\StaticCall;
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\Type;
 use PHPStan\Type\ObjectType;
@@ -29,7 +30,11 @@ class DBFieldStaticReturnTypeExtension implements \PHPStan\Type\DynamicStaticMet
         switch ($name) {
             case 'create_field':
                 if (count($methodCall->args) === 0) {
-                    return $methodReflection->getReturnType();
+                    return ParametersAcceptorSelector::selectFromArgs(
+                        $scope,
+                        $methodCall->args,
+                        $methodReflection->getVariants()
+                    )->getReturnType();
                 }
                 // Handle DBField::create_field('HTMLText', '<p>Value</p>')
                 $arg = $methodCall->args[0]->value;
@@ -37,6 +42,8 @@ class DBFieldStaticReturnTypeExtension implements \PHPStan\Type\DynamicStaticMet
                 return $type;
             break;
         }
-        return $methodReflection->getReturnType();
+        $arg = $methodCall->args[0]->value;
+
+        return $scope->getType($arg);
     }
 }

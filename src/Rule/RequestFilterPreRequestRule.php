@@ -5,7 +5,7 @@ namespace Symbiote\SilverstripePHPStan\Rule;
 use Symbiote\SilverstripePHPStan\ClassHelper;
 use PhpParser\Node\Stmt\Return_;
 use PHPStan\Analyser\Scope;
-use PHPStan\Type\FalseBooleanType;
+use PHPStan\Type\Constant\ConstantBooleanType;
 
 class RequestFilterPreRequestRule implements \PHPStan\Rules\Rule
 {
@@ -37,8 +37,8 @@ class RequestFilterPreRequestRule implements \PHPStan\Rules\Rule
         if ($node->expr === null) {
             return [];
         }
-        $returnType = $scope->getType($node->expr);
-        if ($returnType instanceof FalseBooleanType) {
+        $returnType = $scope->filterByFalseyValue($node->expr)->getType($node->expr);
+        if ($returnType instanceof ConstantBooleanType) {
             // NOTE(Jake): 2018-04-25
             //
             // Added for SS 3.X. This might not be true in SS 4.0
