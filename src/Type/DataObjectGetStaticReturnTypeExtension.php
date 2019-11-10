@@ -82,6 +82,6 @@ class DataObjectGetStaticReturnTypeExtension implements \PHPStan\Type\DynamicSta
         }
         $arg = $methodCall->args[0]->value;
 
-	    return $scope->getType($arg);
+        return $scope->getType($arg);
     }
 }

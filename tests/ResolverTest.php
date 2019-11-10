@@ -51,14 +51,14 @@ abstract class ResolverTest extends \PHPStan\Testing\TestCase
         //
         $this->processFile($file, function (\PhpParser\Node $node, Scope $scope) use ($description, $expression, $evaluatedPointExpression) {
             if ($node instanceof VirtualNode) {
-				return;
-			}
+                return;
+            }
             $printer = new \PhpParser\PrettyPrinter\Standard();
             $printedNode = $printer->prettyPrint([$node]);
             if ($printedNode === $evaluatedPointExpression) {
                 /** @var \PhpParser\Node\Stmt\Expression $expressionNode */
                 $expressionNode = $this->getParser()->parseString(sprintf('<?php %s;', $expression))[0];
-			    $type = $scope->getType($expressionNode->expr);
+                $type = $scope->getType($expressionNode->expr);
                 $this->assertTypeDescribe(
                     $description,
                     $type->describe(VerbosityLevel::precise()),
@@ -106,11 +106,11 @@ abstract class ResolverTest extends \PHPStan\Testing\TestCase
         $anonymousClassNameHelper = new AnonymousClassNameHelper(new FileHelper($workingDirectory), $relativePathHelper);
 
         $typeSpecifier = $this->createTypeSpecifier(
-			$printer,
-			$broker,
-			[],
-			[]
-		);
+            $printer,
+            $broker,
+            [],
+            []
+        );
 
         $resolver = new NodeScopeResolver(
             $broker,
