@@ -5,6 +5,7 @@ namespace Symbiote\SilverstripePHPStan\Tests\Reflection;
 use Symbiote\SilverstripePHPStan\ClassHelper;
 use Symbiote\SilverstripePHPStan\Reflection\MethodClassReflectionExtension;
 use Symbiote\SilverstripePHPStan\Type\DataListType;
+use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\VerbosityLevel;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\MixedType;
@@ -62,19 +63,9 @@ final class SiteTreeMethodClassReflectionExtensionTest extends \PHPStan\Testing\
     public function testParentMethod(): void
     {
         $classReflection = $this->broker->getClass(ClassHelper::SiteTree);
-        /**
-         * NOTE(mleutenegger): 2019-11-10
-         * Without this, phpstan finds an error:
-         * > Call to an undefined method
-         * > PHPStan\Reflection\MethodReflection::getReturnType()
-         * This is caused by MethodsClassReflectionExtension::getMethod()
-         * defining only the MethodReflection interface as return type.
-         *
-         * @var \Symbiote\SilverstripePHPStan\Reflection\ComponentHasOneMethod $methodReflection
-         */
         $methodReflection = $this->method->getMethod($classReflection, 'Parent');
         self::assertSame('Parent', $methodReflection->getName());
-        $resultType = $methodReflection->getReturnType();
+        $resultType = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
         self::assertSame(ObjectType::class, get_class($resultType));
         if (!($resultType instanceof ObjectType)) {
             // This statement is needed so PHPStan knows $resultType is ObjectType.
@@ -86,19 +77,9 @@ final class SiteTreeMethodClassReflectionExtensionTest extends \PHPStan\Testing\
     public function testLinkTrackingMethod(): void
     {
         $classReflection = $this->broker->getClass(ClassHelper::SiteTree);
-        /**
-         * NOTE(mleutenegger): 2019-11-10
-         * Without this, phpstan finds an error:
-         * > Call to an undefined method
-         * > PHPStan\Reflection\MethodReflection::getReturnType()
-         * This is caused by MethodsClassReflectionExtension::getMethod()
-         * defining only the MethodReflection interface as return type.
-         *
-         * @var \Symbiote\SilverstripePHPStan\Reflection\ComponentHasManyMethod $methodReflection 
-         */
         $methodReflection = $this->method->getMethod($classReflection, 'LinkTracking');
         self::assertSame('LinkTracking', $methodReflection->getName());
-        $dataListType = $methodReflection->getReturnType();
+        $dataListType = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
         self::assertSame(DataListType::class, get_class($dataListType));
         if (!($dataListType instanceof DataListType)) {
             // This statement is needed so PHPStan knows $dataListType is DataListType.
