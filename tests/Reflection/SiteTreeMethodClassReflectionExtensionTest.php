@@ -62,6 +62,16 @@ final class SiteTreeMethodClassReflectionExtensionTest extends \PHPStan\Testing\
     public function testParentMethod(): void
     {
         $classReflection = $this->broker->getClass(ClassHelper::SiteTree);
+        /**
+         * NOTE(mleutenegger): 2019-11-10
+         * Without this, phpstan finds an error:
+         * > Call to an undefined method
+         * > PHPStan\Reflection\MethodReflection::getReturnType()
+         * This is caused by MethodsClassReflectionExtension::getMethod()
+         * defining only the MethodReflection interface as return type.
+         *
+         * @var \Symbiote\SilverstripePHPStan\Reflection\ComponentHasOneMethod $methodReflection
+         */
         $methodReflection = $this->method->getMethod($classReflection, 'Parent');
         self::assertSame('Parent', $methodReflection->getName());
         $resultType = $methodReflection->getReturnType();
@@ -76,6 +86,16 @@ final class SiteTreeMethodClassReflectionExtensionTest extends \PHPStan\Testing\
     public function testLinkTrackingMethod(): void
     {
         $classReflection = $this->broker->getClass(ClassHelper::SiteTree);
+        /**
+         * NOTE(mleutenegger): 2019-11-10
+         * Without this, phpstan finds an error:
+         * > Call to an undefined method
+         * > PHPStan\Reflection\MethodReflection::getReturnType()
+         * This is caused by MethodsClassReflectionExtension::getMethod()
+         * defining only the MethodReflection interface as return type.
+         *
+         * @var \Symbiote\SilverstripePHPStan\Reflection\ComponentHasManyMethod $methodReflection 
+         */
         $methodReflection = $this->method->getMethod($classReflection, 'LinkTracking');
         self::assertSame('LinkTracking', $methodReflection->getName());
         $dataListType = $methodReflection->getReturnType();
