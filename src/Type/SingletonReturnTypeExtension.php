@@ -28,14 +28,14 @@ class SingletonReturnTypeExtension implements DynamicFunctionReturnTypeExtension
         switch ($name) {
             case 'singleton':
                 if (count($functionCall->args) === 0) {
-                    return $functionReflection->getReturnType();
+                    return Utility::getMethodReturnType($functionReflection);
                 }
                 // Handle singleton('HTMLText')
                 $arg = $functionCall->args[0]->value;
-                $type = Utility::getTypeFromInjectorVariable($arg, $functionReflection->getReturnType());
+                $type = Utility::getTypeFromInjectorVariable($arg, Utility::getMethodReturnType($functionReflection));
                 return $type;
             break;
         }
-        return $functionReflection->getReturnType();
+        return Utility::getMethodReturnType($functionReflection);
     }
 }

@@ -12,19 +12,21 @@
     ],
     "license": "BSD-3-Clause",
     "authors": [
-    {
-        "name": "Jake Bentvelzen",
-        "email": "jake@symbiote.com.au"
-    }],
+        {
+            "name": "Jake Bentvelzen",
+            "email": "jake@symbiote.com.au"
+        }
+    ],
     "require": {
-        "php": "~7.0",
-        "silverstripe/framework": "~4.0",
+        "php": "~7.1",
+        "silverstripe/framework": "~4.3",
         "silverstripe/vendor-plugin": "^1.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.0",
-        "phpstan/phpstan": "~0.9.0",
-        "phpstan/phpstan-phpunit": "~0.9.0"
+        "phpstan/phpstan": "~0.11.0",
+        "phpstan/phpstan-phpunit": "~0.11.0",
+        "phpunit/phpunit": "^7.5.14 || ^8.0"
     },
     "scripts": {
         "phpcs": "phpcs -n -l src/ src/Reflection/ src/Rule/ src/Type tests/ tests/Reflection/ tests/Rule/ tests/Type/",
@@ -33,7 +35,7 @@
         "phpstan": "bash ../../../vendor/bin/phpstan analyse src/ tests/ -c \"tests/phpstan.neon\" -a \"tests/bootstrap-phpstan.php\" --level 4"
     },
     "suggest": {
-        "phpstan/phpstan-shim": "~0.9.0"
+        "phpstan/phpstan-shim": "~0.11.0"
     },
     "autoload": {
         "psr-4": {

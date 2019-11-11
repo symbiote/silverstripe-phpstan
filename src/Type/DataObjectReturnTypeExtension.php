@@ -68,7 +68,7 @@ class DataObjectReturnTypeExtension implements DynamicMethodReturnTypeExtension
                 // directly from another function like `$this->getCMSFields()`, this will
                 // execute.
                 //
-                $objectType = $methodReflection->getReturnType();
+                $objectType = Utility::getMethodReturnType($methodReflection);
                 if (!($objectType instanceof ObjectType)) {
                     throw new Exception('Unexpected type: '.get_class($objectType).', expected ObjectType');
                 }
@@ -87,17 +87,17 @@ class DataObjectReturnTypeExtension implements DynamicMethodReturnTypeExtension
                 }
                 if (!$className) {
                     throw new Exception('Unhandled type: '.get_class($type));
-                    //return $methodReflection->getReturnType();
+                    //return Utility::getMethodReturnType($methodReflection);
                 }
                 if (count($methodCall->args) === 0) {
-                    return $methodReflection->getReturnType();
+                    return Utility::getMethodReturnType($methodReflection);
                 }
                 // Handle $this->dbObject('Field')
                 $arg = $methodCall->args[0]->value;
                 $fieldName = '';
                 if ($arg instanceof Variable) {
                     // Unhandled, cannot retrieve variable value even if set in this scope.
-                    return $methodReflection->getReturnType();
+                    return Utility::getMethodReturnType($methodReflection);
                 } else if ($arg instanceof ClassConstFetch) {
                     // Handle "SiteTree::class" constant
                     $fieldName = (string)$arg->class;
@@ -106,22 +106,25 @@ class DataObjectReturnTypeExtension implements DynamicMethodReturnTypeExtension
                 }
                 if (!$fieldName) {
                     throw new Exception('Mishandled "newClassInstance" call.');
-                    //return $methodReflection->getReturnType();
+                    //return Utility::getMethodReturnType($methodReflection);
                 }
                 $dbFields = ConfigHelper::get_db($className);
                 if (!isset($dbFields[$fieldName])) {
-                    return $methodReflection->getReturnType();
+                    return Utility::getMethodReturnType($methodReflection);
                 }
                 $dbFieldType = $dbFields[$fieldName];
-                if (!$dbFieldType) {
-                    return $methodReflection->getReturnType();
-                }
+                // NOTE(mleutenegger): 2019-11-10
+                // $dbFieldType is always truthy
+                //
+                // if (!$dbFieldType) {
+                //     return Utility::getMethodReturnType($methodReflection);
+                // }
                 return $dbFieldType;
             break;
 
             case 'newClassInstance':
                 if (count($methodCall->args) === 0) {
-                    return $methodReflection->getReturnType();
+                    return Utility::getMethodReturnType($methodReflection);
                 }
                 $arg = $methodCall->args[0]->value;
                 $type = Utility::getTypeFromVariable($arg, $methodReflection);
@@ -132,6 +135,6 @@ class DataObjectReturnTypeExtension implements DynamicMethodReturnTypeExtension
                 throw new Exception('Unhandled method call: '.$name);
             break;
         }
-        return $methodReflection->getReturnType();
+        return Utility::getMethodReturnType($methodReflection);
     }
 }

@@ -4,6 +4,7 @@ namespace Symbiote\SilverstripePHPStan\Reflection;
 
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\Reflection\ClassMemberReflection;
 use PHPStan\Type\Type;
 use PHPStan\Type\MixedType;
 use PHPStan\Reflection\Php\PhpMethodReflection;
@@ -43,7 +44,7 @@ class CachedMethod implements MethodReflection
         return $this->methodReflection->getDeclaringClass();
     }
 
-    public function getPrototype(): MethodReflection
+    public function getPrototype(): ClassMemberReflection
     {
         return $this->methodReflection->getPrototype();
     }
@@ -53,15 +54,15 @@ class CachedMethod implements MethodReflection
         return $this->methodReflection->isStatic();
     }
 
-    public function getParameters(): array
-    {
-        return $this->methodReflection->getParameters();
-    }
+    // public function getParameters(): array
+    // {
+    //     return $this->methodReflection->getParameters();
+    // }
 
-    public function isVariadic(): bool
-    {
-        return $this->methodReflection->isVariadic();
-    }
+    // public function isVariadic(): bool
+    // {
+    //     return $this->methodReflection->isVariadic();
+    // }
 
     public function isPrivate(): bool
     {
@@ -78,8 +79,16 @@ class CachedMethod implements MethodReflection
         return $this->name;
     }
 
-    public function getReturnType(): Type
+    // public function getReturnType(): Type
+    // {
+    //     return $this->methodReflection->getReturnType();
+    // }
+
+    /**
+     * @return \PHPStan\Reflection\ParametersAcceptor[]
+     */
+    public function getVariants(): array
     {
-        return $this->methodReflection->getReturnType();
+            return $this->methodReflection->getVariants();
     }
 }

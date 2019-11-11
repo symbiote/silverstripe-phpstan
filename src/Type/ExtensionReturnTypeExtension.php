@@ -8,6 +8,7 @@ use Symbiote\SilverstripePHPStan\ConfigHelper;
 use Symbiote\SilverstripePHPStan\Utility;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\Type;
 use PHPStan\Type\ArrayType;
@@ -57,9 +58,12 @@ class ExtensionReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnT
                 } else {
                     $objectType = Utility::getTypeFromVariable($methodCall->var, $methodReflection);
                 }
-                if (!$objectType) {
-                    return $methodReflection->getReturnType();
-                }
+                // NOTE(mleutenegger): 2019-11-10
+                // $objectType is always truthy
+                //
+                // if (!$objectType) {
+                //     return $methodReflection->getReturnType();
+                // }
                 if (!($objectType instanceof ObjectType)) {
                     throw new Exception('Unexpected type: '.get_class($objectType).', expected ObjectType');
                 }
@@ -68,7 +72,7 @@ class ExtensionReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnT
                 $extensionClassName = $objectType->getClassName();
                 $ownerClassNamesByExtensionClassName = $this->getOwnerClassNamesByExtensionClassName();
                 if (!isset($ownerClassNamesByExtensionClassName[$extensionClassName])) {
-                    return $methodReflection->getReturnType();
+                    return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
                 }
                 $classesUsingExtension = $ownerClassNamesByExtensionClassName[$extensionClassName];
 
@@ -84,7 +88,7 @@ class ExtensionReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnT
                     }
                 }
                 if (!$types) {
-                    return $methodReflection->getReturnType();
+                    return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
                 }
                 if (count($types) === 1) {
                     // NOTE(Jake): 2018-04-25
@@ -100,7 +104,7 @@ class ExtensionReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnT
                 throw new Exception('Unhandled method call: '.$name);
             break;
         }
-        return $methodReflection->getReturnType();
+        return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
     }
 
     private function getOwnerClassNamesByExtensionClassName()

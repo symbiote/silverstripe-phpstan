@@ -10,6 +10,7 @@ use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\Type;
 use PHPStan\Type\ObjectType;
@@ -37,13 +38,13 @@ class DataObjectGetStaticReturnTypeExtension implements \PHPStan\Type\DynamicSta
                 if (count($methodCall->args) > 0) {
                     // Handle DataObject::get('Page')
                     $arg = $methodCall->args[0];
-                    $type = Utility::getTypeFromVariable($arg, $methodReflection);
+                    $type = Utility::getTypeFromInjectorVariable($arg, new ObjectType('SilverStripe\ORM\DataObject'));
                     return new DataListType(ClassHelper::DataList, $type);
                 }
                 // Handle Page::get() / self::get()
                 $callerClass = $methodCall->class->toString();
                 if ($callerClass === 'static') {
-                    return $methodReflection->getReturnType();
+                    return Utility::getMethodReturnType($methodReflection);
                 }
                 if ($callerClass === 'self') {
                     $callerClass = $scope->getClassReflection()->getName();
@@ -62,7 +63,7 @@ class DataObjectGetStaticReturnTypeExtension implements \PHPStan\Type\DynamicSta
                 // Handle Page::get() / self::get()
                 $callerClass = $methodCall->class->toString();
                 if ($callerClass === 'static') {
-                    return $methodReflection->getReturnType();
+                    return Utility::getMethodReturnType($methodReflection);
                 }
                 if ($callerClass === 'self') {
                     $callerClass = $scope->getClassReflection()->getName();
@@ -70,6 +71,17 @@ class DataObjectGetStaticReturnTypeExtension implements \PHPStan\Type\DynamicSta
                 return new ObjectType($callerClass);
             break;
         }
-        return $methodReflection->getReturnType();
+        // NOTE(mleutenegger): 2019-11-10
+        // taken from https://github.com/phpstan/phpstan#dynamic-return-type-extensions
+        if (count($methodCall->args) === 0) {
+            return ParametersAcceptorSelector::selectFromArgs(
+                $scope,
+                $methodCall->args,
+                $methodReflection->getVariants()
+            )->getReturnType();
+        }
+        $arg = $methodCall->args[0]->value;
+
+        return $scope->getType($arg);
     }
 }

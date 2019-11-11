@@ -5,13 +5,20 @@ namespace Symbiote\SilverstripePHPStan\Tests;
 use ReflectionProperty;
 use PHPStan\PhpDoc;
 use PHPStan\Analyser\Scope;
+use PHPStan\Analyser\ScopeFactory;
+use PHPStan\Analyser\ScopeContext;
 use PHPStan\Cache\Cache;
 use PHPStan\File\FileHelper;
 use PHPStan\PhpDoc\PhpDocStringResolver;
 use PHPStan\Type\FileTypeMapper;
+use PHPStan\Type\VerbosityLevel;
 use PHPStan\Analyser\NodeScopeResolver;
 use PHPStan\Analyser\TypeSpecifier;
 use PHPStan\Reflection\BrokerAwareExtension;
+use PHPStan\File\FuzzyRelativePathHelper;
+use PHPStan\Broker\AnonymousClassNameHelper;
+use PHPStan\Rules\Properties\PropertyReflectionFinder;
+use PHPStan\Node\VirtualNode;
 
 abstract class ResolverTest extends \PHPStan\Testing\TestCase
 {
@@ -43,15 +50,18 @@ abstract class ResolverTest extends \PHPStan\Testing\TestCase
         // - phpstan\tests\PHPStan\Analyser\NodeScopeResolverTest.php
         //
         $this->processFile($file, function (\PhpParser\Node $node, Scope $scope) use ($description, $expression, $evaluatedPointExpression) {
+            if ($node instanceof VirtualNode) {
+                return;
+            }
             $printer = new \PhpParser\PrettyPrinter\Standard();
             $printedNode = $printer->prettyPrint([$node]);
             if ($printedNode === $evaluatedPointExpression) {
-                /** @var \PhpParser\Node\Expr $expressionNode */
+                /** @var \PhpParser\Node\Stmt\Expression $expressionNode */
                 $expressionNode = $this->getParser()->parseString(sprintf('<?php %s;', $expression))[0];
-                $type = $scope->getType($expressionNode);
+                $type = $scope->getType($expressionNode->expr);
                 $this->assertTypeDescribe(
                     $description,
-                    $type->describe(),
+                    $type->describe(VerbosityLevel::precise()),
                     sprintf('%s at %s', $expression, $evaluatedPointExpression)
                 );
             }
@@ -91,20 +101,38 @@ abstract class ResolverTest extends \PHPStan\Testing\TestCase
             $refProperty->setAccessible(true);
             $refProperty->setValue($broker, $hack);
         }
+        $workingDirectory = __DIR__;
+        $relativePathHelper = new FuzzyRelativePathHelper($workingDirectory, DIRECTORY_SEPARATOR, []);
+        $anonymousClassNameHelper = new AnonymousClassNameHelper(new FileHelper($workingDirectory), $relativePathHelper);
+
+        $typeSpecifier = $this->createTypeSpecifier(
+            $printer,
+            $broker,
+            [],
+            []
+        );
 
         $resolver = new NodeScopeResolver(
             $broker,
             $this->getParser(),
-            $printer,
-            new FileTypeMapper($this->getParser(), $phpDocStringResolver, $this->createMock(Cache::class)),
-            new FileHelper('/'),
+            new FileTypeMapper(
+                $this->getParser(),
+                $phpDocStringResolver,
+                $this->createMock(Cache::class),
+                $anonymousClassNameHelper,
+                new \PHPStan\PhpDoc\TypeNodeResolver([])
+            ),
+            new FileHelper($workingDirectory),
+            $typeSpecifier,
+            true,
             true,
             true,
             [
                 //\EarlyTermination\Foo::class => [
                 //    'doFoo',
                 //],
-            ]
+            ],
+            true
         );
         $broker = $this->createBroker(
             $dynamicMethodReturnTypeExtensions,
@@ -129,14 +157,11 @@ abstract class ResolverTest extends \PHPStan\Testing\TestCase
             $refProperty->setValue($broker, $hack);
         }
 
+        $scopeFactory = $this->createScopeFactory($broker, $typeSpecifier);
+        $scope = $scopeFactory->create(ScopeContext::create($file));
         $resolver->processNodes(
             $this->getParser()->parseFile($file),
-            new Scope(
-                $broker,
-                $printer,
-                new TypeSpecifier($printer),
-                $file
-            ),
+            $scope,
             $callback
         );
     }

@@ -5,6 +5,9 @@ parameters:
     universalObjectCratesClasses:
         - SilverStripe\View\ArrayData
         - SilverStripe\Core\Config\Config_ForClass
+        - SilverStripe\Forms\GridField\GridState_Data
+        - SilverStripe\ORM\DataObject
+        - SilverStripe\ORM\DataObjectInterface
         - Symbiote\QueuedJobs\Services\AbstractQueuedJob # symbiote/silverstripe-queuedjobs module support
     excludes_analyse:
         - silverstripe-cache
@@ -65,9 +68,21 @@ services:
         class: Symbiote\SilverstripePHPStan\Type\DataObjectReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
+
+    -
+        class: Symbiote\SilverstripePHPStan\Type\FormFieldReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
+
     # This makes calls to `DBField::create_field('HTMLText', $value)` return the correct type info
     # ie. The injectored type of the first parameter
     -
         class: Symbiote\SilverstripePHPStan\Type\DBFieldStaticReturnTypeExtension
         tags:
             - phpstan.broker.dynamicStaticMethodReturnTypeExtension
+
+    # Special handling for ->hasMethod() checks
+    -
+        class: Symbiote\SilverstripePHPStan\Type\HasMethodTypeSpecifyingExtension
+        tags:
+            - phpstan.typeSpecifier.methodTypeSpecifyingExtension
