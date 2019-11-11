@@ -4,7 +4,7 @@
 parameters:
     ignoreErrors:
         # Ignore as PHPStan has no support for method_exists()
-        - '%Call to an undefined method PHPStan\\Type\\Type::getItemType()%'
+        # - '%Call to an undefined method PHPStan\\Type\\Type::getItemType()%'
     exclude_files:
         # Exclude bootstrap file
         - tests/bootstrap-phpstan.php
