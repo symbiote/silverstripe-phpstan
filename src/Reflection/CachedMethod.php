@@ -54,15 +54,15 @@ class CachedMethod implements MethodReflection
         return $this->methodReflection->isStatic();
     }
 
-    public function getParameters(): array
-    {
-        return $this->methodReflection->getParameters();
-    }
+    // public function getParameters(): array
+    // {
+    //     return $this->methodReflection->getParameters();
+    // }
 
-    public function isVariadic(): bool
-    {
-        return $this->methodReflection->isVariadic();
-    }
+    // public function isVariadic(): bool
+    // {
+    //     return $this->methodReflection->isVariadic();
+    // }
 
     public function isPrivate(): bool
     {
@@ -79,10 +79,10 @@ class CachedMethod implements MethodReflection
         return $this->name;
     }
 
-    public function getReturnType(): Type
-    {
-        return $this->methodReflection->getReturnType();
-    }
+    // public function getReturnType(): Type
+    // {
+    //     return $this->methodReflection->getReturnType();
+    // }
 
     /**
      * @return \PHPStan\Reflection\ParametersAcceptor[]
