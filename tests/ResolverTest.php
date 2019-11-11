@@ -122,7 +122,7 @@ abstract class ResolverTest extends \PHPStan\Testing\TestCase
                 $anonymousClassNameHelper,
                 new \PHPStan\PhpDoc\TypeNodeResolver([])
             ),
-            new FileHelper('/'),
+            new FileHelper($workingDirectory),
             $typeSpecifier,
             true,
             true,
@@ -157,23 +157,11 @@ abstract class ResolverTest extends \PHPStan\Testing\TestCase
             $refProperty->setValue($broker, $hack);
         }
 
-        $scopeFactory = self::getContainer()->getByType(ScopeFactory::class);
+        $scopeFactory = $this->createScopeFactory($broker, $typeSpecifier);
+        $scope = $scopeFactory->create(ScopeContext::create($file));
         $resolver->processNodes(
             $this->getParser()->parseFile($file),
-            new Scope(
-                $scopeFactory,
-                $broker,
-                $printer,
-                new TypeSpecifier(
-                    $printer,
-                    $broker,
-                    [],
-                    [],
-                    []
-                ),
-                new PropertyReflectionFinder(),
-                ScopeContext::create($file)
-            ),
+            $scope,
             $callback
         );
     }
