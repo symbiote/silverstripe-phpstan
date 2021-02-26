@@ -42,13 +42,9 @@ class InjectorReturnTypeExtension implements DynamicMethodReturnTypeExtension
                     Utility::getMethodReturnType($methodReflection)
                 );
                 return $type;
-            break;
 
             default:
                 throw new LogicException('Unhandled method call: '.$name);
-            break;
         }
-
-        return Utility::getMethodReturnType($methodReflection);
     }
 }

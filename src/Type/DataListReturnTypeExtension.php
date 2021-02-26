@@ -53,7 +53,6 @@ class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTy
             case 'first':
             case 'last':
                 return true;
-            break;
 
             /*case 'min':
             case 'max':
@@ -103,11 +102,9 @@ class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTy
             case 'removeByFilter':
             case 'removeAll':
                 return $type;
-            break;
 
             case 'getIDList':
                 return new ArrayType(new IntegerType, new IntegerType);
-            break;
 
             // DataObject[]
             case 'toArray':
@@ -119,7 +116,6 @@ class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTy
                     return new ArrayType(new IntegerType, $type->getItemType());
                 }
                 return Utility::getMethodReturnType($methodReflection);
-            break;
 
             // DataObject
             case 'find':
@@ -127,12 +123,9 @@ class DataListReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTy
             case 'first':
             case 'last':
                 return $type->getIterableValueType();
-            break;
 
             default:
                 throw new Exception('Unhandled method call: '.$name);
-            break;
         }
-        return Utility::getMethodReturnType($methodReflection);
     }
 }

@@ -10,8 +10,8 @@ env:
     - SS_BASE_URL="https://localhost/"
     - DB=MYSQL
   matrix:
-    - RECIPE_VERSION=4.3.x-dev
-    - RECIPE_VERSION=4.4.x-dev
+    - RECIPE_VERSION=4.3.*
+    - RECIPE_VERSION=4.x-dev
 
 
 

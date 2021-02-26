@@ -7,6 +7,7 @@ use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\PropertyReflection;
 use PHPStan\Type\Type;
 use PHPStan\Type\ObjectType;
+use PHPStan\TrinaryLogic;
 
 class ComponentDBFieldProperty implements PropertyReflection
 {
@@ -42,7 +43,12 @@ class ComponentDBFieldProperty implements PropertyReflection
         $this->returnType = Utility::get_primitive_from_dbfield($className);
     }
 
-    public function getType(): Type
+    public function getReadableType(): Type
+    {
+        return $this->returnType;
+    }
+
+    public function getWritableType(): Type
     {
         return $this->returnType;
     }
@@ -73,6 +79,31 @@ class ComponentDBFieldProperty implements PropertyReflection
     }
 
     public function isWritable(): bool
+    {
+        return true;
+    }
+
+    public function isDeprecated(): TrinaryLogic
+    {
+        return TrinaryLogic::createNo();
+    }
+
+    public function isInternal(): TrinaryLogic
+    {
+        return TrinaryLogic::createNo();
+    }
+
+    public function getDeprecatedDescription(): ?string
+    {
+        return null;
+    }
+
+    public function getDocComment(): ?string
+    {
+        return null;
+    }
+
+    public function canChangeTypeAfterAssignment(): bool
     {
         return true;
     }

@@ -25,10 +25,12 @@ composer require --dev symbiote/silverstripe-phpstan:1.0.0 phpstan/phpstan-shim:
 
 SilverStripe 4.X
 ```
-composer require --dev symbiote/silverstripe-phpstan:2.0.0 phpstan/phpstan-shim:~0.11.0
+composer require --dev symbiote/silverstripe-phpstan
 ```
 
-NOTE: We recommend installing the phpstan-shim as currently in SilverStripe 3.X, the QueuedJobs module's dependence on superclosure forces the PHP-Parser dependency of PHPStan to be at a very outdated version.
+NOTE: Versions of PHPStan less than 0.12, we recommend installing the phpstan-shim as currently in SilverStripe 3.X,
+the QueuedJobs module's dependence on superclosure forces the PHP-Parser dependency of PHPStan to be at a very outdated
+version. From 0.12, the 'shim' install is the dfeault.
 
 ## Requirements
 

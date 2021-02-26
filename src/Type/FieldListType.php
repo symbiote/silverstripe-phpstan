@@ -9,11 +9,11 @@ use PHPStan\Reflection\PropertyReflection;
 use PHPStan\Type\Type;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\IterableTypeTrait;
-use PHPStan\Type\StaticResolvableType;
+use PHPStan\Type\StaticType;
 use PHPStan\TrinaryLogic;
 use PHPStan\Type\VerbosityLevel;
 
-class FieldListType extends ObjectType implements StaticResolvableType
+class FieldListType extends ObjectType
 {
 
     /**
@@ -42,16 +42,6 @@ class FieldListType extends ObjectType implements StaticResolvableType
     public function getIterableValueType(): Type
     {
         return $this->itemType;
-    }
-
-    public function resolveStatic(string $className): Type
-    {
-        return $this;
-    }
-
-    public function changeBaseClass(string $className): StaticResolvableType
-    {
-        return $this;
     }
 
     public function isDocumentableNatively(): bool

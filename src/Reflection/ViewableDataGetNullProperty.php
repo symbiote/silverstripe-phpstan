@@ -8,6 +8,7 @@ use PHPStan\Type\Type;
 use PHPStan\Type\StringType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\NullType;
+use PHPStan\TrinaryLogic;
 
 class ViewableDataGetNullProperty implements PropertyReflection
 {
@@ -40,7 +41,12 @@ class ViewableDataGetNullProperty implements PropertyReflection
         $this->returnType = new NullType;
     }
 
-    public function getType(): Type
+    public function getReadableType(): Type
+    {
+        return $this->returnType;
+    }
+
+    public function getWritableType(): Type
     {
         return $this->returnType;
     }
@@ -71,6 +77,31 @@ class ViewableDataGetNullProperty implements PropertyReflection
     }
 
     public function isWritable(): bool
+    {
+        return true;
+    }
+
+    public function isDeprecated(): TrinaryLogic
+    {
+        return TrinaryLogic::createNo();
+    }
+
+    public function isInternal(): TrinaryLogic
+    {
+        return TrinaryLogic::createNo();
+    }
+
+    public function getDeprecatedDescription(): ?string
+    {
+        return null;
+    }
+
+    public function getDocComment(): ?string
+    {
+        return null;
+    }
+
+    public function canChangeTypeAfterAssignment(): bool
     {
         return true;
     }

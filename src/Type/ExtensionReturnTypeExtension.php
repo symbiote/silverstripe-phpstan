@@ -32,7 +32,6 @@ class ExtensionReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnT
         switch ($name) {
             case 'getOwner':
                 return true;
-            break;
         }
         return false;
     }
@@ -98,13 +97,10 @@ class ExtensionReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnT
                     return $types[0];
                 }
                 return new UnionType($types);
-            break;
 
             default:
                 throw new Exception('Unhandled method call: '.$name);
-            break;
         }
-        return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
     }
 
     private function getOwnerClassNamesByExtensionClassName()
@@ -136,14 +132,12 @@ class ExtensionReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnT
         foreach ($classes as $class) {
             $hasTrait = false;
             foreach ($classes as $subclass) {
-                if ($subclass === $class || is_subclass_of($subclass, $class)) {
-                    $hasTrait = false;
-                    foreach (class_uses($class) as $trait) {
-                        $hasTrait = $hasTrait || $trait == ClassHelper::Extensible;
-                    }
-                    if ($hasTrait) {
-                        $result[$subclass] = $subclass;
-                    }
+                $hasTrait = false;
+                foreach (class_uses($class) as $trait) {
+                    $hasTrait = $hasTrait || $trait == ClassHelper::Extensible;
+                }
+                if ($hasTrait) {
+                    $result[$subclass] = $subclass;
                 }
             }
         }

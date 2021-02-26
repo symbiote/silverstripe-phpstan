@@ -35,15 +35,12 @@ class DataObjectReturnTypeExtension implements DynamicMethodReturnTypeExtension
         switch ($name) {
             case 'getCMSFields':
                 return true;
-            break;
 
             case 'dbObject':
                 return true;
-            break;
 
             case 'newClassInstance':
                 return true;
-            break;
         }
         return false;
     }
@@ -74,7 +71,6 @@ class DataObjectReturnTypeExtension implements DynamicMethodReturnTypeExtension
                 }
                 $className = $objectType->getClassName();
                 return new FieldListType($className);
-            break;
 
             case 'dbObject':
                 $className = '';
@@ -120,7 +116,6 @@ class DataObjectReturnTypeExtension implements DynamicMethodReturnTypeExtension
                 //     return Utility::getMethodReturnType($methodReflection);
                 // }
                 return $dbFieldType;
-            break;
 
             case 'newClassInstance':
                 if (count($methodCall->args) === 0) {
@@ -129,12 +124,9 @@ class DataObjectReturnTypeExtension implements DynamicMethodReturnTypeExtension
                 $arg = $methodCall->args[0]->value;
                 $type = Utility::getTypeFromVariable($arg, $methodReflection);
                 return $type;
-            break;
 
             default:
                 throw new Exception('Unhandled method call: '.$name);
-            break;
         }
-        return Utility::getMethodReturnType($methodReflection);
     }
 }

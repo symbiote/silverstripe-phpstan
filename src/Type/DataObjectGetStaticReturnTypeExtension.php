@@ -50,7 +50,6 @@ class DataObjectGetStaticReturnTypeExtension implements \PHPStan\Type\DynamicSta
                     $callerClass = $scope->getClassReflection()->getName();
                 }
                 return new DataListType(ClassHelper::DataList, new ObjectType($callerClass));
-            break;
 
             case 'get_one':
             case 'get_by_id':
@@ -69,7 +68,6 @@ class DataObjectGetStaticReturnTypeExtension implements \PHPStan\Type\DynamicSta
                     $callerClass = $scope->getClassReflection()->getName();
                 }
                 return new ObjectType($callerClass);
-            break;
         }
         // NOTE(mleutenegger): 2019-11-10
         // taken from https://github.com/phpstan/phpstan#dynamic-return-type-extensions
