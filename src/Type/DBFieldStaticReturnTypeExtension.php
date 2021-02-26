@@ -40,7 +40,6 @@ class DBFieldStaticReturnTypeExtension implements \PHPStan\Type\DynamicStaticMet
                 $arg = $methodCall->args[0]->value;
                 $type = Utility::getTypeFromVariable($arg, $methodReflection);
                 return $type;
-            break;
         }
         $arg = $methodCall->args[0]->value;
 

@@ -118,22 +118,22 @@ abstract class ResolverTest extends \PHPStan\Testing\TestCase
 
         $phpDocInheritanceResolver = new PhpDocInheritanceResolver($fileTypeMapper);
 
-		$resolver = new NodeScopeResolver(
-			$broker,
-			self::getReflectors()[0],
-			$this->getClassReflectionExtensionRegistryProvider(),
-			$this->getParser(),
-			$fileTypeMapper,
-			self::getContainer()->getByType(PhpVersion::class),
-			$phpDocInheritanceResolver,
-			$fileHelper,
-			$typeSpecifier,
-			true,
-			true,
-			true,
-			[],
-			['baz']
-		);
+        $resolver = new NodeScopeResolver(
+            $broker,
+            self::getReflectors()[0],
+            $this->getClassReflectionExtensionRegistryProvider(),
+            $this->getParser(),
+            $fileTypeMapper,
+            self::getContainer()->getByType(PhpVersion::class),
+            $phpDocInheritanceResolver,
+            $fileHelper,
+            $typeSpecifier,
+            true,
+            true,
+            true,
+            [],
+            ['baz']
+        );
 
         $broker = $this->createBroker(
             $dynamicMethodReturnTypeExtensions,

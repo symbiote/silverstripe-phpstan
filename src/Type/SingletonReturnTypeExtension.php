@@ -34,7 +34,6 @@ class SingletonReturnTypeExtension implements DynamicFunctionReturnTypeExtension
                 $arg = $functionCall->args[0]->value;
                 $type = Utility::getTypeFromInjectorVariable($arg, Utility::getMethodReturnType($functionReflection));
                 return $type;
-            break;
         }
         return Utility::getMethodReturnType($functionReflection);
     }

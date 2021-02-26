@@ -85,16 +85,14 @@ class InjectorReturnTypeExtensionTest extends ResolverTest
         $this->assertTypes(
             __DIR__ . '/data/data-object-dynamic-method-return-types.php',
             $description,
-            $expression,
+            $expression
         );
     }
 
-	public function getDynamicFunctionReturnTypeExtensions(): array
-	{
+    public function getDynamicFunctionReturnTypeExtensions(): array
+    {
         return [
             new SingletonReturnTypeExtension(),
         ];
-	}
-
-
+    }
 }
