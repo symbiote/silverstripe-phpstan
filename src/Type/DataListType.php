@@ -8,11 +8,10 @@ use PHPStan\Reflection\PropertyReflection;
 use PHPStan\Type\Type;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\IterableTypeTrait;
-use PHPStan\Type\StaticResolvableType;
 use PHPStan\TrinaryLogic;
 use PHPStan\Type\VerbosityLevel;
 
-class DataListType extends ObjectType implements StaticResolvableType
+class DataListType extends ObjectType
 {
     /** @var Type */
     private $itemType;
@@ -38,16 +37,6 @@ class DataListType extends ObjectType implements StaticResolvableType
     public function getIterableValueType(): Type
     {
         return $this->itemType;
-    }
-
-    public function resolveStatic(string $className): Type
-    {
-        return $this;
-    }
-
-    public function changeBaseClass(string $className): StaticResolvableType
-    {
-        return $this;
     }
 
     public function isDocumentableNatively(): bool

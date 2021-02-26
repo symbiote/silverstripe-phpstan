@@ -8,8 +8,10 @@ use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\FunctionVariant;
 use PHPStan\Reflection\ClassMemberReflection;
+use PHPStan\Type\Generic\TemplateTypeMap;
 use PHPStan\Type\Type;
 use PHPStan\Type\ObjectType;
+use PHPStan\TrinaryLogic;
 
 class ComponentManyManyMethod implements MethodReflection
 {
@@ -97,6 +99,8 @@ class ComponentManyManyMethod implements MethodReflection
         if ($this->variants === null) {
             $this->variants = [
                 new FunctionVariant(
+                    new TemplateTypeMap([]),
+                    null,
                     $this->getParameters(),
                     $this->isVariadic(),
                     $this->getReturnType()
@@ -104,5 +108,40 @@ class ComponentManyManyMethod implements MethodReflection
             ];
         }
         return $this->variants;
+    }
+
+    public function isDeprecated(): TrinaryLogic
+    {
+        return TrinaryLogic::createNo();
+    }
+
+    public function isFinal(): TrinaryLogic
+    {
+        return TrinaryLogic::createNo();
+    }
+
+    public function getDeprecatedDescription(): ?string
+    {
+        return null;
+    }
+
+    public function hasSideEffects(): TrinaryLogic
+    {
+        return TrinaryLogic::createNo();
+    }
+
+    public function getThrowType(): ?Type
+    {
+        return null;
+    }
+
+    public function isInternal(): TrinaryLogic
+    {
+        return TrinaryLogic::createNo();
+    }
+
+    public function getDocComment(): ?string
+    {
+        return null;
     }
 }

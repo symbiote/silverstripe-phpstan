@@ -8,6 +8,7 @@ use PHPStan\Reflection\ClassMemberReflection;
 use PHPStan\Type\Type;
 use PHPStan\Type\MixedType;
 use PHPStan\Reflection\Php\PhpMethodReflection;
+use PHPStan\TrinaryLogic;
 
 class CachedMethod implements MethodReflection
 {
@@ -90,5 +91,40 @@ class CachedMethod implements MethodReflection
     public function getVariants(): array
     {
             return $this->methodReflection->getVariants();
+    }
+
+    public function isDeprecated(): TrinaryLogic
+    {
+        return TrinaryLogic::createNo();
+    }
+
+    public function isFinal(): TrinaryLogic
+    {
+        return TrinaryLogic::createNo();
+    }
+
+    public function getDeprecatedDescription(): ?string
+    {
+        return null;
+    }
+
+    public function hasSideEffects(): TrinaryLogic
+    {
+        return TrinaryLogic::createNo();
+    }
+
+    public function getThrowType(): ?Type
+    {
+        return null;
+    }
+
+    public function isInternal(): TrinaryLogic
+    {
+        return TrinaryLogic::createNo();
+    }
+
+    public function getDocComment(): ?string
+    {
+        return null;
     }
 }
